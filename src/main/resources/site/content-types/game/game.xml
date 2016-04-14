@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content-type>
+  <display-name>Game</display-name>
+  <super-type>base:structured</super-type>
+  <form>
+    <item-set name="questions">
+      <label>Question</label>
+      <occurrences minimum="1" maximum="0"/>
+      <items>
+        <input type="TextLine" name="question">
+          <label>Question</label>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+        <input type="TextLine" name="red">
+          <label>Red</label>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+        <input type="TextLine" name="blue">
+          <label>Blue</label>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+        <input type="TextLine" name="green">
+          <label>Green</label>
+          <occurrences minimum="0" maximum="1"/>
+        </input>
+        <input type="TextLine" name="yellow">
+          <label>Yellow</label>
+          <occurrences minimum="0" maximum="1"/>
+        </input>
+        <input name="answer" type="ComboBox">
+          <label>Correct answer</label>
+          <occurrences minimum="1" maximum="1"/>
+          <config>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+          </config>
+          <default>one</default>
+        </input>
+      </items>
+    </item-set>
+  </form>
+</content-type>
