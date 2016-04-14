@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
   <config/>
+
+  <mappings>
+    <mapping controller="/site/controllers/start/start.js">
+      <pattern>/portal/.*/xphoot</pattern>
+    </mapping>
+
+    <mapping controller="/site/controllers/master/master.js">
+      <pattern>/portal/.*/xphoot/master</pattern>
+    </mapping>
+
+    <mapping controller="/site/controllers/player/player.js">
+      <pattern>/portal/.*/xphoot/player</pattern>
+    </mapping>
+
+  </mappings>
+
 </site>

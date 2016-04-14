@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>XPHoot - Master</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" data-th-href="${portal.assetUrl({'_path=css/xphoot.css'})}" href="../../../assets/css/xphoot.css"
+          type="text/css"/>
+</head>
+<body class="startview">
+
+<p>Start screen</p>
+<ul>
+    <li>
+        <a href="xphoot/master">New</a>
+    </li>
+    <li>
+        <a href="xphoot/player">Join</a>
+    </li>
+</ul>
+
+<script data-th-src="${portal.serviceUrl({'_service=init'})}" src="#"></script>
+<script data-th-src="${portal.assetUrl({'_path=js/xphoot.js'})}" src="../../../assets/js/xphoot.js"></script>
+</body>
+</html>
