@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <content-type>
-  <display-name>Game-result</display-name>
+  <display-name>Game result</display-name>
   <super-type>base:structured</super-type>
   <form>
     <input type="TextLine" name="pin">
