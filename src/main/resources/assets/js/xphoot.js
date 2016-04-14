@@ -1,12 +1,18 @@
 console.log('xphoot!');
 
-var ws = new WebSocket(xphoot_data.wsUrl);
+var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
 ws.onopen = function (event) {
-    console.log('Socket open');
-    ws.send("Hello");
+
+    var joinMsg = {
+        nick: 'fisk',
+        action: "join"
+    };
+
+    var join = ws.send(JSON.stringify(joinMsg));
+
 };
 
 ws.onmessage = function (event) {
-    console.log(event.data);
+    console.log("Yay, a message for me: " + event.data);
 };
