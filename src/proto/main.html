@@ -1,0 +1,70 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            height: 100%;
+            font-size: 80px;
+        }
+
+        .item {
+            flex-basis: 50%;
+            height: 50%;
+            text-align: center;
+        }
+
+        .red-item {
+            background-color: #D32F2F;
+        }
+
+        .blue-item {
+            background-color: #1976D2;
+        }
+
+        .green-item {
+            background-color: #8BC34A;
+        }
+
+        .yellow-item {
+            background-color: #FFC107;
+        }
+
+        input {
+            font-size: 50px;
+        }
+
+        option {
+            font-size: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="item red-item">
+        Start
+    </div>
+    <div class="item yellow-item">
+        <form>
+            <select>
+                <option>Game 1</option>
+                <option>Game 2</option>
+            </select>
+        </form>
+    </div>
+    <div class="item green-item">
+        <form>
+            <input type="text" placeholder="PIN"/>
+            <input type="text" placeholder="Nick"/>
+        </form>
+    </div>
+    <div class="item blue-item">
+        Join
+    </div>
+</div>
+</body>
+</html>
