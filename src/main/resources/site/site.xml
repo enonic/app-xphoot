@@ -16,5 +16,9 @@
     </mapping>
 
   </mappings>
+  <!--
+   Requires that site is called xphoot, and xphoot/master and xphoot/player content exists.
+   It's currently not possible to have mappings if the content for the path does not exist.
+  -->
 
 </site>
