@@ -1,18 +1,34 @@
 console.log('xphoot!');
-
+var role = $('#role').val();
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
 ws.onopen = function (event) {
 
-    var joinMsg = {
-        nick: 'fisk',
-        action: "join"
-    };
-
-    var join = ws.send(JSON.stringify(joinMsg));
+    sendJoin(role);
 
 };
 
 ws.onmessage = function (event) {
-    console.log("Yay, a message for me: " + event.data);
+    var data = event.data;
+    var type = data.type;
+    console.log("Yay, a message for me: " + data);
 };
+
+var send = function (data) {
+    ws.send(JSON.stringify(data));
+};
+
+var sendJoin = function (role, nick) {
+    var req = {
+        type: 'join',
+        role: role,
+        nick: nick || ""
+    };
+    send(req);
+};
+
+$('#sendJoinPlayer').on('click', function (e) {
+    e.preventDefault();
+    var nick = $('input[name="nick"').val();
+    sendJoin(role, nick);
+});

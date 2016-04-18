@@ -8,8 +8,20 @@
           type="text/css"/>
 </head>
 <body class="playerview">
-
+<input type="hidden" value="player" id="role"/>
 <p>Player screen</p>
+
+<div>
+    <fieldset>
+        <p>
+            <label>Nick</label>
+            <input name="nick" type="text" value="fisk"/>
+        </p>
+        <p>
+            <button type="button" name="send" id="sendJoinPlayer">Join</button>
+        </p>
+    </fieldset>
+</div>
 
 <script data-th-src="${portal.serviceUrl({'_service=init'})}" src="#"></script>
 <script data-th-src="${portal.assetUrl({'_path=js/jquery-2.2.3.min.js'})}" src="../../../assets/js/jquery-2.2.3.min.js"></script>

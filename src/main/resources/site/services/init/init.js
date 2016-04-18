@@ -8,7 +8,7 @@ exports.get = function (req) {
     };
 
     return {
-        contentType: 'text/html',
+        contentType: 'application/javascript',
         body: "var xphoot_data = " + JSON.stringify(data, null, 2) + ";"
     }
 };

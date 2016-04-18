@@ -3,9 +3,9 @@ body.startview {
 }
 
 body.playerview {
-    background-color: indianred;
+    background-color: lightyellow;
 }
 
 body.masterview {
-    background-color: lightgoldenrodyellow;
+    background-color: lightgray;
 }

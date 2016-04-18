@@ -8,8 +8,20 @@
           type="text/css"/>
 </head>
 <body class="masterview">
-
+<input type="hidden" value="master" id="role"/>
 <p>Master screen</p>
+
+<div>
+    <fieldset>
+        <p>
+            <label>PIN</label>
+            <input name="pin" type="text" value="12345"/>
+        </p>
+        <p>
+            <button type="button" name="send" id="sendPin">Send</button>
+        </p>
+    </fieldset>
+</div>
 
 <script data-th-src="${portal.serviceUrl({'_service=init'})}" src="#"></script>
 <script data-th-src="${portal.assetUrl({'_path=js/jquery-2.2.3.min.js'})}" src="../../../assets/js/jquery-2.2.3.min.js"></script>
