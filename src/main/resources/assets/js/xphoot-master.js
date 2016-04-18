@@ -1,7 +1,7 @@
 var role = 'master';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var players = {};
-var game;
+var game, pin;
 
 $(function () {
     loadGames();
@@ -28,6 +28,9 @@ ws.onmessage = function (event) {
 };
 
 var send = function (data) {
+    if (!data.pin && pin) {
+        data.pin = pin;
+    }
     ws.send(JSON.stringify(data));
 };
 
@@ -54,6 +57,7 @@ var sendQuestBegin = function (questionNumber) {
 
 wsResponseHandlers.joinAck = function (data) {
     game = data.game;
+    pin = data.pin;
     console.log('Game: ', game);
     $('#selectPanel').hide();
     $('#joinPanel').show();
