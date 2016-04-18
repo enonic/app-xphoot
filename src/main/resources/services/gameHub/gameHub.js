@@ -32,13 +32,27 @@ function handleEvent(event) {
     }
 
     if (event.type == 'close') {
-        // Do something on close
+        leave(event);
     }
-
-};
+}
 
 function handleMessage(event) {
 
+    if (!verifyRequiredParams()) {
+        return false;
+    }
+
+    var message = JSON.parse(event.message);
+
+    if (message.action == 'join') {
+        return join(event, message);
+    }
+
+    return forwardEvent(event, message);
+
+}
+
+function verifyRequiredParams() {
     var pin = getPin(event);
     var role = event.data.role;
 
@@ -47,16 +61,7 @@ function handleMessage(event) {
         return false;
     }
 
-    var message = JSON.parse(event.message);
-
-    if (message.action == 'join') {
-        join(event, message);
-    }
-
-    if (message.action == 'leave') {
-        leave(event, message);
-    }
-
+    return true;
 }
 
 function join(event, message) {
@@ -103,6 +108,10 @@ function leave(event) {
 
     webSocketLib.removeFromGroup(pin, id);
     webSocketLib.send(event.session.id, "Left");
+}
+
+function forwardEvent(event, message) {
+    webSocketLib.sendToGroup(getPin(event), message);
 }
 
 function getId(event) {
