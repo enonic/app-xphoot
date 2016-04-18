@@ -40,6 +40,18 @@ var sendJoin = function (role, gameId) {
     send(req);
 };
 
+var sendQuestBegin = function (questionNumber) {
+    var question = getQuestion(questionNumber);
+    showQuestion(question);
+
+    delete question['answer'];
+    var req = {
+        action: 'questBegin',
+        question: getQuestion(questionNumber)
+    };
+    send(req);
+};
+
 wsResponseHandlers.joinAck = function (data) {
     game = data.game;
     console.log('Game: ', game);
@@ -47,6 +59,8 @@ wsResponseHandlers.joinAck = function (data) {
     $('#joinPanel').show();
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
+
+    startCountDown(10);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
@@ -70,4 +84,42 @@ var loadGames = function () {
             sendJoin(role, gameId);
         }
     });
+};
+
+
+var startCountDown = function (duration) {
+    var timer = duration;
+    showTimer(duration);
+
+    var timerId = setInterval(function () {
+        showTimer(timer);
+        if (--timer < 0) {
+            clearInterval(timerId);
+
+            sendQuestBegin(0);
+        }
+    }, 1000);
+};
+
+var showTimer = function (duration) {
+    var timer = duration, minutes, seconds;
+    minutes = parseInt(timer / 60, 10);
+    seconds = parseInt(timer % 60, 10);
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    $('#timeLeft').text(minutes + ":" + seconds);
+};
+
+var getQuestion = function (questionNumber) {
+    return game.questions[questionNumber];
+};
+
+var showQuestion = function (question) {
+    $('#questionPanel').show();
+    $('#joinPanel').hide();
+    $('#questionText').text(question.question);
+
+    console.log(question);
 };
