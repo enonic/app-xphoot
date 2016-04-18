@@ -29,6 +29,6 @@ var sendJoin = function (role, nick) {
 
 $('#sendJoinPlayer').on('click', function (e) {
     e.preventDefault();
-    var nick = $('input[name="nick"').val();
+    var nick = $('input[name="nick"]').val();
     sendJoin(role, nick);
 });
