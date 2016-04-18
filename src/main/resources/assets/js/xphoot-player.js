@@ -1,5 +1,4 @@
-console.log('xphoot!');
-var role = $('#role').val();
+var role = 'player';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
 ws.onopen = function (event) {
