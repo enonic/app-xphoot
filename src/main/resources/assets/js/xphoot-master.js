@@ -16,7 +16,7 @@ ws.onopen = function (event) {
 var wsResponseHandlers = {};
 
 ws.onmessage = function (event) {
-    //console.log("Yay, a message for me: " + event.data);
+    console.log("Yay, a message for me: " + event.data);
     var data = JSON.parse(event.data);
     var action = data.action;
 
@@ -24,52 +24,6 @@ ws.onmessage = function (event) {
     if (handler) {
         handler(data);
     }
-
-};
-
-var send = function (data) {
-    if (!data.pin && pin) {
-        data.pin = pin;
-    }
-    ws.send(JSON.stringify(data));
-};
-
-var sendJoin = function (role, gameId) {
-    var req = {
-        action: 'join',
-        role: role,
-        gameId: gameId
-    };
-    send(req);
-};
-
-var sendQuestBegin = function (questionNumber) {
-    var question = getQuestion(questionNumber);
-    showQuestion(question);
-
-    delete question['answer'];
-    var req = {
-        action: 'questBegin',
-        question: getQuestion(questionNumber)
-    };
-    send(req);
-};
-
-wsResponseHandlers.joinAck = function (data) {
-    game = data.game;
-    pin = data.pin;
-    console.log('Game: ', game);
-    $('#selectPanel').hide();
-    $('#joinPanel').show();
-    $('#pin').text(data.pin);
-    $('#gameName').text(game.name);
-
-    startCountDown(10);
-};
-
-wsResponseHandlers.playerJoined = function (data) {
-    players[data.nick] = {nick: data.nick};
-    $('#players').append('<li>' + data.nick + '</li>');
 };
 
 var loadGames = function () {
@@ -90,7 +44,6 @@ var loadGames = function () {
     });
 };
 
-
 var startCountDown = function (duration) {
     var timer = duration;
     showTimer(duration);
@@ -99,7 +52,6 @@ var startCountDown = function (duration) {
         showTimer(timer);
         if (--timer < 0) {
             clearInterval(timerId);
-
             sendQuestBegin(0);
         }
     }, 1000);
@@ -120,10 +72,56 @@ var getQuestion = function (questionNumber) {
     return game.questions[questionNumber];
 };
 
+var send = function (data) {
+    if (!data.pin && pin) {
+        data.pin = pin;
+    }
+    ws.send(JSON.stringify(data));
+};
+
+var sendJoin = function (role, gameId) {
+    var req = {
+        action: 'join',
+        role: role,
+        gameId: gameId
+    };
+    send(req);
+};
+
+var sendQuestBegin = function (questionNumber) {
+    var question = getQuestion(questionNumber);
+    delete question['answer'];
+    var req = {
+        action: 'questBegin',
+        question: getQuestion(questionNumber)
+    };
+    send(req);
+};
+
 var showQuestion = function (question) {
     $('#questionPanel').show();
     $('#joinPanel').hide();
     $('#questionText').text(question.question);
 
     console.log(question);
+};
+
+wsResponseHandlers.joinAck = function (data) {
+    game = data.game;
+    pin = data.pin;
+    console.log('Game: ', game);
+    $('#selectPanel').hide();
+    $('#joinPanel').show();
+    $('#pin').text(data.pin);
+    $('#gameName').text(game.name);
+    startCountDown(10);
+};
+
+wsResponseHandlers.playerJoined = function (data) {
+    players[data.nick] = {nick: data.nick};
+    $('#players').append('<li>' + data.nick + '</li>');
+};
+
+wsResponseHandlers.questBegin = function (data) {
+    showQuestion(data.question);
 };

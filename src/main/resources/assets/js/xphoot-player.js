@@ -2,10 +2,12 @@ var role = 'player';
 var gamePin;
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
+var date = new Date();
+
+var start;
+
 ws.onopen = function (event) {
-
     // TODO check connected
-
 };
 
 var wsResponseHandlers = {};
@@ -23,6 +25,9 @@ ws.onmessage = function (event) {
 };
 
 var send = function (data) {
+    if (!data.pin && gamePin) {
+        data.pin = gamePin;
+    }
     ws.send(JSON.stringify(data));
 };
 
@@ -36,8 +41,49 @@ var sendJoin = function (role, nick, pin) {
     send(req);
 };
 
-wsResponseHandlers.joinAck = function (data) {
 
+var sendPlayerAnswer = function (answer, points) {
+    var req = {
+        action: 'playerAnswer',
+        answer: answer,
+        points: points
+    };
+    send(req);
+};
+
+$('#sendJoin').on('click', function (e) {
+    e.preventDefault();
+    var nick = $('#nick').val();
+    var pin = $('#pin').val();
+    sendJoin(role, nick, pin);
+});
+
+function sendAnswer(e, answer) {
+    e.preventDefault();
+    sendPlayerAnswer(answer, calculateScore());
+}
+
+function calculateScore() {
+    return 1234;
+}
+
+$('#answerRed').on('click', function (e) {
+    sendAnswer(e, 'red');
+});
+
+$('#answerBlue').on('click', function (e) {
+    sendAnswer(e, 'blue');
+});
+
+$('#answerGreen').on('click', function (e) {
+    sendAnswer(e, 'green');
+});
+
+$('#answerYellow').on('click', function (e) {
+    sendAnswer(e, 'yellow');
+});
+
+wsResponseHandlers.joinAck = function (data) {
     if (data.error) {
         $('#message').text('Not able to join the game: ' + data.error);
     } else {
@@ -51,9 +97,17 @@ wsResponseHandlers.joinAck = function (data) {
     }
 };
 
-$('#sendJoin').on('click', function (e) {
-    e.preventDefault();
-    var nick = $('#nick').val();
-    var pin = $('#pin').val();
-    sendJoin(role, nick, pin);
-});
+wsResponseHandlers.questBegin = function (data) {
+
+    console.log("Received event QuestBegin", data);
+
+    var questPanel = $('#questStartPanel');
+
+    $('answerRed').text(data.question.red);
+    $('answerBlue').text(data.question.blue);
+    $('answerGreen').text(data.question.green);
+    $('answerYellow').text(data.question.yellow);
+
+    questPanel.show();
+    start = date.getTime();
+};

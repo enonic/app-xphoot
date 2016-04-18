@@ -25,7 +25,7 @@ function getGames() {
         ]
     });
 
-    log.info('Games: %s', JSON.stringify(result, null, 4));
+//    log.info('Games: %s', JSON.stringify(result, null, 4));
 
     var games = [], i, game, results = result.hits, res;
     for (i = 0; i < results.length; i++) {

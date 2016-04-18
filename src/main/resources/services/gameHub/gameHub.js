@@ -46,8 +46,7 @@ function handleMessage(event) {
         return join(event, message);
     }
 
-    return forwardEvent(event, message);
-
+    return forwardEvent(message);
 }
 
 function join(event, message) {
@@ -71,6 +70,7 @@ function join(event, message) {
     } else if (role == 'player') {
         pin = message.pin;
         nick = message.nick;
+
         if (!masters[pin]) {
             sendToClient(sessionId, {action: 'joinAck', error: 'Game with pin [' + pin + '] not found'});
             return;
@@ -108,8 +108,9 @@ function leave(event) {
     webSocketLib.send(getId(event), "Left");
 }
 
-function forwardEvent(event, message) {
-    webSocketLib.sendToGroup(getPin(event), message);
+function forwardEvent(message) {
+    log.info("Forward event: %s", message);
+    webSocketLib.sendToGroup(message.pin, JSON.stringify(message));
 }
 
 function sendToClient(sessionId, message) {
@@ -122,7 +123,7 @@ function getId(event) {
 }
 
 function getPin(event) {
-    return event.data.pin;
+    return event.message.pin;
 }
 
 function fetchGame(id) {
