@@ -4,31 +4,36 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
 ws.onopen = function (event) {
 
-    sendJoin(role);
+    sendOpen(role);
 
 };
 
+var wsResponseHandlers = {};
+
 ws.onmessage = function (event) {
-    var data = event.data;
-    var type = data.type;
-    console.log("Yay, a message for me: " + data);
+    console.log("Yay, a message for me: " + event.data);
+    var data = JSON.parse(event.data);
+    var action = data.action;
+
+    var handler = wsResponseHandlers[action];
+    if (handler) {
+        handler(data);
+    }
+
 };
 
 var send = function (data) {
     ws.send(JSON.stringify(data));
 };
 
-var sendJoin = function (role, nick) {
+var sendOpen = function (role) {
     var req = {
-        type: 'join',
-        role: role,
-        nick: nick || ""
+        action: 'open',
+        role: role
     };
     send(req);
 };
 
-$('#sendJoinPlayer').on('click', function (e) {
-    e.preventDefault();
-    var nick = $('input[name="nick"]').val();
-    sendJoin(role, nick);
-});
+wsResponseHandlers.masterJoinAck = function (data) {
+    $('#pin').text(data.pin);
+};

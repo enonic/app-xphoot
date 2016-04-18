@@ -10,24 +10,9 @@ function handleGet(req) {
         };
     }
 
-    var role = req.params.role;
-
-    var pin;
-
-    if (role == 'master' && !req.params.pin) {
-        pin = createPin(10000, 99999);
-    } else {
-        pin = req.params.pin;
-    }
-
-    log.info("pin: " + pin);
-
     return {
         webSocket: {
-            data: {
-                pin: pin,
-                role: req.params.role
-            },
+            data: {},
             subProtocols: ["game"]
         }
     };
@@ -40,7 +25,7 @@ function createPin(min, max) {
 function handleEvent(event) {
 
     if (event.type == 'open') {
-        webSocketLib.send(event.session.id, 'Connected');
+        sendToClient(event.session.id, {action: 'Connected'});
     }
 
     if (event.type == 'message') {
@@ -54,11 +39,22 @@ function handleEvent(event) {
 
 function handleMessage(event) {
 
+    var message = JSON.parse(event.message);
+    if (message.action == 'open' && message.role == 'master') {
+        var role = message.role;
+
+        var pin;
+        if (role == 'master' && !message.pin) {
+            pin = createPin(10000, 99999);
+        } else {
+            pin = req.params.pin;
+        }
+        sendToClient(event.session.id, {action: 'masterJoinAck', pin: pin});
+    }
+
     if (!verifyRequiredParams(event)) {
         return false;
     }
-
-    var message = JSON.parse(event.message);
 
     if (message.action == 'join') {
         return join(event, message);
@@ -82,11 +78,6 @@ function verifyRequiredParams(event) {
 
 function join(event, message) {
 
-    var nick = message.nick;
-
-    if (!nick) {
-        return false;
-    }
 
     var role = event.data.role;
     var pin = getPin(event);
@@ -128,6 +119,11 @@ function leave(event) {
 
 function forwardEvent(event, message) {
     webSocketLib.sendToGroup(getPin(event), message);
+}
+
+function sendToClient(sessionId, message) {
+    var msg = JSON.stringify(message);
+    webSocketLib.send(sessionId, msg);
 }
 
 function getId(event) {
