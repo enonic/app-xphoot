@@ -37,10 +37,14 @@ var sendJoin = function (role, nick, pin) {
 };
 
 wsResponseHandlers.joinAck = function (data) {
-    gamePin = data.pin;
 
-    $('#pin').text(data.pin);
-    $('#message').text(data.nick + ' joined the game');
+    if (data.error) {
+        $('#message').text('Not able to join the game: ' + data.error);
+    } else {
+        gamePin = data.pin;
+        $('#pin').text(data.pin);
+        $('#message').text(data.nick + ' joined the game');
+    }
 };
 
 $('#sendJoin').on('click', function (e) {

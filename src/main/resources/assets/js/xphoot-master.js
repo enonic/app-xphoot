@@ -36,3 +36,7 @@ var sendJoin = function (role) {
 wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
 };
+
+wsResponseHandlers.playerJoined = function (data) {
+    $('#players').append('<li>' + data.nick + '</li>');
+};

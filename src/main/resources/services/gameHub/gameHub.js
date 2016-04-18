@@ -33,6 +33,7 @@ function handleEvent(event) {
     }
 
     if (event.type == 'close') {
+        log.info("Closed!! %s", event);
         leave(event);
     }
 }
@@ -68,12 +69,13 @@ function join(event, message) {
         pin = message.pin;
         nick = message.nick;
         if (!masters[pin]) {
-            log.info('Wrong pin: ' + pin); // TODO
+            sendToClient(sessionId, {action: 'joinAck', error: 'Game with pin [' + pin + '] not found'});
             return;
         }
 
         webSocketLib.addToGroup(pin, sessionId);
         sendToClient(sessionId, {action: 'joinAck', pin: pin, nick: nick});
+        sendToClient(masters[pin], {action: 'playerJoined', pin: pin, nick: nick});
     }
 
     return true;
