@@ -38,7 +38,7 @@ function handleEvent(event) {
 
 function handleMessage(event) {
 
-    if (!verifyRequiredParams()) {
+    if (!verifyRequiredParams(event)) {
         return false;
     }
 
@@ -52,7 +52,7 @@ function handleMessage(event) {
 
 }
 
-function verifyRequiredParams() {
+function verifyRequiredParams(event) {
     var pin = getPin(event);
     var role = event.data.role;
 
