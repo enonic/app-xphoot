@@ -10,7 +10,7 @@
 <body class="playerview">
 <p>Player screen</p>
 
-<div>
+<div id="joinPanel">
     <fieldset>
         <p>
             <label>PIN</label>
@@ -25,6 +25,10 @@
         </p>
     </fieldset>
     <span id="message"/>
+</div>
+
+<div id="readyPanel" style="display: none;">
+    <h3>Get ready <span id="readyNick"></span>!</h3>
 </div>
 
 <script data-th-src="${portal.serviceUrl({'_service=init'})}" src="#"></script>

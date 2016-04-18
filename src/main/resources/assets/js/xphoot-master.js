@@ -1,5 +1,6 @@
 var role = 'master';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
+var players = {};
 
 ws.onopen = function (event) {
 
@@ -38,5 +39,6 @@ wsResponseHandlers.joinAck = function (data) {
 };
 
 wsResponseHandlers.playerJoined = function (data) {
+    players[data.nick] = {nick: data.nick};
     $('#players').append('<li>' + data.nick + '</li>');
 };

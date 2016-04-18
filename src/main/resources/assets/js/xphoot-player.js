@@ -44,6 +44,10 @@ wsResponseHandlers.joinAck = function (data) {
         gamePin = data.pin;
         $('#pin').text(data.pin);
         $('#message').text(data.nick + ' joined the game');
+
+        $('#readyNick').text(data.nick);
+        $('#joinPanel').hide();
+        $('#readyPanel').show();
     }
 };
 
