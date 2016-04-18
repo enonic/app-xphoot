@@ -4,7 +4,7 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
 ws.onopen = function (event) {
 
-    sendOpen(role);
+    sendJoin(role);
 
 };
 
@@ -26,14 +26,14 @@ var send = function (data) {
     ws.send(JSON.stringify(data));
 };
 
-var sendOpen = function (role) {
+var sendJoin = function (role) {
     var req = {
-        action: 'open',
+        action: 'join',
         role: role
     };
     send(req);
 };
 
-wsResponseHandlers.masterJoinAck = function (data) {
+wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
 };

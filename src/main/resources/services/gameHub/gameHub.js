@@ -40,16 +40,18 @@ function handleEvent(event) {
 function handleMessage(event) {
 
     var message = JSON.parse(event.message);
-    if (message.action == 'open' && message.role == 'master') {
+    if (message.action == 'join') {
         var role = message.role;
 
-        var pin;
-        if (role == 'master' && !message.pin) {
-            pin = createPin(10000, 99999);
-        } else {
-            pin = req.params.pin;
+        if (role == 'master') {
+            var pin = getPinFromSession(event.session.id);
+            if (!pin && role == 'master' && !message.pin) {
+                pin = createPin(10000, 99999);
+                log.info("New pin for session '%s': %s", event.session.id, pin);
+                addMaster(pin, event.session.id);
+            }
+            sendToClient(event.session.id, {action: 'joinAck', pin: pin});
         }
-        sendToClient(event.session.id, {action: 'masterJoinAck', pin: pin});
     }
 
     if (!verifyRequiredParams(event)) {
@@ -134,6 +136,15 @@ function getPin(event) {
     return event.data.pin;
 }
 
+function getPinFromSession(sessionId) {
+    log.info("%s", masters);
+    for (var pin in masters) {
+        if (masters[pin] === sessionId) {
+            return pin;
+        }
+    }
+    return undefined;
+}
 
 exports.webSocketEvent = handleEvent;
 
