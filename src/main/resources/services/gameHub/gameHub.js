@@ -10,15 +10,31 @@ function handleGet(req) {
         };
     }
 
+    var role = req.params.role;
+
+    var pin;
+
+    if (role == 'master' && !req.params.pin) {
+        pin = getRandomPin(10000, 99999);
+    } else {
+        pin = req.params.pin;
+    }
+
+    log.info("pin: " + pin);
+
     return {
         webSocket: {
             data: {
-                pin: req.params.pin,
+                pin: pin,
                 role: req.params.role
             },
             subProtocols: ["game"]
         }
     };
+}
+
+function getRandomPin(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function handleEvent(event) {
