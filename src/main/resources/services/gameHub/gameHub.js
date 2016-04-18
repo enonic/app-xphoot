@@ -15,7 +15,7 @@ function handleGet(req) {
     var pin;
 
     if (role == 'master' && !req.params.pin) {
-        pin = getRandomPin(10000, 99999);
+        pin = createPin(10000, 99999);
     } else {
         pin = req.params.pin;
     }
@@ -33,7 +33,7 @@ function handleGet(req) {
     };
 }
 
-function getRandomPin(min, max) {
+function createPin(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
