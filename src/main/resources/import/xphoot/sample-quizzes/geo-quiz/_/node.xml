@@ -1,0 +1,228 @@
+<node>
+  <id>3eb70a75-dd78-4f39-9d42-48efa4969ab2</id>
+  <childOrder>modifiedtime DESC</childOrder>
+  <nodeType>content</nodeType>
+  <timestamp>2016-04-18T09:40:26.207Z</timestamp>
+  <inheritPermissions>true</inheritPermissions>
+  <permissions>
+    <principal key="role:cms.cm.app">
+      <allow type="array">
+        <value>READ</value>
+      </allow>
+      <deny type="array"/>
+    </principal>
+    <principal key="role:system.admin">
+      <allow type="array">
+        <value>READ</value>
+        <value>CREATE</value>
+        <value>MODIFY</value>
+        <value>DELETE</value>
+        <value>PUBLISH</value>
+        <value>READ_PERMISSIONS</value>
+        <value>WRITE_PERMISSIONS</value>
+      </allow>
+      <deny type="array"/>
+    </principal>
+    <principal key="role:cms.admin">
+      <allow type="array">
+        <value>READ</value>
+        <value>CREATE</value>
+        <value>MODIFY</value>
+        <value>DELETE</value>
+        <value>PUBLISH</value>
+        <value>READ_PERMISSIONS</value>
+        <value>WRITE_PERMISSIONS</value>
+      </allow>
+      <deny type="array"/>
+    </principal>
+  </permissions>
+  <data>
+    <boolean name="valid">true</boolean>
+    <string name="displayName">Geo Quiz</string>
+    <string name="type">com.enonic.app.xphoot:game</string>
+    <string name="owner">user:system:su</string>
+    <dateTime name="modifiedTime">2016-04-18T09:40:26.196Z</dateTime>
+    <string name="modifier">user:system:su</string>
+    <string name="creator">user:system:su</string>
+    <dateTime name="createdTime">2016-04-18T09:35:07.524Z</dateTime>
+    <property-set name="data">
+      <property-set name="questions">
+        <string name="answer">blue</string>
+        <string name="question">What is the most widely spoken language of the world (by first language speakers)?</string>
+        <string name="red">Hindi</string>
+        <string name="blue">Mandarin</string>
+        <string name="green">Spanish</string>
+        <string name="yellow">English</string>
+      </property-set>
+      <property-set name="questions">
+        <string name="question">What is the southernmost capital of an independent nation in the world?</string>
+        <string name="red">Canberra</string>
+        <string name="blue">Pretoria</string>
+        <string name="green">Montevideo</string>
+        <string name="yellow">Wellington</string>
+        <string name="answer">yellow</string>
+      </property-set>
+      <property-set name="questions">
+        <string name="question">What is Earth's approximate water vs. land coverage ratio?</string>
+        <string name="red">71 to 29</string>
+        <string name="blue">61 to 39</string>
+        <string name="green">51 to 49</string>
+        <string name="yellow">81 to 19</string>
+        <string name="answer">red</string>
+      </property-set>
+      <property-set name="questions">
+        <string name="question">Which of these countries has three national capitals?</string>
+        <string name="red">Bolivia</string>
+        <string name="blue">South Africa</string>
+        <string name="green">The Netherlands</string>
+        <string name="yellow">Israel</string>
+        <string name="answer">blue</string>
+      </property-set>
+    </property-set>
+  </data>
+  <indexConfigs>
+    <analyzer>document_index_default</analyzer>
+    <defaultConfig>
+      <decideByType>true</decideByType>
+      <enabled>true</enabled>
+      <nGram>false</nGram>
+      <fulltext>false</fulltext>
+      <includeInAllText>false</includeInAllText>
+    </defaultConfig>
+    <pathIndexConfigs>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>false</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>page.regions</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>true</nGram>
+          <fulltext>true</fulltext>
+          <includeInAllText>true</includeInAllText>
+          <indexValueProcessors>
+            <indexValueProcessor>htmlStripper</indexValueProcessor>
+          </indexValueProcessors>
+        </indexConfig>
+        <path>data.htmlarea_text</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>creator</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>createdTime</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>modifiedTime</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>modifier</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>owner</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>attachment</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>x</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>true</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>data</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>page</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>false</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>site</path>
+      </pathIndexConfig>
+      <pathIndexConfig>
+        <indexConfig>
+          <decideByType>false</decideByType>
+          <enabled>true</enabled>
+          <nGram>false</nGram>
+          <fulltext>false</fulltext>
+          <includeInAllText>false</includeInAllText>
+        </indexConfig>
+        <path>type</path>
+      </pathIndexConfig>
+    </pathIndexConfigs>
+  </indexConfigs>
+</node>
