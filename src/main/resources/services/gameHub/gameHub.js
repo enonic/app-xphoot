@@ -46,7 +46,24 @@ function handleMessage(event) {
         return join(event, message);
     }
 
+    if (message.action == 'playerAnswer') {
+        return playerAnswer(event, message);
+    }
+
     return forwardEvent(message);
+}
+
+function playerAnswer(event, message) {
+    var sessionId = getId(event);
+
+    var pin = message.pin
+
+    if (!masters.hasOwnProperty(pin)) {
+        sendToClient(sessionId, {action: 'answerAck', error: 'not able to submit to game with pin [' + message.pin + ']'});
+        return;
+    }
+
+    sendToClient(masters[pin], {action: 'playerAnswer', player: event.session.id, score: message.score, answer: message.answer});
 }
 
 function join(event, message) {

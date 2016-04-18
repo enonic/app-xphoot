@@ -2,10 +2,6 @@ var role = 'player';
 var gamePin;
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
-var date = new Date();
-
-var start;
-
 ws.onopen = function (event) {
     // TODO check connected
 };
@@ -21,7 +17,6 @@ ws.onmessage = function (event) {
     if (handler) {
         handler(data);
     }
-
 };
 
 var send = function (data) {
@@ -42,11 +37,11 @@ var sendJoin = function (role, nick, pin) {
 };
 
 
-var sendPlayerAnswer = function (answer, points) {
+var sendPlayerAnswer = function (answer, score) {
     var req = {
         action: 'playerAnswer',
         answer: answer,
-        points: points
+        score: score
     };
     send(req);
 };
@@ -64,7 +59,7 @@ function sendAnswer(e, answer) {
 }
 
 function calculateScore() {
-    return 1234;
+    return 4321;
 }
 
 $('#answerRed').on('click', function (e) {
@@ -99,8 +94,6 @@ wsResponseHandlers.joinAck = function (data) {
 
 wsResponseHandlers.questBegin = function (data) {
 
-    console.log("Received event QuestBegin", data);
-
     var questPanel = $('#questStartPanel');
 
     $('answerRed').text(data.question.red);
@@ -108,6 +101,6 @@ wsResponseHandlers.questBegin = function (data) {
     $('answerGreen').text(data.question.green);
     $('answerYellow').text(data.question.yellow);
 
+    $('#readyPanel').hide();
     questPanel.show();
-    start = date.getTime();
 };
