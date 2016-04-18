@@ -56,6 +56,8 @@ $('#sendJoin').on('click', function (e) {
 function sendAnswer(e, answer) {
     e.preventDefault();
     sendPlayerAnswer(answer, calculateScore());
+    $('#questStartPanel').hide();
+    $('#questEndPanel').show();
 }
 
 function calculateScore() {
@@ -96,10 +98,10 @@ wsResponseHandlers.questBegin = function (data) {
 
     var questPanel = $('#questStartPanel');
 
-    $('answerRed').text(data.question.red);
-    $('answerBlue').text(data.question.blue);
-    $('answerGreen').text(data.question.green);
-    $('answerYellow').text(data.question.yellow);
+    $('#answerRed').text(data.question.red);
+    $('#answerBlue').text(data.question.blue);
+    $('#answerGreen').text(data.question.green);
+    $('#answerYellow').text(data.question.yellow);
 
     $('#readyPanel').hide();
     questPanel.show();
