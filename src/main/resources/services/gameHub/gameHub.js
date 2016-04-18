@@ -1,4 +1,5 @@
 var webSocketLib = require('/lib/xp/websocket');
+var contentLib = require('/lib/xp/content');
 
 var masters = {};
 
@@ -52,9 +53,10 @@ function handleMessage(event) {
 function join(event, message) {
     var role = message.role;
     var sessionId = getId(event);
-    var pin, nick;
+    var pin, nick, gameId, game;
 
     if (role == 'master') {
+        gameId = message.gameId;
         if (!message.pin) {
             pin = createPin(10000, 99999);
             log.info("New pin for session '%s': %s", sessionId, pin);
@@ -63,7 +65,8 @@ function join(event, message) {
             }
             webSocketLib.addToGroup(pin, sessionId);
         }
-        sendToClient(sessionId, {action: 'joinAck', pin: pin});
+        game = fetchGame(gameId);
+        sendToClient(sessionId, {action: 'joinAck', pin: pin, game: game});
 
     } else if (role == 'player') {
         pin = message.pin;
@@ -120,6 +123,15 @@ function getId(event) {
 
 function getPin(event) {
     return event.data.pin;
+}
+
+function fetchGame(id) {
+    var content = contentLib.get({key: id});
+    return {
+        name: content.displayName,
+        id: content._id,
+        questions: content.data.questions
+    }
 }
 
 exports.webSocketEvent = handleEvent;

@@ -10,14 +10,28 @@
 <body class="masterview">
 <p>Master screen</p>
 
-<div>
+<div id="selectPanel">
     <fieldset>
         <p>
-            <label>PIN</label>
+            <label>Quizz</label>
+            <select name="games" id="games">
+            </select>
+        </p>
+    </fieldset>
+</div>
+
+<div id="joinPanel" style="display: none;">
+    <fieldset>
+        <p>
+            <label>PIN: </label>
             <span id="pin"></span>
         </p>
         <p>
-            <label>Players:</label>
+            <label>Game: </label>
+            <span id="gameName"></span>
+        </p>
+        <p>
+            <label>Players: </label>
         <ul id="players">
         </ul>
         </p>
