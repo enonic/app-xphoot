@@ -1,9 +1,10 @@
 var role = 'player';
+var gamePin;
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
 ws.onopen = function (event) {
 
-    sendJoin(role);
+    // TODO check connected
 
 };
 
@@ -25,14 +26,26 @@ var send = function (data) {
     ws.send(JSON.stringify(data));
 };
 
-var sendJoin = function (role) {
+var sendJoin = function (role, nick, pin) {
     var req = {
         action: 'join',
-        role: role
+        role: role,
+        nick: nick,
+        pin: pin
     };
     send(req);
 };
 
 wsResponseHandlers.joinAck = function (data) {
+    gamePin = data.pin;
+
     $('#pin').text(data.pin);
+    $('#message').text(data.nick + ' joined the game');
 };
+
+$('#sendJoin').on('click', function (e) {
+    e.preventDefault();
+    var nick = $('#nick').val();
+    var pin = $('#pin').val();
+    sendJoin(role, nick, pin);
+});

@@ -13,13 +13,18 @@
 <div>
     <fieldset>
         <p>
-            <label>Nick</label>
-            <input name="nick" type="text" value="fisk"/>
+            <label>PIN</label>
+            <input id="pin" type="text" value=""/>
         </p>
         <p>
-            <button type="button" name="send" id="sendJoinPlayer">Join</button>
+            <label>Nick</label>
+            <input id="nick" type="text" value="odadoda3000"/>
+        </p>
+        <p>
+            <button type="button" name="send" id="sendJoin">Join</button>
         </p>
     </fieldset>
+    <span id="message"/>
 </div>
 
 <script data-th-src="${portal.serviceUrl({'_service=init'})}" src="#"></script>

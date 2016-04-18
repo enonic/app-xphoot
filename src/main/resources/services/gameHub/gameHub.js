@@ -25,7 +25,7 @@ function createPin(min, max) {
 function handleEvent(event) {
 
     if (event.type == 'open') {
-        sendToClient(event.session.id, {action: 'Connected'});
+        sendToClient(getId(event), {action: 'Connected'});
     }
 
     if (event.type == 'message') {
@@ -41,24 +41,6 @@ function handleMessage(event) {
 
     var message = JSON.parse(event.message);
     if (message.action == 'join') {
-        var role = message.role;
-
-        if (role == 'master') {
-            var pin = getPinFromSession(event.session.id);
-            if (!pin && role == 'master' && !message.pin) {
-                pin = createPin(10000, 99999);
-                log.info("New pin for session '%s': %s", event.session.id, pin);
-                addMaster(pin, event.session.id);
-            }
-            sendToClient(event.session.id, {action: 'joinAck', pin: pin});
-        }
-    }
-
-    if (!verifyRequiredParams(event)) {
-        return false;
-    }
-
-    if (message.action == 'join') {
         return join(event, message);
     }
 
@@ -66,32 +48,34 @@ function handleMessage(event) {
 
 }
 
-function verifyRequiredParams(event) {
-    var pin = getPin(event);
-    var role = event.data.role;
-
-    if (!pin || !role) {
-        log.info("Missing data role and/or pin")
-        return false;
-    }
-
-    return true;
-}
-
 function join(event, message) {
-
-
-    var role = event.data.role;
-    var pin = getPin(event);
-    var id = getId(event);
+    var role = message.role;
+    var sessionId = getId(event);
+    var pin, nick;
 
     if (role == 'master') {
-        if (!addMaster(pin, id)) {
-            return false;
+        if (!message.pin) {
+            pin = createPin(10000, 99999);
+            log.info("New pin for session '%s': %s", sessionId, pin);
+            if (!addMaster(pin, sessionId)) {
+                return;
+            }
+            webSocketLib.addToGroup(pin, sessionId);
         }
+        sendToClient(sessionId, {action: 'joinAck', pin: pin});
+
+    } else if (role == 'player') {
+        pin = message.pin;
+        nick = message.nick;
+        if (!masters[pin]) {
+            log.info('Wrong pin: ' + pin); // TODO
+            return;
+        }
+
+        webSocketLib.addToGroup(pin, sessionId);
+        sendToClient(sessionId, {action: 'joinAck', pin: pin, nick: nick});
     }
-    webSocketLib.addToGroup(pin, id);
-    webSocketLib.send(event.session.id, "Joined");
+
     return true;
 }
 
@@ -116,7 +100,7 @@ function leave(event) {
     }
 
     webSocketLib.removeFromGroup(pin, id);
-    webSocketLib.send(event.session.id, "Left");
+    webSocketLib.send(getId(event), "Left");
 }
 
 function forwardEvent(event, message) {
@@ -134,16 +118,6 @@ function getId(event) {
 
 function getPin(event) {
     return event.data.pin;
-}
-
-function getPinFromSession(sessionId) {
-    log.info("%s", masters);
-    for (var pin in masters) {
-        if (masters[pin] === sessionId) {
-            return pin;
-        }
-    }
-    return undefined;
 }
 
 exports.webSocketEvent = handleEvent;
