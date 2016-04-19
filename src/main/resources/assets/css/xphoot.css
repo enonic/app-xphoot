@@ -57,7 +57,7 @@ select {
 #joinPanel {
     flex: 1;
 
-    height:100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,8 +66,8 @@ select {
 
 #joinPin {
     background-color: #6fc040;
-    width:100%;
-    flex:1;
+    width: 100%;
+    flex: 1;
 
     display: flex;
     flex-direction: row;
@@ -83,7 +83,7 @@ select {
 
 #pin {
     font-weight: bold;
-    font-family: Tagesschrift, "Courier New", Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 42px;
 }
 
@@ -93,18 +93,31 @@ select {
 
 #joinPlayers {
     background-color: #51a8fa;
-    width:100%;
+    width: 100%;
 
-    flex:5;
+    flex: 5;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+#joinPlayersHeader {
+    /*padding-top: 50px;*/
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    overflow: hidden;
+}
+
 #joinPlayersTitle {
     font-size: 38px;
-    padding-top: 50px;
+
+    white-space: nowrap;
+    order: 2;
 }
 
 #players {
@@ -120,6 +133,13 @@ select {
 
 #players li {
     flex: 1 1 20%;
-    padding-left: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
     padding-bottom: 20px;
+}
+
+#joinTimer {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 60px;
+    margin-right: auto;
 }
