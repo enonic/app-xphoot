@@ -126,6 +126,11 @@ var showQuestion = function (question) {
     $('#joinPanel').hide();
     $('#questionText').text(question.question);
 
+    $('#answerRed span').text(question.red);
+    $('#answerBlue span').text(question.blue);
+    $('#answerGreen span').text(question.green);
+    $('#answerYellow span').text(question.yellow);
+
     startActionTimer(10, sendQuestEnd)
 };
 

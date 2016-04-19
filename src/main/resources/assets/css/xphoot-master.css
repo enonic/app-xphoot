@@ -200,6 +200,11 @@ select {
     background: #cdd422;
 }
 
+.answerText {
+    color: #fff;
+    font-size:24px;
+}
+
 .answerImage {
     width: 25%
 }
