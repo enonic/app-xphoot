@@ -4,6 +4,7 @@ html {
 
 body {
     min-height: 100%;
+    font-family: Verdana, Geneva, sans-serif;
 }
 
 body.startview {
@@ -20,20 +21,20 @@ body.masterview {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin: 0;
 }
 
 #selectPanel {
     margin: 50px;
 
     flex: 1;
-    width: 80%;
     height: 250px;
     background-color: #51a8fa;
     border-radius: 25px;
 }
 
 #selectGame {
-    height:100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -42,8 +43,6 @@ body.masterview {
 
 select {
     margin: 50px;
-    border: 1px solid #111;
-    background: transparent;
     min-width: 350px;
     padding: 5px 35px 5px 5px;
     font-size: 38px;
@@ -56,6 +55,75 @@ select {
 
 .title {
     font-size: 38px;
-    font-family: Verdana, Geneva, sans-serif;
     text-transform: uppercase;
+}
+
+#joinPanel {
+    flex: 1;
+
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#joinPin {
+    background-color: #6fc040;
+    width:100%;
+    flex:1;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 38px;
+}
+
+#joinPinPin {
+
+}
+
+#pin {
+    font-weight: bold;
+    font-family: Tagesschrift, "Courier New", Courier, monospace;
+    font-size: 42px;
+}
+
+#joinPinUrl {
+    margin: 50px;
+}
+
+#joinPlayers {
+    background-color: #51a8fa;
+    width:100%;
+
+    flex:5;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#joinPlayersTitle {
+    font-size: 38px;
+    padding-top: 50px;
+}
+
+#players {
+    font-size: 34px;
+    color: #fff;
+    list-style-type: none;
+
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#players li {
+    flex: 1 1 20%;
+    padding-left: 40px;
+    padding-bottom: 20px;
 }
