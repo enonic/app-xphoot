@@ -63,7 +63,7 @@ function playerAnswer(event, message) {
         return;
     }
 
-    sendToClient(masters[pin], {action: 'playerAnswer', player: event.session.id, score: message.score, answer: message.answer});
+    sendToClient(masters[pin], message);
 }
 
 function join(event, message) {

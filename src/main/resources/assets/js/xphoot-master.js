@@ -137,15 +137,17 @@ var showQuestResult = function (data) {
             console.log("Score: " + player + " : " + answers[player]);
         }
     }
-
-
     console.log("Handle Show Quest Result")
     currentQuestNum++;
-    startActionTimer(10, processNextQuestion);
+    startActionTimer(5, processNextQuestion);
 };
 
 var isMoreQuestions = function () {
     return game.questions.length > currentQuestNum;
+};
+
+var calculateScore = function (timeUsed) {
+    return 10000 - timeUsed;
 };
 
 wsResponseHandlers.joinAck = function (data) {
@@ -175,12 +177,9 @@ wsResponseHandlers.questEnd = function (data) {
 
 wsResponseHandlers.playerAnswer = function (data) {
 
-    var player = data.player;
+    var player = data.nick;
 
     if (game.questions[currentQuestNum].answer == data.answer) {
-        console.log("correct answer for player [" + player + "]");
-        answers[player] = (answers[player] || 0) + data.score;
-    } else {
-        console.log("wrong answer [" + data.answer + "], correct: [" + game.questions[currentQuestNum].answer + "]");
+        answers[player] = (answers[player] || 0) + calculateScore(data.timeUsed);
     }
 };

@@ -2,6 +2,10 @@ var role = 'player';
 var gamePin;
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 
+var nick;
+
+var startTime;
+
 ws.onopen = function (event) {
     // TODO check connected
 };
@@ -23,6 +27,9 @@ var send = function (data) {
     if (!data.pin && gamePin) {
         data.pin = gamePin;
     }
+    if (!data.nick && nick) {
+        data.nick = nick;
+    }
     ws.send(JSON.stringify(data));
 };
 
@@ -37,11 +44,14 @@ var sendJoin = function (role, nick, pin) {
 };
 
 
-var sendPlayerAnswer = function (answer, score) {
+var sendPlayerAnswer = function (answer, timeUsed) {
+
+    console.log("Timeused", timeUsed);
+
     var req = {
         action: 'playerAnswer',
         answer: answer,
-        score: score
+        timeUsed: timeUsed
     };
     send(req);
 };
@@ -54,14 +64,11 @@ $('#sendJoin').on('click', function (e) {
 });
 
 function sendAnswer(e, answer) {
+    var timeUsed = new Date().getTime() - startTime;
     e.preventDefault();
-    sendPlayerAnswer(answer, calculateScore());
+    sendPlayerAnswer(answer, timeUsed);
     $('#questStartPanel').hide();
     $('#questEndPanel').show();
-}
-
-function calculateScore() {
-    return 4321;
 }
 
 $('#answerRed').on('click', function (e) {
@@ -81,13 +88,14 @@ $('#answerYellow').on('click', function (e) {
 });
 
 wsResponseHandlers.joinAck = function (data) {
+
     if (data.error) {
         $('#message').text('Not able to join the game: ' + data.error);
     } else {
         gamePin = data.pin;
         $('#pin').text(data.pin);
         $('#message').text(data.nick + ' joined the game');
-
+        nick = data.nick;
         $('#readyNick').text(data.nick);
         $('#joinPanel').hide();
         $('#readyPanel').show();
@@ -106,4 +114,11 @@ wsResponseHandlers.questBegin = function (data) {
     $('#readyPanel').hide();
     $('#questEndPanel').hide();
     questPanel.show();
+
+    startTime = new Date().getTime();
+};
+
+wsResponseHandlers.questEnd = function (data) {
+    $('#questEndPanel').text("Get ready");
+    $('#questEndPanel').show();
 };
