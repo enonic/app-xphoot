@@ -1,3 +1,11 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
 body.startview {
     background-color: steelblue;
 }
@@ -7,5 +15,46 @@ body.playerview {
 }
 
 body.masterview {
-    background-color: lightgray;
+    background-color: #53585f;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#selectPanel {
+    flex: 1;
+    width: 80%;
+    height: 250px;
+    background-color: #51a8fa;
+    border-radius: 25px;
+}
+
+#selectGame {
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+select {
+    margin: 50px;
+    border: 1px solid #111;
+    background: transparent;
+    min-width: 350px;
+    padding: 5px 35px 5px 5px;
+    font-size: 30px;
+    border: 1px solid #ccc;
+    /*height: 34px;*/
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(../img/Icons8_flat_survey.svg) 98% / 15% no-repeat #eee;
+}
+
+.title {
+    font-size: 30px;
+    font-family: Verdana, Geneva, sans-serif;
+    text-transform: uppercase;
 }
