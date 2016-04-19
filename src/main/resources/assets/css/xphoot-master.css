@@ -171,8 +171,9 @@ select {
     display: flex;
     flex-direction: row;
     flex-flow: row wrap;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
+    height: 50%;
 }
 
 #answer-grid > div {
@@ -182,6 +183,10 @@ select {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+}
+
+#answer-grid > div > img {
+    padding-left: 10px;
 }
 
 .answerRed {
@@ -202,7 +207,8 @@ select {
 
 .answerText {
     color: #fff;
-    font-size:24px;
+    font-size: 24px;
+    padding-left: 10px;
 }
 
 .answerImage {
