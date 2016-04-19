@@ -3,6 +3,8 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var players = {};
 var game, pin;
 
+var currentQuestNum = 0;
+
 $(function () {
     loadGames();
 });
@@ -44,7 +46,7 @@ var loadGames = function () {
     });
 };
 
-var startCountDown = function (duration) {
+var startQuestionTimer = function (duration) {
     var timer = duration;
     showTimer(duration);
 
@@ -52,7 +54,13 @@ var startCountDown = function (duration) {
         showTimer(timer);
         if (--timer < 0) {
             clearInterval(timerId);
-            sendQuestBegin(0);
+
+            if (isMoreQuestions()) {
+                sendQuestBegin(currentQuestNum++);
+            } else {
+                console.log("## All questions done, end quiz!");
+                send({action: 'quizEnd'});
+            }
         }
     }, 1000);
 };
@@ -103,7 +111,11 @@ var showQuestion = function (question) {
     $('#joinPanel').hide();
     $('#questionText').text(question.question);
 
-    console.log(question);
+    startQuestionTimer(10);
+};
+
+var isMoreQuestions = function () {
+    return game.questions.length > currentQuestNum;
 };
 
 wsResponseHandlers.joinAck = function (data) {
@@ -114,7 +126,8 @@ wsResponseHandlers.joinAck = function (data) {
     $('#joinPanel').show();
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
-    startCountDown(10);
+
+    startQuestionTimer(10);
 };
 
 wsResponseHandlers.playerJoined = function (data) {

@@ -104,5 +104,6 @@ wsResponseHandlers.questBegin = function (data) {
     $('#answerYellow').text(data.question.yellow);
 
     $('#readyPanel').hide();
+    $('#questEndPanel').hide();
     questPanel.show();
 };
