@@ -69,7 +69,7 @@ function sendAnswer(e, answer) {
     e.preventDefault();
     sendPlayerAnswer(answer, timeUsed);
     $('#questStartPanel').hide();
-    $('#questEndPanel').show();
+    $('#questSubmitPanel').show();
 }
 
 $('#answerRed').on('click', function (e) {
@@ -88,6 +88,53 @@ $('#answerYellow').on('click', function (e) {
     sendAnswer(e, 'yellow');
 });
 
+
+function getLayoutClass(data) {
+    var layout = 2;
+
+    if (data.question.green) {
+        if (data.question.yellow) {
+            layout = 4;
+        } else {
+            layout = 3;
+        }
+    }
+    return "answer-grid-" + layout;
+}
+
+function layOutAnswerGrid(data) {
+    var answerGrid = $('#answer-grid');
+    answerGrid.removeClass("answer-grid-2");
+    answerGrid.removeClass("answer-grid-3");
+    answerGrid.removeClass("answer-grid-4");
+    answerGrid.addClass(getLayoutClass(data));
+
+
+    if (!data.question.red) {
+        $('#answerRed').hide();
+    } else {
+        $('#answerRed').show();
+    }
+
+    if (!data.question.blue) {
+        $('#answerBlue').hide();
+    } else {
+        $('#answerBlue').show();
+    }
+
+    if (!data.question.green) {
+        $('#answerGreen').hide();
+    } else {
+        $('#answerGreen').show();
+    }
+
+    if (!data.question.yellow) {
+        $('#answerYellow').hide();
+    } else {
+        $('#answerYellow').show();
+    }
+}
+
 wsResponseHandlers.joinAck = function (data) {
 
     if (data.error) {
@@ -103,26 +150,9 @@ wsResponseHandlers.joinAck = function (data) {
     }
 };
 
-function getLayoutClass(data) {
-    var layout = 2;
-
-    if (data.question.green) {
-        if (data.question.yellow) {
-            layout = 4;
-        } else {
-            layout = 3;
-        }
-    }
-    return "answer-grid-" + layout;
-}
-
 wsResponseHandlers.questBegin = function (data) {
-    var questStartPanel = $('#questStartPanel');
 
-    $('#answer-grid').removeClass("answer-grid-2");
-    $('#answer-grid').removeClass("answer-grid-3");
-    $('#answer-grid').removeClass("answer-grid-4");
-    $('#answer-grid').addClass(getLayoutClass(data));
+    layOutAnswerGrid(data);
 
     $('#readyPanel').hide();
     $('#questEndPanel').hide();
@@ -132,6 +162,6 @@ wsResponseHandlers.questBegin = function (data) {
 };
 
 wsResponseHandlers.questEnd = function (data) {
-    $('#questEndPanel').text("Get ready");
+    $('#questEndPanel').text("Quest Ended event");
     $('#questEndPanel').show();
 };
