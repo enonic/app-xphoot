@@ -8,24 +8,22 @@ body {
 }
 
 body.startview {
-    background-color: steelblue;
 }
 
 body.masterview {
-    background-color: #53585f;
+    background-color: #51a8fa;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     margin: 0;
+    color: #333333;
 }
 
 #selectPanel {
     margin: 50px;
-
     flex: 1;
     height: 250px;
-    background-color: #51a8fa;
     border-radius: 25px;
 }
 
@@ -39,14 +37,17 @@ body.masterview {
 
 select {
     margin: 50px;
-    min-width: 350px;
+    min-width: 320px;
+    height: 50px;
     padding: 5px 35px 5px 5px;
-    font-size: 38px;
+    font-size: 25px;
     border: 1px solid #ccc;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: url(../img/Icons8_flat_survey.svg) 98% / 15% no-repeat #eee;
+    border: 1px solid #ccc;
+    color: #333333;
+    background: url(../img/downArray.svg) 98% / 10% no-repeat lightgoldenrodyellow;
 }
 
 .title {

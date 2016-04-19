@@ -34,7 +34,6 @@ var loadGames = function () {
     var games = xphoot_data.games, l = games.length, i;
     var gameSelect = $('#games');
 
-    gameSelect.append($("<option></option>").attr("value", '').text('- select a game -'));
     for (i = 0; i < l; i++) {
         gameSelect.append($("<option></option>").attr("value", games[i].id).text(games[i].name));
     }
@@ -164,7 +163,7 @@ wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
 
-    startActionTimer(2, processNextQuestion);
+    startActionTimer(10, processNextQuestion);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
