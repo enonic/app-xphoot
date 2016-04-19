@@ -115,9 +115,6 @@ select {
 
 #joinPlayersTitle {
     font-size: 38px;
-
-    white-space: nowrap;
-    order: 2;
 }
 
 #players {
@@ -142,4 +139,67 @@ select {
     font-family: "Courier New", Courier, monospace;
     font-size: 60px;
     margin-right: auto;
+}
+
+#questionPanel {
+    height: 100vh;
+
+    background-color: #fff;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#questionHeader {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#questionText {
+    font-size: 34px;
+}
+
+/* answers */
+#answer-grid {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    align-items: center;
+    width: 100%;
+}
+
+#answer-grid > div {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.answerRed {
+    background: firebrick;
+}
+
+.answerBlue {
+    background: #51a8fa;
+}
+
+.answerGreen {
+    background: #6fc040;
+}
+
+.answerYellow {
+    background: #cdd422;
+}
+
+.answerImage {
+    width: 25%
 }

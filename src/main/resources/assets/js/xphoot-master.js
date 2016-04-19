@@ -159,7 +159,7 @@ wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
 
-    startActionTimer(10, processNextQuestion);
+    startActionTimer(2, processNextQuestion);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
