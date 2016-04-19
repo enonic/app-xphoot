@@ -55,7 +55,7 @@ body.playerview {
     font-size: 18pt;
     border-radius: 4px;
     background: lightgoldenrodyellow;
-    border: 0px;
+    border: 1px solid;
 }
 
 .joinElement button {
