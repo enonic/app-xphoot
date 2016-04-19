@@ -12,17 +12,15 @@
 
 <div id="joinPanel" style="display: none;">
     <fieldset class="joinPanelFields">
-        <p>
-            <label>PIN</label>
-            <input id="pin" type="text" value=""/>
-        </p>
-        <p>
-            <label>Nick</label>
-            <input id="nick" type="text" value="odadoda3000"/>
-        </p>
-        <p>
+        <div class="joinElement">
+            <input id="pin" type="text" value="" placeholder="PIN"/>
+        </div>
+        <div class="joinElement">
+            <input id="nick" type="text" value="" placeholder="Nick"/>
+        </div>
+        <div class="joinElement">
             <button type="button" name="send" id="sendJoin">Join</button>
-        </p>
+        </div>
     </fieldset>
     <span id="message"/>
 </div>
@@ -41,7 +39,7 @@
 </div>
 
 <div id="questEndPanel" style="display: none;">
-    <h3>Thanks, get ready for next question</h3>
+    <h3>Get ready</h3>
 </div>
 
 <script data-th-src="${portal.serviceUrl({'_service=init'})}" src="#"></script>
