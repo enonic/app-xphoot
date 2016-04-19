@@ -145,7 +145,7 @@ select {
 #questionPanel {
     height: 100vh;
 
-    background-color: #fff;
+    background-color: lightgoldenrodyellow;
     width: 100%;
 
     display: flex;
