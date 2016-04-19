@@ -5,6 +5,8 @@ var game, pin;
 
 var currentQuestNum = 0;
 
+var answers = {};
+
 $(function () {
     loadGames();
 });
@@ -46,7 +48,15 @@ var loadGames = function () {
     });
 };
 
-var startQuestionTimer = function (duration) {
+function processNextQuestion() {
+    if (isMoreQuestions()) {
+        sendQuestBegin(currentQuestNum);
+    } else {
+        console.log("## All questions done, end quiz!");
+        send({action: 'quizEnd'});
+    }
+}
+var startActionTimer = function (duration, action) {
     var timer = duration;
     showTimer(duration);
 
@@ -54,13 +64,7 @@ var startQuestionTimer = function (duration) {
         showTimer(timer);
         if (--timer < 0) {
             clearInterval(timerId);
-
-            if (isMoreQuestions()) {
-                sendQuestBegin(currentQuestNum++);
-            } else {
-                console.log("## All questions done, end quiz!");
-                send({action: 'quizEnd'});
-            }
+            action();
         }
     }, 1000);
 };
@@ -98,11 +102,22 @@ var sendJoin = function (role, gameId) {
 
 var sendQuestBegin = function (questionNumber) {
     var question = getQuestion(questionNumber);
-    delete question['answer'];
+    // delete question['answer'];
     var req = {
         action: 'questBegin',
-        question: getQuestion(questionNumber)
+        question: question
     };
+    send(req);
+};
+
+var sendQuestEnd = function () {
+
+    console.log("Send quest end");
+
+    var req = {
+        action: 'questEnd'
+    };
+
     send(req);
 };
 
@@ -111,7 +126,15 @@ var showQuestion = function (question) {
     $('#joinPanel').hide();
     $('#questionText').text(question.question);
 
-    startQuestionTimer(10);
+    startActionTimer(10, sendQuestEnd)
+};
+
+var showQuestResult = function (data) {
+    // Show leaderboard
+
+    console.log("Handle Show Quest Result")
+    currentQuestNum++;
+    startActionTimer(10, processNextQuestion);
 };
 
 var isMoreQuestions = function () {
@@ -127,7 +150,7 @@ wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
 
-    startQuestionTimer(10);
+    startActionTimer(10, processNextQuestion);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
@@ -137,4 +160,20 @@ wsResponseHandlers.playerJoined = function (data) {
 
 wsResponseHandlers.questBegin = function (data) {
     showQuestion(data.question);
+};
+
+wsResponseHandlers.questEnd = function (data) {
+    showQuestResult(data);
+};
+
+wsResponseHandlers.playerAnswer = function (data) {
+
+    var player = data.player;
+
+    if (game.questions[currentQuestNum].answer == data.answer) {
+        console.log("correct answer for player [" + player + "]");
+        answers[player] = answers[player] + data.score;
+    } else {
+        console.log("wrong answer [" + data.answer + "], correct: [" + game.questions[currentQuestNum].answer + "]");
+    }
 };
