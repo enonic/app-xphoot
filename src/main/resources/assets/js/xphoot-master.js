@@ -132,6 +132,13 @@ var showQuestion = function (question) {
 var showQuestResult = function (data) {
     // Show leaderboard
 
+    for (var player in answers) {
+        if (answers.hasOwnProperty(player)) {
+            console.log("Score: " + player + " : " + answers[player]);
+        }
+    }
+
+
     console.log("Handle Show Quest Result")
     currentQuestNum++;
     startActionTimer(10, processNextQuestion);
@@ -172,7 +179,7 @@ wsResponseHandlers.playerAnswer = function (data) {
 
     if (game.questions[currentQuestNum].answer == data.answer) {
         console.log("correct answer for player [" + player + "]");
-        answers[player] = answers[player] + data.score;
+        answers[player] = (answers[player] || 0) + data.score;
     } else {
         console.log("wrong answer [" + data.answer + "], correct: [" + game.questions[currentQuestNum].answer + "]");
     }
