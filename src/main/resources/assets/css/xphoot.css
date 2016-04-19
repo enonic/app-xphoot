@@ -11,10 +11,6 @@ body.startview {
     background-color: steelblue;
 }
 
-body.playerview {
-    background-color: lightyellow;
-}
-
 body.masterview {
     background-color: #53585f;
     display: flex;

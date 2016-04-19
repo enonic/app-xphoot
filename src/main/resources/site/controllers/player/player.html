@@ -1,17 +1,17 @@
 <!doctype html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title>XPHoot - Player</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" data-th-href="${portal.assetUrl({'_path=css/xphoot.css'})}" href="../../../assets/css/xphoot.css"
+    <link rel="stylesheet" data-th-href="${portal.assetUrl({'_path=css/xphoot-player.css'})}" href="../../../assets/css/xphoot.css"
           type="text/css"/>
 </head>
 <body class="playerview">
-<p>Player screen</p>
 
-<div id="joinPanel">
-    <fieldset>
+
+<div id="joinPanel" style="display: none;">
+    <fieldset class="joinPanelFields">
         <p>
             <label>PIN</label>
             <input id="pin" type="text" value=""/>
@@ -32,12 +32,13 @@
 </div>
 
 <div id="questStartPanel" style="display: none;">
-    <div id="answerRed" class="answerRed">RED</div>
-    <div id="answerBlue" class="answerBlue">BLUE</div>
-    <div id="answerGreen" class="answerGreen">GREEN</div>
-    <div id="answerYellow" class="answerYellow">YELLOW</div>
+    <div class="answer-grid-4">
+        <div id="answerRed" class="answerRed"><img class="answerImage" th:src="${portal.assetUrl({'_path=img/circle.png'})}"/></div>
+        <div id="answerBlue" class="answerBlue"><img class="answerImage" th:src="${portal.assetUrl({'_path=img/square.png'})}"/></div>
+        <div id="answerGreen" class="answerGreen"><img class="answerImage" th:src="${portal.assetUrl({'_path=img/triangle.png'})}"/></div>
+        <div id="answerYellow" class="answerYellow"><img class="answerImage" th:src="${portal.assetUrl({'_path=img/cross.png'})}"/></div>
+    </div>
 </div>
-
 
 <div id="questEndPanel" style="display: none;">
     <h3>Thanks, get ready for next question</h3>

@@ -8,6 +8,7 @@ var startTime;
 
 ws.onopen = function (event) {
     // TODO check connected
+    $('#joinPanel').show();
 };
 
 var wsResponseHandlers = {};
@@ -104,16 +105,11 @@ wsResponseHandlers.joinAck = function (data) {
 
 wsResponseHandlers.questBegin = function (data) {
 
-    var questPanel = $('#questStartPanel');
-
-    $('#answerRed').text(data.question.red);
-    $('#answerBlue').text(data.question.blue);
-    $('#answerGreen').text(data.question.green);
-    $('#answerYellow').text(data.question.yellow);
+    console.log(data);
 
     $('#readyPanel').hide();
     $('#questEndPanel').hide();
-    questPanel.show();
+    $('#questStartPanel').show();
 
     startTime = new Date().getTime();
 };

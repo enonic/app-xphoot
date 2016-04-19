@@ -1,0 +1,68 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+
+body.playerview {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background-color: lightyellow;
+    padding: 0;
+    margin: 0;
+
+    flex-wrap: wrap;
+    height: 100%;
+
+    font-size: 80px;
+    font-family: Geneva, Tahoma, Verdana, sans-serif;
+}
+
+#questStartPanel {
+    flex-basis: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+}
+
+.answer-grid-4 {
+    flex-basis: 100%;
+    height: 100%;
+    float: left;
+}
+
+.answer-grid-4 > div {
+    width: 50%;
+    height: 50%;
+    float: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.answerRed {
+    background: firebrick;
+}
+
+.answerBlue {
+    background: #51a8fa;
+}
+
+.answerGreen {
+    background: #6fc040;
+}
+
+.answerYellow {
+    background: lightgoldenrodyellow;
+}
+
+.answerImage {
+    width: 25%
+}
