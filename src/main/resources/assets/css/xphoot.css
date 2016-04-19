@@ -23,6 +23,8 @@ body.masterview {
 }
 
 #selectPanel {
+    margin: 50px;
+
     flex: 1;
     width: 80%;
     height: 250px;
@@ -44,9 +46,8 @@ select {
     background: transparent;
     min-width: 350px;
     padding: 5px 35px 5px 5px;
-    font-size: 30px;
+    font-size: 38px;
     border: 1px solid #ccc;
-    /*height: 34px;*/
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -54,7 +55,7 @@ select {
 }
 
 .title {
-    font-size: 30px;
+    font-size: 38px;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: uppercase;
 }
