@@ -103,9 +103,26 @@ wsResponseHandlers.joinAck = function (data) {
     }
 };
 
-wsResponseHandlers.questBegin = function (data) {
+function getLayoutClass(data) {
+    var layout = 2;
 
-    console.log(data);
+    if (data.question.green) {
+        if (data.question.yellow) {
+            layout = 4;
+        } else {
+            layout = 3;
+        }
+    }
+    return "answer-grid-" + layout;
+}
+
+wsResponseHandlers.questBegin = function (data) {
+    var questStartPanel = $('#questStartPanel');
+
+    $('#answer-grid').removeClass("answer-grid-2");
+    $('#answer-grid').removeClass("answer-grid-3");
+    $('#answer-grid').removeClass("answer-grid-4");
+    $('#answer-grid').addClass(getLayoutClass(data));
 
     $('#readyPanel').hide();
     $('#questEndPanel').hide();

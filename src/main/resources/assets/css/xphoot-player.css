@@ -37,9 +37,41 @@ body.playerview {
     float: left;
 }
 
+.answer-grid-3 {
+    flex-basis: 100%;
+    height: 100%;
+    float: left;
+}
+
+.answer-grid-2 {
+    flex-basis: 100%;
+    height: 100%;
+    float: left;
+}
+
 .answer-grid-4 > div {
     width: 50%;
     height: 50%;
+    float: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-grid-3 > div {
+    width: 33%;
+    height: 100%;
+    float: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-grid-2 > div {
+    width: 50%;
+    height: 100%;
     float: left;
     display: flex;
     flex-direction: row;
@@ -60,7 +92,7 @@ body.playerview {
 }
 
 .answerYellow {
-    background: lightgoldenrodyellow;
+    background: #cdd422;
 }
 
 .answerImage {
