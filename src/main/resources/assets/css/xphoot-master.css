@@ -158,10 +158,12 @@ select {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 #questionText {
     font-size: 34px;
+    text-align: center;
 }
 
 /* answers */
