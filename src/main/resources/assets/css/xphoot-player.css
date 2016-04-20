@@ -144,3 +144,8 @@ body.playerview {
 .answerImage {
     width: 25%
 }
+
+#message {
+    font-size: 24px;
+    color: #ca3319;
+}
