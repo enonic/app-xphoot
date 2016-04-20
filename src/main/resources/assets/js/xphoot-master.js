@@ -110,6 +110,7 @@ var sendQuestBegin = function (questionNumber) {
 };
 
 var sendQuestEnd = function () {
+    showAnswer(getQuestion(currentQuestNum));
 
     console.log("Send quest end");
 
@@ -129,6 +130,7 @@ var showQuestion = function (question) {
     $('#answerBlue span').text(question.blue);
     $('#answerGreen span').text(question.green);
     $('#answerYellow span').text(question.yellow);
+    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
 
     startActionTimer(10, sendQuestEnd)
 };
@@ -141,7 +143,7 @@ var showQuestResult = function (data) {
             console.log("Score: " + player + " : " + answers[player]);
         }
     }
-    console.log("Handle Show Quest Result")
+    console.log("Handle Show Quest Result");
     currentQuestNum++;
     startActionTimer(5, processNextQuestion);
 };
@@ -152,6 +154,19 @@ var isMoreQuestions = function () {
 
 var calculateScore = function (timeUsed) {
     return 10000 - timeUsed;
+};
+
+var showAnswer = function(question) {
+    var answer = question.answer;
+    if (answer === 'red') {
+        $('#answerBlue,#answerGreen,#answerYellow').animate({ opacity: 0.2 });
+    } else if (answer === 'blue') {
+        $('#answerRed,#answerGreen,#answerYellow').animate({ opacity: 0.2 });
+    } else if (answer === 'green') {
+        $('#answerRed,#answerBlue,#answerYellow').animate({ opacity: 0.2 });
+    } else if (answer === 'yellow') {
+        $('#answerRed,#answerBlue,#answerGreen').animate({ opacity: 0.2 });
+    }
 };
 
 wsResponseHandlers.joinAck = function (data) {
