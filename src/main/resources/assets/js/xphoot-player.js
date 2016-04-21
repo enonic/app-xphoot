@@ -6,6 +6,12 @@ var nick;
 
 var startTime;
 
+$(function () {
+    setTimeout(function(){
+        $('#pin').focus();
+    });
+});
+
 ws.onopen = function (event) {
     // TODO check connected
     $('#joinPanel').show();
