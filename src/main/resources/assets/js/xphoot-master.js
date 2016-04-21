@@ -4,17 +4,38 @@ var players = {};
 var game, pin;
 
 var JOIN_GAME_TIME = 10;
+var QUESTION_TRANSITION_TIME = 10;
 var currentQuestNum = 0;
 var answers = {};
 var joinTimerId;
 var initialTimerOffset = 440;
 var timerPos = 1;
+var progressBar;
 
 $(function () {
     loadGames();
     $('#joinTimer').on('click', function () {
         clearInterval(joinTimerId);
         processNextQuestion();
+
+        // color: '#FFEA82',
+        // from: {color: '#FFEA82'},
+        // to: {color: '#ED6A5A'},
+
+        progressBar = new ProgressBar.Line('#progressbar', {
+            strokeWidth: 2,
+            easing: 'easeInOut',
+            duration: QUESTION_TRANSITION_TIME*1000,
+            color: '#b22222',
+            trailColor: 'lightgoldenrodyellow',
+            trailWidth: 0,
+            svgStyle: {width: '100%', height: '100%'},
+            from: {color: '#51a8fa'},
+            to: {color: '#b22222'},
+            step: function (state, bar) {
+                bar.path.setAttribute('stroke', state.color);
+            }
+        });
     });
 });
 
@@ -66,14 +87,14 @@ function processNextQuestion() {
     }
 }
 var startActionTimer = function (duration, action, onTick) {
-    var timer = duration;
+    var tick = duration;
 
     var timerId = setInterval(function () {
-        timer--;
-        if (onTick && timer > 0) {
-            onTick(duration, timer);
+        tick--;
+        if (onTick && tick > 0) {
+            onTick(duration, tick);
         }
-        if (timer == 0) {
+        if (tick == 0) {
             clearInterval(timerId);
             action();
         }
@@ -126,6 +147,7 @@ var sendQuestBegin = function (questionNumber) {
 
 var sendQuestEnd = function () {
     showAnswer(getQuestion(currentQuestNum));
+    $('#progressbar').hide();
 
     console.log("Send quest end");
 
@@ -205,7 +227,10 @@ var showQuestion = function (question) {
 
     layOutAnswerGrid(question);
 
-    startActionTimer(10, sendQuestEnd)
+    progressBar.set(0.0);
+    $('#progressbar').show();
+    progressBar.animate(1.0);
+    startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
 };
 
 var showQuestResult = function (data) {

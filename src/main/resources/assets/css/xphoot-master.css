@@ -288,7 +288,7 @@ select {
     float: left;
 }
 
-svg {
+.timerItem > svg {
     -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
@@ -303,4 +303,11 @@ svg {
     width: 100%;
     font-family: "Digital-7 Mono", monospace;
     transform: rotate(90deg);
+}
+
+/* */
+#progressbar {
+    background-color: lightgoldenrodyellow;
+    margin: 0;
+    width: 100%;
 }
