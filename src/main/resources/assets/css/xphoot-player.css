@@ -142,6 +142,30 @@ body.playerview {
     width: 25%
 }
 
+#correctAnswerPanel {
+    flex-basis: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    color: lightgoldenrodyellow;
+    background: #6fc040;
+}
+
+#wrongAnswerPanel {
+    flex-basis: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    color: lightgoldenrodyellow;
+    background: firebrick;
+}
+
 #message {
     font-size: 3vh;
     color: #ca3319;

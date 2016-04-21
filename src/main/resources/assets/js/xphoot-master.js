@@ -146,13 +146,14 @@ var sendQuestBegin = function (questionNumber) {
 };
 
 var sendQuestEnd = function () {
-    showAnswer(getQuestion(currentQuestNum));
+
+    var question = getQuestion(currentQuestNum);
+    showAnswer(question));
     progressBar.set(0.0);
 
-    console.log("Send quest end");
-
     var req = {
-        action: 'questEnd'
+        action: 'questEnd',
+        correctAnswer: question.answer
     };
 
     send(req);

@@ -6,6 +6,9 @@ var nick;
 
 var startTime;
 
+var currentQuestion;
+var currentAnswer;
+
 $(function () {
     setTimeout(function () {
         $('#pin').focus();
@@ -50,6 +53,12 @@ var sendJoin = function (role, nick, pin) {
     send(req);
 };
 
+$('#sendJoin').on('click', function (e) {
+    e.preventDefault();
+    var nick = $('#nick').val();
+    var pin = $('#pin').val();
+    sendJoin(role, nick, pin);
+});
 
 var sendPlayerAnswer = function (answer, timeUsed) {
 
@@ -63,43 +72,27 @@ var sendPlayerAnswer = function (answer, timeUsed) {
     send(req);
 };
 
-$('#sendJoin').on('click', function (e) {
-    e.preventDefault();
-    var nick = $('#nick').val();
-    var pin = $('#pin').val();
-    sendJoin(role, nick, pin);
-});
-
-function sendAnswer(e, answer) {
+function handlePlayerAnswered(e) {
     var timeUsed = new Date().getTime() - startTime;
-    e.preventDefault();
-    sendPlayerAnswer(answer, timeUsed);
-    $('#questStartPanel').hide();
-    $('#questSubmitPanel').show();
+    currentAnswer = e.data.color;
+    sendPlayerAnswer(e.data.color, timeUsed);
+    disableAnswers();
+    highlightPlayerAnswer(e.data.target);
 }
 
-$('#answerRed').on('click', function (e) {
-    sendAnswer(e, 'red');
-});
+function highlightPlayerAnswer(target) {
+    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').not(target).fadeTo('fast', 0.5);
+}
 
-$('#answerBlue').on('click', function (e) {
-    sendAnswer(e, 'blue');
-});
+function disableAnswers() {
+    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').off("click");
+}
 
-$('#answerGreen').on('click', function (e) {
-    sendAnswer(e, 'green');
-});
-
-$('#answerYellow').on('click', function (e) {
-    sendAnswer(e, 'yellow');
-});
-
-
-function getLayoutClass(data) {
+function getLayoutClass() {
     var layout = 2;
 
-    if (data.question.green) {
-        if (data.question.yellow) {
+    if (currentQuestion.green) {
+        if (currentQuestion.yellow) {
             layout = 4;
         } else {
             layout = 3;
@@ -108,37 +101,49 @@ function getLayoutClass(data) {
     return "answer-grid-" + layout;
 }
 
-function layOutAnswerGrid(data) {
-    var answerGrid = $('#answer-grid');
+function layOutAnswerGrid(element) {
+    var answerGrid = element;
     answerGrid.removeClass("answer-grid-2");
     answerGrid.removeClass("answer-grid-3");
     answerGrid.removeClass("answer-grid-4");
-    answerGrid.addClass(getLayoutClass(data));
+    answerGrid.addClass(getLayoutClass());
 
 
-    if (!data.question.red) {
+    if (!currentQuestion.red) {
         $('#answerRed').hide();
     } else {
         $('#answerRed').show();
     }
 
-    if (!data.question.blue) {
+    if (!currentQuestion.blue) {
         $('#answerBlue').hide();
     } else {
         $('#answerBlue').show();
     }
 
-    if (!data.question.green) {
+    if (!currentQuestion.green) {
         $('#answerGreen').hide();
     } else {
         $('#answerGreen').show();
     }
 
-    if (!data.question.yellow) {
+    if (!currentQuestion.yellow) {
         $('#answerYellow').hide();
     } else {
         $('#answerYellow').show();
     }
+}
+
+function handleQuestionEnded(data) {
+
+    $('#questStartPanel').hide();
+
+    if (currentAnswer == data.correctAnswer) {
+        $('#correctAnswerPanel').show();
+    } else {
+        $('#wrongAnswerPanel').show();
+    }
+
 }
 
 wsResponseHandlers.joinAck = function (data) {
@@ -158,17 +163,29 @@ wsResponseHandlers.joinAck = function (data) {
 
 wsResponseHandlers.questBegin = function (data) {
 
-    layOutAnswerGrid(data);
+    $('#correctAnswerPanel').hide();
+    $('#wrongAnswerPanel').hide();
 
+    currentAnswer = null;
+    currentQuestion = data.question;
+
+    layOutAnswerGrid($('#answer-grid'));
+    $('#questSubmitPanel').hide();
     $('#readyPanel').hide();
     $('#questEndPanel').hide();
     $('#questStartPanel').show();
+
+    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
+
+    $('#answerRed').on("click", {color: 'red', target: $('#answerRed')}, handlePlayerAnswered);
+    $('#answerBlue').on("click", {color: 'blue', target: $('#answerBlue')}, handlePlayerAnswered);
+    $('#answerGreen').on("click", {color: 'green', target: $('#answerGreen')}, handlePlayerAnswered);
+    $('#answerYellow').on("click", {color: 'yellow', target: $('#answerYellow')}, handlePlayerAnswered);
 
     startTime = new Date().getTime();
 };
 
 wsResponseHandlers.questEnd = function (data) {
-    $('#questStartPanel').hide();
-    $('#questEndPanel').text("Thank you for playing!");
-    $('#questEndPanel').show();
+    handleQuestionEnded(data);
 };
+
