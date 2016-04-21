@@ -98,6 +98,10 @@ select {
     margin: 50px;
 }
 
+#joinPinUrl span {
+    font-size: 2vw;
+}
+
 #joinPlayers {
     background-color: #51a8fa;
     width: 100%;
@@ -144,7 +148,7 @@ select {
 
 #joinTimer {
     font-family: "Courier New", Courier, monospace;
-    font-size: 5vw;
+    font-size: 8vw;
 }
 
 #questionPanel {
@@ -328,8 +332,8 @@ select {
 }
 
 .circle_animation {
-    stroke-dasharray: 440; /* this value is the pixel circumference of the circle */
-    stroke-dashoffset: 440;
+    stroke-dasharray: 754; /* this value is the pixel circumference of the circle */
+    stroke-dashoffset: 754;
     transition: all 1s linear;
 }
 

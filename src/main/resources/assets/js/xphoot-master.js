@@ -3,14 +3,14 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var players = {}, playerCount = 0;
 var game, pin;
 
-var JOIN_GAME_TIME = 10;
+var JOIN_GAME_TIME = 30;
 var QUESTION_TRANSITION_TIME = 10;
 var SHOW_SCORE_TIME = 7;
 
 var currentQuestNum = 0;
 var answers = {};
 var joinTimerId;
-var initialTimerOffset = 440;
+var initialTimerOffset = 754;
 var timerPos = 1;
 var progressBar;
 
@@ -311,7 +311,7 @@ var addDummyPlayers = function () {
     dummies.forEach(function (nick) {
         setTimeout(function () {
             joinPlayer(nick);
-            answers[nick] = Math.floor(Math.random() * (5000 + 1));
+            answers[nick] = Math.floor((Math.random() * 3000) + 2000);
         }, Math.random() * (8000));
     })
 };
@@ -321,7 +321,7 @@ var joinPlayer = function (nick) {
     playerCount++;
     $('#players').append('<li>' + nick + '</li>');
 
-    $('#joinPlayersTitle').text(playerCount + " Players joined");
+    $('#joinPlayersTitle').text(playerCount + " Player" + (playerCount > 1 ? "s" : "") + " joined");
 };
 
 wsResponseHandlers.joinAck = function (data) {

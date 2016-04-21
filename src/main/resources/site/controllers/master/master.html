@@ -22,19 +22,19 @@
 
 <div id="joinPanel" style="display: none;">
     <div id="joinPin">
-        <div id="joinPinUrl">Join at <span>&lt; xpHoot URL&gt;</span></div>
+        <div id="joinPinUrl">Join at <span data-th-text="${joinUrl}">&lt; xpHoot URL&gt;</span></div>
         <div id="joinPinPin">Game PIN: <span id="pin">12345</span></div>
     </div>
     <div id="joinPlayers">
         <div id="joinTimer">
             <div class="timerItem">
-                <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+                <svg width="320" height="320" xmlns="http://www.w3.org/2000/svg">
                     <g>
-                        <circle r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#FF9000"
+                        <circle r="120.003" cy="161" cx="161" stroke-width="12" stroke="#FF9000"
                                 fill="none"></circle>
-                        <circle id="circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#6fdb6f"
+                        <circle id="circle" class="circle_animation" r="120.003" cy="161" cx="161" stroke-width="12" stroke="#6fdb6f"
                                 fill="none"></circle>
-                        <text id="timeLeft" x="50%" y="-50%" text-anchor="middle" dy=".3em" fill="white">33</text>
+                        <text id="timeLeft" x="50%" y="-50%" text-anchor="middle" dy=".3em" fill="whitesmoke">33</text>
                     </g>
                 </svg>
             </div>
