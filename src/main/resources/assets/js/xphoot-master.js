@@ -129,7 +129,62 @@ var sendQuestEnd = function () {
     send(req);
 };
 
+
+function getLayoutClass(question) {
+    var layout = 2;
+
+    if (question.green) {
+        if (question.yellow) {
+            layout = 4;
+        } else {
+            layout = 3;
+        }
+    }
+    return "answer-grid-" + layout;
+}
+
+
+function layOutAnswerGrid(question) {
+
+    console.log("LayOutGrid: ", question);
+
+    var answerGrid = $('#answer-grid');
+    answerGrid.removeClass("answer-grid-2");
+    answerGrid.removeClass("answer-grid-3");
+    answerGrid.removeClass("answer-grid-4");
+    answerGrid.addClass(getLayoutClass(question));
+
+
+    if (!question.red) {
+        $('#answerRed').hide();
+    } else {
+        $('#answerRed').show();
+    }
+
+    if (!question.blue) {
+        $('#answerBlue').hide();
+    } else {
+        $('#answerBlue').show();
+    }
+
+    if (!question.green) {
+        console.log("Hiding green!", $('#answerGreen'))
+        $('#answerGreen').hide();
+    } else {
+        console.log("Showing green!")
+        $('#answerGreen').show();
+    }
+
+    if (!question.yellow) {
+        console.log("Hiding Yellow!!", $('#answerYellow'))
+        $('#answerYellow').hide();
+    } else {
+        $('#answerYellow').show();
+    }
+}
+
 var showQuestion = function (question) {
+
     $('#questionPanel').show();
     $('#joinPanel').hide();
     $('#questionText').text(question.question);
@@ -138,7 +193,10 @@ var showQuestion = function (question) {
     $('#answerBlue span').text(question.blue);
     $('#answerGreen span').text(question.green);
     $('#answerYellow span').text(question.yellow);
+
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
+
+    layOutAnswerGrid(question);
 
     startActionTimer(10, sendQuestEnd)
 };
@@ -164,16 +222,16 @@ var calculateScore = function (timeUsed) {
     return 10000 - timeUsed;
 };
 
-var showAnswer = function(question) {
+var showAnswer = function (question) {
     var answer = question.answer;
     if (answer === 'red') {
-        $('#answerBlue,#answerGreen,#answerYellow').animate({ opacity: 0.2 });
+        $('#answerBlue,#answerGreen,#answerYellow').animate({opacity: 0.2});
     } else if (answer === 'blue') {
-        $('#answerRed,#answerGreen,#answerYellow').animate({ opacity: 0.2 });
+        $('#answerRed,#answerGreen,#answerYellow').animate({opacity: 0.2});
     } else if (answer === 'green') {
-        $('#answerRed,#answerBlue,#answerYellow').animate({ opacity: 0.2 });
+        $('#answerRed,#answerBlue,#answerYellow').animate({opacity: 0.2});
     } else if (answer === 'yellow') {
-        $('#answerRed,#answerBlue,#answerGreen').animate({ opacity: 0.2 });
+        $('#answerRed,#answerBlue,#answerGreen').animate({opacity: 0.2});
     }
 };
 
