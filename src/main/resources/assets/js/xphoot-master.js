@@ -5,7 +5,7 @@ var game, pin;
 
 var JOIN_GAME_TIME = 10;
 var QUESTION_TRANSITION_TIME = 10;
-var SHOW_SCORE_TIME = 5;
+var SHOW_SCORE_TIME = 7;
 
 var currentQuestNum = 0;
 var answers = {};
@@ -160,11 +160,7 @@ var sendQuestEnd = function () {
         correctAnswer: question.answer
     };
 
-    showAnswer(question);
-    startActionTimer(SHOW_SCORE_TIME, function () {
-        showScores();
-        send(req);
-    });
+    send(req);
 };
 
 function getLayoutClass(question) {
@@ -250,11 +246,15 @@ var showQuestResult = function (data) {
             console.log("Score: " + player + " : " + answers[player]);
         }
     }
-    console.log("Handle Show Quest Result");
-    currentQuestNum++;
-    showScores();
 
-    startActionTimer(5, processNextQuestion);
+    var question = getQuestion(currentQuestNum);
+    showAnswer(question);
+
+    startActionTimer(SHOW_SCORE_TIME, function () {
+        showScores();
+    });
+
+    currentQuestNum++;
 };
 
 var isMoreQuestions = function () {
@@ -302,6 +302,8 @@ var showScores = function () {
         first = false;
         playersEl.append(li);
     });
+
+    startActionTimer(SHOW_SCORE_TIME, processNextQuestion);
 };
 
 var addDummyPlayers = function () {
