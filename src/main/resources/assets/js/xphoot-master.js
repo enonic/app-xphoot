@@ -17,25 +17,25 @@ $(function () {
     $('#joinTimer').on('click', function () {
         clearInterval(joinTimerId);
         processNextQuestion();
+    });
 
-        // color: '#FFEA82',
-        // from: {color: '#FFEA82'},
-        // to: {color: '#ED6A5A'},
+    // color: '#FFEA82',
+    // from: {color: '#FFEA82'},
+    // to: {color: '#ED6A5A'},
 
-        progressBar = new ProgressBar.Line('#progressbar', {
-            strokeWidth: 1.5,
-            easing: 'easeInOut',
-            duration: QUESTION_TRANSITION_TIME*1000,
-            color: '#b22222',
-            trailColor: 'lightgoldenrodyellow',
-            trailWidth: 0,
-            svgStyle: {width: '100%', height: '100%'},
-            from: {color: '#51a8fa'},
-            to: {color: '#b22222'},
-            step: function (state, bar) {
-                bar.path.setAttribute('stroke', state.color);
-            }
-        });
+    progressBar = new ProgressBar.Line('#progressbar', {
+        strokeWidth: 1.5,
+        easing: 'easeInOut',
+        duration: QUESTION_TRANSITION_TIME * 1000,
+        color: '#b22222',
+        trailColor: 'lightgoldenrodyellow',
+        trailWidth: 0,
+        svgStyle: {width: '100%', height: '100%'},
+        from: {color: '#51a8fa'},
+        to: {color: '#b22222'},
+        step: function (state, bar) {
+            bar.path.setAttribute('stroke', state.color);
+        }
     });
 });
 
