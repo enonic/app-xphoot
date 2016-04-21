@@ -5,6 +5,8 @@ var game, pin;
 
 var JOIN_GAME_TIME = 10;
 var QUESTION_TRANSITION_TIME = 10;
+var SHOW_SCORE_TIME = 5;
+
 var currentQuestNum = 0;
 var answers = {};
 var joinTimerId;
@@ -151,7 +153,6 @@ var sendQuestBegin = function (questionNumber) {
 var sendQuestEnd = function () {
 
     var question = getQuestion(currentQuestNum);
-    showAnswer(question);
     progressBar.set(0.0);
 
     var req = {
@@ -159,9 +160,12 @@ var sendQuestEnd = function () {
         correctAnswer: question.answer
     };
 
-    send(req);
+    showAnswer(question);
+    startActionTimer(SHOW_SCORE_TIME, function () {
+        showScores();
+        send(req);
+    });
 };
-
 
 function getLayoutClass(question) {
     var layout = 2;
