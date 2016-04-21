@@ -216,3 +216,38 @@ select {
 .answerImage {
     width: 20%
 }
+
+#resultsPanel {
+    height: 100vh;
+
+    background-color: lightgoldenrodyellow;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#resultsHeader {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.resultsHeaderText {
+    font-size: 5vw;
+}
+
+#resultsPlayers {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+    flex-flow: row;
+    align-items: center;
+    width: 100%;
+}

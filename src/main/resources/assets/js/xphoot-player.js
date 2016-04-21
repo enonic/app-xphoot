@@ -168,6 +168,6 @@ wsResponseHandlers.questBegin = function (data) {
 };
 
 wsResponseHandlers.questEnd = function (data) {
-    $('#questEndPanel').text("Quest Ended event");
+    $('#questEndPanel').text("Thank you for playing!");
     $('#questEndPanel').show();
 };

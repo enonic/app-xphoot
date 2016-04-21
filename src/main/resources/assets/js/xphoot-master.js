@@ -4,11 +4,15 @@ var players = {};
 var game, pin;
 
 var currentQuestNum = 0;
-
 var answers = {};
+var joinTimerId;
 
 $(function () {
     loadGames();
+    $('#joinTimer').on('click', function () {
+        clearInterval(joinTimerId);
+        processNextQuestion();
+    });
 });
 
 ws.onopen = function (event) {
@@ -51,8 +55,11 @@ function processNextQuestion() {
     if (isMoreQuestions()) {
         sendQuestBegin(currentQuestNum);
     } else {
-        console.log("## All questions done, end quiz!");
+        console.log("## All questions done, end quiz!", players);
         send({action: 'quizEnd'});
+
+        $('#questionPanel,#joinPanel').hide();
+        $('#resultsPanel').show();
     }
 }
 var startActionTimer = function (duration, action) {
@@ -66,6 +73,7 @@ var startActionTimer = function (duration, action) {
             action();
         }
     }, 1000);
+    return timerId;
 };
 
 var showTimer = function (duration) {
@@ -178,7 +186,7 @@ wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
 
-    startActionTimer(10, processNextQuestion);
+    joinTimerId = startActionTimer(10, processNextQuestion);
 };
 
 wsResponseHandlers.playerJoined = function (data) {

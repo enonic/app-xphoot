@@ -56,7 +56,7 @@ function handleMessage(event) {
 function playerAnswer(event, message) {
     var sessionId = getId(event);
 
-    var pin = message.pin
+    var pin = message.pin;
 
     if (!masters.hasOwnProperty(pin)) {
         sendToClient(sessionId, {action: 'answerAck', error: 'not able to submit to game with pin [' + message.pin + ']'});
@@ -148,7 +148,7 @@ function fetchGame(id) {
     return {
         name: content.displayName,
         id: content._id,
-        questions: content.data.questions
+        questions: [].concat(content.data.questions)
     }
 }
 
