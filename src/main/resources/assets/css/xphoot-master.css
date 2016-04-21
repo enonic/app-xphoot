@@ -305,7 +305,15 @@ select {
     color:#51a8fa;
     background-color:whitesmoke;
     border-radius:10px;
-    padding:3px;
+    padding: 3px 5px;
+
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%   {color: #51a8fa;}
+    50%  {color: firebrick;}
+    100% {color: #51a8fa;}
 }
 
 /* timer */

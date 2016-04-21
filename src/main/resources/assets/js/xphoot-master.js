@@ -1,6 +1,6 @@
 var role = 'master';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
-var players = {};
+var players = {}, playerCount = 0;
 var game, pin;
 
 var JOIN_GAME_TIME = 10;
@@ -86,6 +86,7 @@ function processNextQuestion() {
 
         $('#questionPanel,#joinPanel').hide();
         showScores();
+        $('.scoresHeaderText').text('Final Scoreboard');
     }
 }
 var startActionTimer = function (duration, action, onTick) {
@@ -302,12 +303,19 @@ var showScores = function () {
 var addDummyPlayers = function () {
     var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123'];
     dummies.forEach(function (nick) {
-        players[nick] = {nick: nick};
-        answers[nick] = Math.floor(Math.random() * (5000 + 1));
         setTimeout(function () {
-            $('#players').append('<li>' + nick + '</li>');
+            joinPlayer(nick);
+            answers[nick] = Math.floor(Math.random() * (5000 + 1));
         }, Math.random() * (8000));
     })
+};
+
+var joinPlayer = function (nick) {
+    players[nick] = {nick: nick};
+    playerCount++;
+    $('#players').append('<li>' + nick + '</li>');
+
+    $('#joinPlayersTitle').text(playerCount + " Players joined");
 };
 
 wsResponseHandlers.joinAck = function (data) {
@@ -320,12 +328,12 @@ wsResponseHandlers.joinAck = function (data) {
     // $('#gameName').text(game.name);
 
     showInitTimer(JOIN_GAME_TIME);
+    $('.scoresHeaderText').text('Scoreboard');
     joinTimerId = startActionTimer(JOIN_GAME_TIME, processNextQuestion, showTimer);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
-    players[data.nick] = {nick: data.nick};
-    $('#players').append('<li>' + data.nick + '</li>');
+    joinPlayer(data.nick);
 };
 
 wsResponseHandlers.questBegin = function (data) {
