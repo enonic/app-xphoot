@@ -27,7 +27,17 @@
     </div>
     <div id="joinPlayers">
         <div id="joinTimer">
-            <span id="timeLeft">00:00</span>
+            <div class="timerItem">
+                <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <circle r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#FF9000"
+                                fill="none"></circle>
+                        <circle id="circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#6fdb6f"
+                                fill="none"></circle>
+                        <text id="timeLeft" x="50%" y="-50%" text-anchor="middle" dy=".3em" fill="white">33</text>
+                    </g>
+                </svg>
+            </div>
         </div>
         <div id="joinPlayersHeader">
             <span id="joinPlayersTitle">Players joined</span>

@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Digital-7 Mono";
+    src: url("../fonts/digital-7__mono_.eot?") format("eot"), url("../fonts/digital-7__mono_.woff") format("woff"), url("../fonts/digital-7__mono_.ttf") format("truetype"), url("../fonts/digital-7__mono_.svg#Digital-7Mono") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
 html {
     height: 100%;
 }
@@ -138,7 +145,6 @@ select {
 #joinTimer {
     font-family: "Courier New", Courier, monospace;
     font-size: 5vw;
-    margin-right: auto;
 }
 
 #questionPanel {
@@ -274,4 +280,27 @@ select {
     flex-flow: row;
     align-items: center;
     width: 100%;
+}
+
+/* timer */
+.timerItem {
+    position: relative;
+    float: left;
+}
+
+svg {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.circle_animation {
+    stroke-dasharray: 440; /* this value is the pixel circumference of the circle */
+    stroke-dashoffset: 440;
+    transition: all 1s linear;
+}
+
+#timeLeft {
+    width: 100%;
+    font-family: "Digital-7 Mono", monospace;
+    transform: rotate(90deg);
 }

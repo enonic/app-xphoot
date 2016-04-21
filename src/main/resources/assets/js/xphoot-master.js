@@ -3,9 +3,12 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var players = {};
 var game, pin;
 
+var JOIN_GAME_TIME = 10;
 var currentQuestNum = 0;
 var answers = {};
 var joinTimerId;
+var initialTimerOffset = 440;
+var timerPos = 1;
 
 $(function () {
     loadGames();
@@ -62,13 +65,15 @@ function processNextQuestion() {
         $('#resultsPanel').show();
     }
 }
-var startActionTimer = function (duration, action) {
+var startActionTimer = function (duration, action, onTick) {
     var timer = duration;
-    showTimer(duration);
 
     var timerId = setInterval(function () {
-        showTimer(timer);
-        if (--timer < 0) {
+        timer--;
+        if (onTick && timer > 0) {
+            onTick(duration, timer);
+        }
+        if (timer == 0) {
             clearInterval(timerId);
             action();
         }
@@ -76,15 +81,17 @@ var startActionTimer = function (duration, action) {
     return timerId;
 };
 
-var showTimer = function (duration) {
-    var timer = duration, minutes, seconds;
-    minutes = parseInt(timer / 60, 10);
-    seconds = parseInt(timer % 60, 10);
+var showInitTimer = function (duration) {
+    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
+    $('#timeLeft').text(duration);
+    timerPos++;
+};
 
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-    $('#timeLeft').text(minutes + ":" + seconds);
+var showTimer = function (duration, left) {
+    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
+    var leftStr = left < 10 ? "0" + left : left;
+    $('#timeLeft').text(leftStr);
+    timerPos++;
 };
 
 var getQuestion = function (questionNumber) {
@@ -244,7 +251,8 @@ wsResponseHandlers.joinAck = function (data) {
     $('#pin').text(data.pin);
     $('#gameName').text(game.name);
 
-    joinTimerId = startActionTimer(10, processNextQuestion);
+    showInitTimer(JOIN_GAME_TIME);
+    joinTimerId = startActionTimer(JOIN_GAME_TIME, processNextQuestion, showTimer);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
