@@ -7,7 +7,7 @@ var nick;
 var startTime;
 
 $(function () {
-    setTimeout(function(){
+    setTimeout(function () {
         $('#pin').focus();
     });
 });
@@ -168,6 +168,7 @@ wsResponseHandlers.questBegin = function (data) {
 };
 
 wsResponseHandlers.questEnd = function (data) {
+    $('#questStartPanel').hide();
     $('#questEndPanel').text("Thank you for playing!");
     $('#questEndPanel').show();
 };
