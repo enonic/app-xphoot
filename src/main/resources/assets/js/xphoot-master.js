@@ -37,6 +37,8 @@ $(function () {
             bar.path.setAttribute('stroke', state.color);
         }
     });
+
+    addDummyPlayers();
 });
 
 ws.onopen = function (event) {
@@ -83,7 +85,7 @@ function processNextQuestion() {
         send({action: 'quizEnd'});
 
         $('#questionPanel,#joinPanel').hide();
-        $('#resultsPanel').show();
+        showScores();
     }
 }
 var startActionTimer = function (duration, action, onTick) {
@@ -215,8 +217,10 @@ function layOutAnswerGrid(question) {
 
 var showQuestion = function (question) {
 
+    $('#scoresPanel').hide();
     $('#questionPanel').show();
     $('#joinPanel').hide();
+
     $('#questionText').text(question.question);
 
     $('#answerRed span').text(question.red);
@@ -243,6 +247,8 @@ var showQuestResult = function (data) {
     }
     console.log("Handle Show Quest Result");
     currentQuestNum++;
+    showScores();
+
     startActionTimer(5, processNextQuestion);
 };
 
@@ -267,6 +273,43 @@ var showAnswer = function (question) {
     }
 };
 
+var showScores = function () {
+    $('#questionPanel').hide();
+    $('#scoresPanel').show();
+    var playersEl = $('#scoresPlayers > ul');
+    playersEl.find('li').remove();
+
+    var sortedPlayers = [];
+    for (var player in answers) {
+        if (answers.hasOwnProperty(player)) {
+            sortedPlayers.push({player: player, score: answers[player]});
+        }
+    }
+    sortedPlayers.sort(function(a, b) {
+        return b.score - a.score;
+    });
+
+    var first = true;
+    sortedPlayers.forEach(function (p) {
+        var playerEl = $('<span>').text(p.player);
+        var playerScoreEl = $('<span>').text(p.score).addClass('scoreValue');
+        var li = $('<li>').append(playerEl).append(playerScoreEl).toggleClass('scoreWinner', first);
+        first = false;
+        playersEl.append(li);
+    });
+};
+
+var addDummyPlayers = function () {
+    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123'];
+    dummies.forEach(function (nick) {
+        players[nick] = {nick: nick};
+        answers[nick] = Math.floor(Math.random() * (5000 + 1));
+        setTimeout(function() {
+            $('#players').append('<li>' + nick + '</li>');
+        }, Math.random() * (8000));
+    })
+};
+
 wsResponseHandlers.joinAck = function (data) {
     game = data.game;
     pin = data.pin;
@@ -274,7 +317,7 @@ wsResponseHandlers.joinAck = function (data) {
     $('#selectPanel').hide();
     $('#joinPanel').show();
     $('#pin').text(data.pin);
-    $('#gameName').text(game.name);
+    // $('#gameName').text(game.name);
 
     showInitTimer(JOIN_GAME_TIME);
     joinTimerId = startActionTimer(JOIN_GAME_TIME, processNextQuestion, showTimer);

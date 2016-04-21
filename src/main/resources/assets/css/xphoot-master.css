@@ -247,10 +247,11 @@ select {
     width: 20%
 }
 
-#resultsPanel {
+#scoresPanel {
     height: 100vh;
 
-    background-color: lightgoldenrodyellow;
+    background-color: lightblue;
+    color: #000;
     width: 100%;
 
     display: flex;
@@ -259,27 +260,52 @@ select {
     justify-content: center;
 }
 
-#resultsHeader {
+#scoresHeader {
     flex: 1;
+    width: 100%;
 
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 }
 
-.resultsHeaderText {
+.scoresHeaderText {
     font-size: 5vw;
 }
 
-#resultsPlayers {
-    flex: 1;
+#scoresPlayers {
+    flex: 4;
+    width: 100%;
+    background-color: #51a8fa;
 
     display: flex;
     flex-direction: row;
     flex-flow: row;
-    align-items: center;
-    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#scoresPlayers ul {
+    width: 60%;
+}
+
+#scoresPlayers li {
+
+    font-size: 2.8vw;
+    color: whitesmoke;
+    list-style-type: none;
+}
+
+.scoreValue {
+    float:right;
+}
+
+#scoresPlayers li.scoreWinner {
+    color:#51a8fa;
+    background-color:whitesmoke;
+    border-radius:10px;
+    padding:3px;
 }
 
 /* timer */
