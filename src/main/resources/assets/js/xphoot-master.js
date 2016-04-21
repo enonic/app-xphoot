@@ -23,7 +23,7 @@ $(function () {
         // to: {color: '#ED6A5A'},
 
         progressBar = new ProgressBar.Line('#progressbar', {
-            strokeWidth: 2,
+            strokeWidth: 1.5,
             easing: 'easeInOut',
             duration: QUESTION_TRANSITION_TIME*1000,
             color: '#b22222',
@@ -147,7 +147,7 @@ var sendQuestBegin = function (questionNumber) {
 
 var sendQuestEnd = function () {
     showAnswer(getQuestion(currentQuestNum));
-    $('#progressbar').hide();
+    progressBar.set(0.0);
 
     console.log("Send quest end");
 
@@ -228,7 +228,6 @@ var showQuestion = function (question) {
     layOutAnswerGrid(question);
 
     progressBar.set(0.0);
-    $('#progressbar').show();
     progressBar.animate(1.0);
     startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
 };
