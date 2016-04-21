@@ -150,7 +150,7 @@ var sendQuestBegin = function (questionNumber) {
 var sendQuestEnd = function () {
 
     var question = getQuestion(currentQuestNum);
-    showAnswer(question));
+    showAnswer(question);
     progressBar.set(0.0);
 
     var req = {
@@ -285,7 +285,7 @@ var showScores = function () {
             sortedPlayers.push({player: player, score: answers[player]});
         }
     }
-    sortedPlayers.sort(function(a, b) {
+    sortedPlayers.sort(function (a, b) {
         return b.score - a.score;
     });
 
@@ -304,7 +304,7 @@ var addDummyPlayers = function () {
     dummies.forEach(function (nick) {
         players[nick] = {nick: nick};
         answers[nick] = Math.floor(Math.random() * (5000 + 1));
-        setTimeout(function() {
+        setTimeout(function () {
             $('#players').append('<li>' + nick + '</li>');
         }, Math.random() * (8000));
     })
