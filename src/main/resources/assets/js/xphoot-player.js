@@ -13,6 +13,14 @@ $(function () {
     setTimeout(function () {
         $('#pin').focus();
     });
+
+    $('#pin,#nick').keypress(function (e) {
+        if (e.which == 13) {
+            var nick = $('#nick').val();
+            var pin = $('#pin').val();
+            sendJoin(role, nick, pin);
+        }
+    });
 });
 
 ws.onopen = function (event) {
@@ -44,6 +52,11 @@ var send = function (data) {
 };
 
 var sendJoin = function (role, nick, pin) {
+    nick = nick ? nick.trim() : '';
+    pin = pin ? pin.trim() : '';
+    if (!pin || !nick) {
+        return;
+    }
     var req = {
         action: 'join',
         role: role,
