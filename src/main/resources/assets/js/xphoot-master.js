@@ -88,7 +88,7 @@ function processNextQuestion() {
 
         $('#questionPanel,#joinPanel').hide();
         showScores();
-        $('.scoresHeaderText').text('Final Scoreboard');
+        saveResults();
     }
 }
 var startActionTimer = function (duration, action, onTick) {
@@ -252,6 +252,7 @@ var showQuestResult = function (data) {
 
     startActionTimer(SHOW_SCORE_TIME, function () {
         showScores();
+        startActionTimer(SHOW_SCORE_TIME, processNextQuestion);
     });
 
     currentQuestNum++;
@@ -281,6 +282,10 @@ var showAnswer = function (question) {
 };
 
 var showScores = function () {
+    if (!isMoreQuestions()) {
+        $('.scoresHeaderText').text('Final Scoreboard');
+    }
+
     $('#questionPanel').hide();
     $('#scoresPanel').show();
     var playersEl = $('#scoresPlayers > ul');
@@ -304,8 +309,6 @@ var showScores = function () {
         first = false;
         playersEl.append(li);
     });
-
-    startActionTimer(SHOW_SCORE_TIME, processNextQuestion);
 };
 
 var addDummyPlayers = function () {
@@ -326,6 +329,29 @@ var joinPlayer = function (nick) {
     $('#joinPlayersTitle').text(playerCount + " Player" + (playerCount > 1 ? "s" : "") + " joined");
 };
 
+var saveResults = function () {
+    var playerScores = [];
+    for (var player in answers) {
+        if (answers.hasOwnProperty(player)) {
+            playerScores.push({nick: player, score: answers[player]});
+        }
+    }
+
+    var data = {
+        description: game.name,
+        game: game.id,
+        players: playerScores
+    };
+
+    $.ajax({
+        url: xphoot_data.saveGameUrl,
+        type: "POST",
+        processData: false,
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+    });
+};
+
 wsResponseHandlers.joinAck = function (data) {
     game = data.game;
     pin = data.pin;
@@ -333,7 +359,6 @@ wsResponseHandlers.joinAck = function (data) {
     $('#selectPanel').hide();
     $('#joinPanel').show();
     $('#pin').text(data.pin);
-    // $('#gameName').text(game.name);
 
     showInitTimer(JOIN_GAME_TIME);
     $('.scoresHeaderText').text('Scoreboard');
