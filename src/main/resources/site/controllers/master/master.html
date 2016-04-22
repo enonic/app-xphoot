@@ -49,11 +49,25 @@
 
 <div id="questionPanel" style="display: none;">
     <div id="progressbar"></div>
+    <div class="pieContainer" style="display: none;">
+        <div class="pieBackground"></div>
+        <div id="pieSliceRed" class="hold">
+            <div class="pie"></div>
+        </div>
+        <div id="pieSliceBlue" class="hold">
+            <div class="pie"></div>
+        </div>
+        <div id="pieSliceGreen" class="hold">
+            <div class="pie"></div>
+        </div>
+        <div id="pieSliceYellow" class="hold">
+            <div class="pie"></div>
+        </div>
+    </div>
     <div id="questionHeader">
         <span id="questionText"></span>
         <img id="questionImage" data-th-src="${portal.assetUrl({'_path=img/empty.png'})}" style="display:none;"/>
     </div>
-
     <div class="answer-grid-wrapper">
         <div id="answer-grid" class="answer-grid-4">
             <div id="answerRed" class="answerRed"><img class="answerImage" data-th-src="${portal.assetUrl({'_path=img/circle.png'})}"/>

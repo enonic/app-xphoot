@@ -14,6 +14,12 @@ var joinTimerId;
 var initialTimerOffset = 754;
 var timerPos = 1;
 var progressBar;
+var currentAnswers = {
+    blue: 0,
+    red: 0,
+    green: 0,
+    yellow: 0
+};
 
 $(function () {
     loadGames();
@@ -232,6 +238,7 @@ var showQuestion = function (question) {
     $('#answerYellow span').text(question.yellow);
 
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
+    $('.pieContainer').hide();
 
     layOutAnswerGrid(question);
 
@@ -290,6 +297,32 @@ var showAnswer = function (question) {
     } else if (answer === 'yellow') {
         $('#answerRed,#answerBlue,#answerGreen').animate({opacity: 0.2});
     }
+
+    showAnswersPie();
+};
+
+var showAnswersPie = function () {
+    console.log(currentAnswers);
+
+    var red = currentAnswers.red;
+    var blue = currentAnswers.blue;
+    var yellow = currentAnswers.yellow;
+    var green = currentAnswers.green;
+    var total = blue + red + yellow + green;
+
+    blue = (blue / total) * 360;
+    red = (red / total) * 360;
+    yellow = (yellow / total) * 360;
+    green = (green / total) * 360;
+
+    $('#pieSliceRed .pie').css('transform', 'rotate(' + red + 'deg)');
+    $('#pieSliceBlue').css('transform', 'rotate(' + red + 'deg)');
+    $('#pieSliceBlue .pie').css('transform', 'rotate(' + blue + 'deg)');
+    $('#pieSliceGreen').css('transform', 'rotate(' + (red + blue) + 'deg)');
+    $('#pieSliceGreen .pie').css('transform', 'rotate(' + green + 'deg)');
+    $('#pieSliceYellow').css('transform', 'rotate(' + (red + blue + green) + 'deg)');
+    $('#pieSliceYellow .pie').css('transform', 'rotate(' + yellow + 'deg)');
+    $('.pieContainer').show();
 };
 
 var showScores = function () {
@@ -395,4 +428,5 @@ wsResponseHandlers.playerAnswer = function (data) {
     if (game.questions[currentQuestNum].answer == data.answer) {
         answers[player] = (answers[player] || 0) + calculateScore(data.timeUsed);
     }
+    currentAnswers[data.answer]++;
 };
