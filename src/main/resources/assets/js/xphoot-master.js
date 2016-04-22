@@ -287,7 +287,8 @@ var isMoreQuestions = function () {
 var calculateScore = function (timeUsed) {
     var questionTime = QUESTION_TRANSITION_TIME * 1000;
     var timeLeft = questionTime - timeUsed;
-    return Math.floor((timeLeft / questionTime) * 10000);
+
+    return Math.floor(((timeLeft / questionTime) * 5000) + 3000);
 };
 
 var showAnswer = function (question) {

@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html xmlns:display="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title>XPHoot - Master</title>
@@ -51,7 +51,7 @@
     <div id="progressbar"></div>
     <div id="questionHeader">
         <span id="questionText"></span>
-        <img id="questionImage" src="dummy" style="display:none;"/>
+        <img id="questionImage" data-th-src="${portal.assetUrl({'_path=img/empty.png'})}" style="display:none;"/>
     </div>
 
     <div class="answer-grid-wrapper">
