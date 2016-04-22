@@ -84,7 +84,6 @@ function processNextQuestion() {
     if (isMoreQuestions()) {
         sendQuestBegin(currentQuestNum);
     } else {
-        console.log("## All questions done, end quiz!", players);
         send({action: 'quizEnd'});
 
         $('#questionPanel,#joinPanel').hide();
@@ -254,17 +253,6 @@ var setImage = function (imageId, component) {
             component.show();
         }
     });
-
-    /*
-     var req = {
-     action: 'getImageUrl',
-     imageId: imageId
-     };
-
-     var response = send(req);
-
-     console.log("GetImageUrl response", response);
-     */
 };
 
 var showQuestResult = function (data) {
@@ -305,6 +293,7 @@ var showAnswer = function (question) {
 };
 
 var showScores = function () {
+
     if (!isMoreQuestions()) {
         $('.scoresHeaderText').text('Final Scoreboard');
     }

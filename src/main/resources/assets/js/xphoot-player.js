@@ -91,7 +91,7 @@ function handlePlayerAnswered(e) {
 }
 
 function highlightPlayerAnswer(target) {
-    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').not(target).fadeTo('fast', 0.5);
+    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').not(target).fadeTo('fast', 0.2);
 }
 
 function disableAnswers() {
@@ -117,7 +117,6 @@ function layOutAnswerGrid(element) {
     answerGrid.removeClass("answer-grid-3");
     answerGrid.removeClass("answer-grid-4");
     answerGrid.addClass(getLayoutClass());
-
 
     if (!currentQuestion.red) {
         $('#answerRed').hide();
@@ -153,7 +152,15 @@ function handleQuestionEnded(data) {
     } else {
         $('#wrongAnswerPanel').show();
     }
+}
 
+function getAllPanels() {
+    return $('#joinPanel,#readyPanel,#questStartPanel,#correctAnswerPanel,#wrongAnswerPanel,#quizEndPanel');
+}
+
+function handleQuizEnd(data) {
+    getAllPanels().not($('#quizEndPanel')).hide();
+    $('#quizEndPanel').show();
 }
 
 wsResponseHandlers.joinAck = function (data) {
@@ -173,16 +180,12 @@ wsResponseHandlers.joinAck = function (data) {
 
 wsResponseHandlers.questBegin = function (data) {
 
-    $('#correctAnswerPanel').hide();
-    $('#wrongAnswerPanel').hide();
-
     currentAnswer = null;
     currentQuestion = data.question;
 
     layOutAnswerGrid($('#answer-grid'));
-    $('#questSubmitPanel').hide();
-    $('#readyPanel').hide();
-    $('#questEndPanel').hide();
+
+    getAllPanels().not($('#questStartPanel')).hide();
     $('#questStartPanel').show();
 
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
@@ -197,5 +200,10 @@ wsResponseHandlers.questBegin = function (data) {
 
 wsResponseHandlers.questEnd = function (data) {
     handleQuestionEnded(data);
+};
+
+
+wsResponseHandlers.quizEnd = function (data) {
+    handleQuizEnd(data);
 };
 
