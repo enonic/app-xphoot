@@ -304,7 +304,11 @@ var sendShowScores = function () {
 };
 
 function sendQuizEnd() {
-    send({action: 'quizEnd'});
+    var req = {
+        action: 'quizEnd',
+        scores: answers
+    };
+    send(req);
 }
 
 // UTILS

@@ -170,3 +170,21 @@ body.playerview {
     font-size: 3vh;
     color: #ca3319;
 }
+
+#quizEndPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+}
+
+#quizResultText {
+    height: 30%;
+    font-size: 8vw;
+}
+
+#quizResultPlace {
+    height: 30%;
+    font-size: 5vw;
+}

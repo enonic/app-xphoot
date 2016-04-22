@@ -23,6 +23,17 @@ $(function () {
     });
 });
 
+
+$('#sendJoin').on('click', function (e) {
+    e.preventDefault();
+    var nick = $('#nick').val();
+    var pin = $('#pin').val();
+    sendJoin(role, nick, pin);
+});
+
+
+// WS-STUFF
+
 ws.onopen = function (event) {
     // TODO check connected
     $('#joinPanel').show();
@@ -40,6 +51,101 @@ ws.onmessage = function (event) {
         handler(data);
     }
 };
+
+// WS END
+
+// HANDLERS
+
+
+function handleJoined(data) {
+    if (data.error) {
+        $('#message').text('Not able to join the game: ' + data.error);
+    } else {
+        gamePin = data.pin;
+        $('#pin').text(data.pin);
+        $('#message').text(data.nick + ' joined the game');
+        nick = data.nick;
+        $('#readyNick').text(data.nick);
+        $('#joinPanel').hide();
+        $('#readyPanel').show();
+    }
+}
+
+function handleQuestionBegin(data) {
+    currentAnswer = null;
+    currentQuestion = data.question;
+
+    layOutAnswerGrid($('#answer-grid'));
+
+    getAllPanels().not($('#questStartPanel')).hide();
+    $('#questStartPanel').show();
+
+    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
+
+    $('#answerRed').on("click", {color: 'red', target: $('#answerRed')}, handlePlayerAnswered);
+    $('#answerBlue').on("click", {color: 'blue', target: $('#answerBlue')}, handlePlayerAnswered);
+    $('#answerGreen').on("click", {color: 'green', target: $('#answerGreen')}, handlePlayerAnswered);
+    $('#answerYellow').on("click", {color: 'yellow', target: $('#answerYellow')}, handlePlayerAnswered);
+
+    startTime = new Date().getTime();
+}
+
+function handlePlayerAnswered(e) {
+    var timeUsed = new Date().getTime() - startTime;
+    currentAnswer = e.data.color;
+    sendPlayerAnswer(e.data.color, timeUsed);
+    disableAnswers();
+    highlightPlayerAnswer(e.data.target);
+}
+
+function handleQuestionEnded(data) {
+
+    getAllPanels().hide();
+
+    if (currentAnswer == data.correctAnswer) {
+        $('#correctAnswerPanel').show();
+    } else {
+        $('#wrongAnswerPanel').show();
+    }
+}
+
+function handleQuizEnd(answers) {
+
+    var sortedPlayers = [];
+    for (var player in answers) {
+        if (answers.hasOwnProperty(player)) {
+            sortedPlayers.push({player: player, score: answers[player]});
+        }
+    }
+    sortedPlayers.sort(function (a, b) {
+        return b.score - a.score;
+    });
+
+    var place = 1;
+    sortedPlayers.forEach(function (p) {
+        if (p.player == nick) {
+
+            if (place == 1) {
+                $('#playerPos').text("Winner!");
+            } else if (place = 2) {
+                $('#playerPos').text("Second place!");
+            } else if (place = 3) {
+                $('#playerPos').text("Third place!");
+            } else {
+                $('#playerPos').text(place + "th place");
+            }
+        }
+        place++;
+    });
+
+    getAllPanels().hide();
+    $('#quizEndPanel').show();
+}
+
+// HANDLERS END
+
+
+// SEND
 
 var send = function (data) {
     if (!data.pin && gamePin) {
@@ -66,13 +172,6 @@ var sendJoin = function (role, nick, pin) {
     send(req);
 };
 
-$('#sendJoin').on('click', function (e) {
-    e.preventDefault();
-    var nick = $('#nick').val();
-    var pin = $('#pin').val();
-    sendJoin(role, nick, pin);
-});
-
 var sendPlayerAnswer = function (answer, timeUsed) {
     var req = {
         action: 'playerAnswer',
@@ -82,13 +181,7 @@ var sendPlayerAnswer = function (answer, timeUsed) {
     send(req);
 };
 
-function handlePlayerAnswered(e) {
-    var timeUsed = new Date().getTime() - startTime;
-    currentAnswer = e.data.color;
-    sendPlayerAnswer(e.data.color, timeUsed);
-    disableAnswers();
-    highlightPlayerAnswer(e.data.target);
-}
+// DISPLAY
 
 function highlightPlayerAnswer(target) {
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').not(target).fadeTo('fast', 0.2);
@@ -143,67 +236,28 @@ function layOutAnswerGrid(element) {
     }
 }
 
-function handleQuestionEnded(data) {
+// UTILS
 
-    $('#questStartPanel').hide();
-
-    if (currentAnswer == data.correctAnswer) {
-        $('#correctAnswerPanel').show();
-    } else {
-        $('#wrongAnswerPanel').show();
-    }
-}
 
 function getAllPanels() {
     return $('#joinPanel,#readyPanel,#questStartPanel,#correctAnswerPanel,#wrongAnswerPanel,#quizEndPanel');
 }
 
-function handleQuizEnd(data) {
-    getAllPanels().not($('#quizEndPanel')).hide();
-    $('#quizEndPanel').show();
-}
+// EVENT HANDLER
 
 wsResponseHandlers.joinAck = function (data) {
-
-    if (data.error) {
-        $('#message').text('Not able to join the game: ' + data.error);
-    } else {
-        gamePin = data.pin;
-        $('#pin').text(data.pin);
-        $('#message').text(data.nick + ' joined the game');
-        nick = data.nick;
-        $('#readyNick').text(data.nick);
-        $('#joinPanel').hide();
-        $('#readyPanel').show();
-    }
+    handleJoined(data);
 };
 
 wsResponseHandlers.questBegin = function (data) {
-
-    currentAnswer = null;
-    currentQuestion = data.question;
-
-    layOutAnswerGrid($('#answer-grid'));
-
-    getAllPanels().not($('#questStartPanel')).hide();
-    $('#questStartPanel').show();
-
-    $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
-
-    $('#answerRed').on("click", {color: 'red', target: $('#answerRed')}, handlePlayerAnswered);
-    $('#answerBlue').on("click", {color: 'blue', target: $('#answerBlue')}, handlePlayerAnswered);
-    $('#answerGreen').on("click", {color: 'green', target: $('#answerGreen')}, handlePlayerAnswered);
-    $('#answerYellow').on("click", {color: 'yellow', target: $('#answerYellow')}, handlePlayerAnswered);
-
-    startTime = new Date().getTime();
+    handleQuestionBegin(data);
 };
 
 wsResponseHandlers.questEnd = function (data) {
     handleQuestionEnded(data);
 };
 
-
 wsResponseHandlers.quizEnd = function (data) {
-    handleQuizEnd(data);
+    handleQuizEnd(data.scores);
 };
 
