@@ -262,7 +262,9 @@ var isMoreQuestions = function () {
 };
 
 var calculateScore = function (timeUsed) {
-    return 10000 - timeUsed;
+    var questionTime = QUESTION_TRANSITION_TIME * 1000;
+    var timeLeft = questionTime - timeUsed;
+    return Math.floor((timeLeft / questionTime) * 10000);
 };
 
 var showAnswer = function (question) {
