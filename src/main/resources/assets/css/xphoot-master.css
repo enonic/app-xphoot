@@ -176,6 +176,13 @@ select {
     text-align: center;
 }
 
+#questionImage {
+    padding: 10px;
+    height: 25vh;
+    border: 0px;
+    border-radius: 2px;
+}
+
 /* answers */
 .answer-grid-wrapper {
     width: 100%;
@@ -302,22 +309,28 @@ select {
 }
 
 .scoreValue {
-    float:right;
+    float: right;
 }
 
 #scoresPlayers li.scoreWinner {
-    color:#51a8fa;
-    background-color:whitesmoke;
-    border-radius:10px;
+    color: #51a8fa;
+    background-color: whitesmoke;
+    border-radius: 10px;
     padding: 3px 5px;
 
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0%   {color: #51a8fa;}
-    50%  {color: firebrick;}
-    100% {color: #51a8fa;}
+    0% {
+        color: #51a8fa;
+    }
+    50% {
+        color: firebrick;
+    }
+    100% {
+        color: #51a8fa;
+    }
 }
 
 /* timer */

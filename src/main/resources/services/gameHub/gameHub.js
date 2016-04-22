@@ -11,6 +11,7 @@ function handleGet(req) {
         };
     }
 
+
     return {
         webSocket: {
             data: {},
@@ -34,7 +35,6 @@ function handleEvent(event) {
     }
 
     if (event.type == 'close') {
-        log.info("Closed!! %s", event);
         leave(event);
     }
 }
@@ -48,6 +48,11 @@ function handleMessage(event) {
 
     if (message.action == 'playerAnswer') {
         return playerAnswer(event, message);
+    }
+
+    if (message.action == 'getImageUrl') {
+        var id = message.imageId;
+        return getImageUrl(id);
     }
 
     return forwardEvent(message);
@@ -75,7 +80,6 @@ function join(event, message) {
         gameId = message.gameId;
         if (!message.pin) {
             pin = createPin(10000, 99999);
-            log.info("New pin for session '%s': %s", sessionId, pin);
             if (!addMaster(pin, sessionId)) {
                 return;
             }
@@ -126,7 +130,6 @@ function leave(event) {
 }
 
 function forwardEvent(message) {
-    log.info("Forward event: %s", message);
     webSocketLib.sendToGroup(message.pin, JSON.stringify(message));
 }
 
@@ -145,6 +148,7 @@ function getPin(event) {
 
 function fetchGame(id) {
     var content = contentLib.get({key: id});
+
     return {
         name: content.displayName,
         id: content._id,

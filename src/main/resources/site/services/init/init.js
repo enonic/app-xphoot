@@ -5,11 +5,14 @@ exports.get = function (req) {
 
     var saveGameUrl = portalLib.serviceUrl({service: 'saveGame'});
     var wsUrl = portalLib.serviceUrl({service: 'gameHub', type: 'absolute'});
+    var imageServiceUrl = portalLib.serviceUrl({service: 'imageService', type: 'absolute'});
+
     wsUrl = 'ws' + wsUrl.substring(wsUrl.indexOf(':'));
     var data = {
         wsUrl: wsUrl,
         saveGameUrl: saveGameUrl,
-        games: getGames()
+        games: getGames(),
+        imageServiceUrl: imageServiceUrl
     };
 
     return {

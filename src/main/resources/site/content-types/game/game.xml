@@ -11,6 +11,13 @@
           <label>Question</label>
           <occurrences minimum="1" maximum="1"/>
         </input>
+        <input name="image" type="ImageSelector">
+          <label>Question image</label>
+          <occurrences minimum="0" maximum="1"/>
+          <config>
+            <allowPath>./*</allowPath>
+          </config>
+        </input>
         <input type="TextLine" name="red">
           <label>Red</label>
           <occurrences minimum="1" maximum="1"/>

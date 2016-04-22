@@ -1,5 +1,6 @@
 var role = 'master';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
+var imageService = xphoot_data.imageServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin;
 
@@ -52,7 +53,7 @@ ws.onopen = function (event) {
 var wsResponseHandlers = {};
 
 ws.onmessage = function (event) {
-    console.log("Yay, a message for me: " + event.data);
+    // console.log("Yay, a message for me: " + event.data);
     var data = JSON.parse(event.data);
     var action = data.action;
 
@@ -179,7 +180,7 @@ function getLayoutClass(question) {
 
 function layOutAnswerGrid(question) {
 
-    console.log("LayOutGrid: ", question);
+    //console.log("LayOutGrid: ", question);
 
     var answerGrid = $('#answer-grid');
     answerGrid.removeClass("answer-grid-2");
@@ -201,15 +202,12 @@ function layOutAnswerGrid(question) {
     }
 
     if (!question.green) {
-        console.log("Hiding green!", $('#answerGreen'))
         $('#answerGreen').hide();
     } else {
-        console.log("Showing green!")
         $('#answerGreen').show();
     }
 
     if (!question.yellow) {
-        console.log("Hiding Yellow!!", $('#answerYellow'))
         $('#answerYellow').hide();
     } else {
         $('#answerYellow').show();
@@ -218,11 +216,16 @@ function layOutAnswerGrid(question) {
 
 var showQuestion = function (question) {
 
+    $('#questionImage').hide();
     $('#scoresPanel').hide();
     $('#questionPanel').show();
     $('#joinPanel').hide();
 
     $('#questionText').text(question.question);
+
+    if (question.image) {
+        setImage(question.image, $('#questionImage'));
+    }
 
     $('#answerRed span').text(question.red);
     $('#answerBlue span').text(question.blue);
@@ -238,14 +241,33 @@ var showQuestion = function (question) {
     startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
 };
 
-var showQuestResult = function (data) {
-    // Show leaderboard
+var setImage = function (imageId, component) {
 
-    for (var player in answers) {
-        if (answers.hasOwnProperty(player)) {
-            console.log("Score: " + player + " : " + answers[player]);
+    var getImageUrl = jQuery.ajax({
+        url: imageService,
+        data: {
+            imageId: imageId
+        },
+        success: function (result) {
+            var url = result.url;
+            component.attr('src', url);
+            component.show();
         }
-    }
+    });
+
+    /*
+     var req = {
+     action: 'getImageUrl',
+     imageId: imageId
+     };
+
+     var response = send(req);
+
+     console.log("GetImageUrl response", response);
+     */
+};
+
+var showQuestResult = function (data) {
 
     var question = getQuestion(currentQuestNum);
     showAnswer(question);
@@ -355,7 +377,6 @@ var saveResults = function () {
 wsResponseHandlers.joinAck = function (data) {
     game = data.game;
     pin = data.pin;
-    console.log('Game: ', game);
     $('#selectPanel').hide();
     $('#joinPanel').show();
     $('#pin').text(data.pin);

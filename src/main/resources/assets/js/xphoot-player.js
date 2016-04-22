@@ -31,7 +31,7 @@ ws.onopen = function (event) {
 var wsResponseHandlers = {};
 
 ws.onmessage = function (event) {
-    console.log("Yay, a message for me: " + event.data);
+    //console.log("Yay, a message for me: " + event.data);
     var data = JSON.parse(event.data);
     var action = data.action;
 
@@ -74,9 +74,6 @@ $('#sendJoin').on('click', function (e) {
 });
 
 var sendPlayerAnswer = function (answer, timeUsed) {
-
-    console.log("Timeused", timeUsed);
-
     var req = {
         action: 'playerAnswer',
         answer: answer,
