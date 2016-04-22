@@ -14,23 +14,15 @@ var joinTimerId;
 var initialTimerOffset = 754;
 var timerPos = 1;
 var progressBar;
-var currentAnswers = {
-    blue: 0,
-    red: 0,
-    green: 0,
-    yellow: 0
-};
+
+var wsResponseHandlers = {};
 
 $(function () {
     loadGames();
     $('#joinTimer').on('click', function () {
         clearInterval(joinTimerId);
-        processNextQuestion();
+        sendQuestBegin();
     });
-
-    // color: '#FFEA82',
-    // from: {color: '#FFEA82'},
-    // to: {color: '#ED6A5A'},
 
     progressBar = new ProgressBar.Line('#progressbar', {
         strokeWidth: 1.5,
@@ -50,13 +42,10 @@ $(function () {
     addDummyPlayers();
 });
 
+// WS - EVENTS
+
 ws.onopen = function (event) {
-
-    //
-
 };
-
-var wsResponseHandlers = {};
 
 ws.onmessage = function (event) {
     // console.log("Yay, a message for me: " + event.data);
@@ -69,130 +58,97 @@ ws.onmessage = function (event) {
     }
 };
 
-var loadGames = function () {
-    var games = xphoot_data.games, l = games.length, i;
-    var gameSelect = $('#games');
 
-    for (i = 0; i < l; i++) {
-        gameSelect.append($("<option></option>").attr("value", games[i].id).text(games[i].name));
-    }
+// HANDLERS
 
-    gameSelect.on('change', function (e) {
-        e.preventDefault();
-        var gameId = this.value;
-        if (gameId) {
-            sendJoin(role, gameId);
-        }
-    });
+var handleJoined = function (data) {
+    displayJoinPanel(data);
+    joinTimerId = startActionTimer(JOIN_GAME_TIME, sendQuestBegin, showTimer);
 };
 
-function processNextQuestion() {
+var handlePlayerJoined = function (nick) {
+    players[nick] = {nick: nick};
+    playerCount++;
+    $('#players').append('<li>' + nick + '</li>');
+
+    $('#joinPlayersTitle').text(playerCount + " Player" + (playerCount > 1 ? "s" : "") + " joined");
+};
+
+var handleShowQuestions = function (question) {
+    displayQuestionPanel(question);
+    startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
+};
+
+var handlePlayerAnswer = function (data) {
+    var player = data.nick;
+
+    if (game.questions[currentQuestNum].answer == data.answer) {
+        answers[player] = (answers[player] || 0) + calculateScore(data.timeUsed);
+    }
+};
+
+var handleQuestEnded = function (data) {
+    displayCorrectAnswer(getQuestion(currentQuestNum));
+    currentQuestNum++;
+
     if (isMoreQuestions()) {
-        sendQuestBegin(currentQuestNum);
+        startActionTimer(SHOW_SCORE_TIME, sendShowScores);
     } else {
-        send({action: 'quizEnd'});
-
-        $('#questionPanel,#joinPanel').hide();
-        showScores();
-        saveResults();
+        startActionTimer(SHOW_SCORE_TIME, sendQuizEnd);
     }
+};
+
+var handleShowScores = function () {
+    displayScoreBoard();
+    startActionTimer(SHOW_SCORE_TIME, sendQuestBegin);
+};
+
+var handleQuizEnd = function () {
+    displayScoreBoard();
+    saveResults();
+};
+
+// END HANDLERS
+
+
+// DISPLAY
+
+function displayJoinPanel(data) {
+    game = data.game;
+    pin = data.pin;
+
+    getAllPanels().hide();
+    $('#joinPanel').show();
+
+    $('#pin').text(data.pin);
+
+    showInitTimer(JOIN_GAME_TIME);
+    $('.scoresHeaderText').text('Scoreboard');
 }
-var startActionTimer = function (duration, action, onTick) {
-    var tick = duration;
 
-    var timerId = setInterval(function () {
-        tick--;
-        if (onTick && tick > 0) {
-            onTick(duration, tick);
-        }
-        if (tick == 0) {
-            clearInterval(timerId);
-            action();
-        }
-    }, 1000);
-    return timerId;
-};
+function displayQuestionPanel(question) {
+    getAllPanels().hide();
+    $('#questionPanel').show();
 
-var showInitTimer = function (duration) {
-    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
-    $('#timeLeft').text(duration);
-    timerPos++;
-};
+    $('#questionText').text(question.question);
 
-var showTimer = function (duration, left) {
-    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
-    var leftStr = left < 10 ? "0" + left : left;
-    $('#timeLeft').text(leftStr);
-    timerPos++;
-};
-
-var getQuestion = function (questionNumber) {
-    return game.questions[questionNumber];
-};
-
-var send = function (data) {
-    if (!data.pin && pin) {
-        data.pin = pin;
+    if (question.image) {
+        setImage(question.image, $('#questionImage'));
     }
-    ws.send(JSON.stringify(data));
-};
 
-var sendJoin = function (role, gameId) {
-    var req = {
-        action: 'join',
-        role: role,
-        gameId: gameId
-    };
-    send(req);
-};
+    displayAnswerGrid(question);
 
-var sendQuestBegin = function (questionNumber) {
-    var question = getQuestion(questionNumber);
-    // delete question['answer'];
-    var req = {
-        action: 'questBegin',
-        question: question
-    };
-    send(req);
-};
-
-var sendQuestEnd = function () {
-
-    var question = getQuestion(currentQuestNum);
     progressBar.set(0.0);
-
-    var req = {
-        action: 'questEnd',
-        correctAnswer: question.answer
-    };
-
-    send(req);
-};
-
-function getLayoutClass(question) {
-    var layout = 2;
-
-    if (question.green) {
-        if (question.yellow) {
-            layout = 4;
-        } else {
-            layout = 3;
-        }
-    }
-    return "answer-grid-" + layout;
+    progressBar.animate(1.0);
 }
 
-
-function layOutAnswerGrid(question) {
-
-    //console.log("LayOutGrid: ", question);
+function displayAnswerGrid(question) {
 
     var answerGrid = $('#answer-grid');
     answerGrid.removeClass("answer-grid-2");
     answerGrid.removeClass("answer-grid-3");
     answerGrid.removeClass("answer-grid-4");
     answerGrid.addClass(getLayoutClass(question));
-
 
     if (!question.red) {
         $('#answerRed').hide();
@@ -217,20 +173,6 @@ function layOutAnswerGrid(question) {
     } else {
         $('#answerYellow').show();
     }
-}
-
-var showQuestion = function (question) {
-
-    $('#questionImage').hide();
-    $('#scoresPanel').hide();
-    $('#questionPanel').show();
-    $('#joinPanel').hide();
-
-    $('#questionText').text(question.question);
-
-    if (question.image) {
-        setImage(question.image, $('#questionImage'));
-    }
 
     $('#answerRed span').text(question.red);
     $('#answerBlue span').text(question.blue);
@@ -238,18 +180,24 @@ var showQuestion = function (question) {
     $('#answerYellow span').text(question.yellow);
 
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
-    $('.pieContainer').hide();
+}
 
-    layOutAnswerGrid(question);
+function getLayoutClass(question) {
+    var layout = 2;
 
-    progressBar.set(0.0);
-    progressBar.animate(1.0);
-    startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
-};
+    if (question.green) {
+        if (question.yellow) {
+            layout = 4;
+        } else {
+            layout = 3;
+        }
+    }
+    return "answer-grid-" + layout;
+}
 
 var setImage = function (imageId, component) {
 
-    var getImageUrl = jQuery.ajax({
+    jQuery.ajax({
         url: imageService,
         data: {
             imageId: imageId
@@ -262,31 +210,7 @@ var setImage = function (imageId, component) {
     });
 };
 
-var showQuestResult = function (data) {
-
-    var question = getQuestion(currentQuestNum);
-    showAnswer(question);
-
-    startActionTimer(SHOW_SCORE_TIME, function () {
-        showScores();
-        startActionTimer(SHOW_SCORE_TIME, processNextQuestion);
-    });
-
-    currentQuestNum++;
-};
-
-var isMoreQuestions = function () {
-    return game.questions.length > currentQuestNum;
-};
-
-var calculateScore = function (timeUsed) {
-    var questionTime = QUESTION_TRANSITION_TIME * 1000;
-    var timeLeft = questionTime - timeUsed;
-
-    return Math.floor(((timeLeft / questionTime) * 5000) + 3000);
-};
-
-var showAnswer = function (question) {
+var displayCorrectAnswer = function (question) {
     var answer = question.answer;
     if (answer === 'red') {
         $('#answerBlue,#answerGreen,#answerYellow').animate({opacity: 0.2});
@@ -297,42 +221,16 @@ var showAnswer = function (question) {
     } else if (answer === 'yellow') {
         $('#answerRed,#answerBlue,#answerGreen').animate({opacity: 0.2});
     }
-
-    showAnswersPie();
 };
 
-var showAnswersPie = function () {
-    console.log(currentAnswers);
-
-    var red = currentAnswers.red;
-    var blue = currentAnswers.blue;
-    var yellow = currentAnswers.yellow;
-    var green = currentAnswers.green;
-    var total = blue + red + yellow + green;
-
-    blue = (blue / total) * 360;
-    red = (red / total) * 360;
-    yellow = (yellow / total) * 360;
-    green = (green / total) * 360;
-
-    $('#pieSliceRed .pie').css('transform', 'rotate(' + red + 'deg)');
-    $('#pieSliceBlue').css('transform', 'rotate(' + red + 'deg)');
-    $('#pieSliceBlue .pie').css('transform', 'rotate(' + blue + 'deg)');
-    $('#pieSliceGreen').css('transform', 'rotate(' + (red + blue) + 'deg)');
-    $('#pieSliceGreen .pie').css('transform', 'rotate(' + green + 'deg)');
-    $('#pieSliceYellow').css('transform', 'rotate(' + (red + blue + green) + 'deg)');
-    $('#pieSliceYellow .pie').css('transform', 'rotate(' + yellow + 'deg)');
-    $('.pieContainer').show();
-};
-
-var showScores = function () {
-
+function displayScoreBoard() {
     if (!isMoreQuestions()) {
         $('.scoresHeaderText').text('Final Scoreboard');
     }
 
     $('#questionPanel').hide();
     $('#scoresPanel').show();
+
     var playersEl = $('#scoresPlayers > ul');
     playersEl.find('li').remove();
 
@@ -354,25 +252,66 @@ var showScores = function () {
         first = false;
         playersEl.append(li);
     });
+}
+
+// DISPLAY END
+
+
+// SEND EVENTS
+
+var send = function (data) {
+    if (!data.pin && pin) {
+        data.pin = pin;
+    }
+    ws.send(JSON.stringify(data));
 };
 
-var addDummyPlayers = function () {
-    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123'];
-    dummies.forEach(function (nick) {
-        setTimeout(function () {
-            joinPlayer(nick);
-            answers[nick] = Math.floor((Math.random() * 3000) + 2000);
-        }, Math.random() * (8000));
-    })
+var sendJoin = function (role, gameId) {
+    var req = {
+        action: 'join',
+        role: role,
+        gameId: gameId
+    };
+    send(req);
 };
 
-var joinPlayer = function (nick) {
-    players[nick] = {nick: nick};
-    playerCount++;
-    $('#players').append('<li>' + nick + '</li>');
-
-    $('#joinPlayersTitle').text(playerCount + " Player" + (playerCount > 1 ? "s" : "") + " joined");
+var sendQuestBegin = function () {
+    var question = getQuestion(currentQuestNum);
+    // delete question['answer'];
+    var req = {
+        action: 'questBegin',
+        question: question
+    };
+    send(req);
 };
+
+
+var sendQuestEnd = function () {
+    var question = getQuestion(currentQuestNum);
+    progressBar.set(0.0);
+    var req = {
+        action: 'questEnd',
+        correctAnswer: question.answer
+    };
+    send(req);
+};
+
+var sendShowScores = function () {
+    var data = {
+        action: 'showScores'
+    };
+    send(data);
+};
+
+function sendQuizEnd() {
+    send({action: 'quizEnd'});
+}
+
+// UTILS
+
+function getAllPanels() {
+    return $('#scoresPanel,#questionPanel,#joinPanel,#selectPanel');
+}
 
 var saveResults = function () {
     var playerScores = [];
@@ -397,36 +336,109 @@ var saveResults = function () {
     });
 };
 
-wsResponseHandlers.joinAck = function (data) {
-    game = data.game;
-    pin = data.pin;
-    $('#selectPanel').hide();
-    $('#joinPanel').show();
-    $('#pin').text(data.pin);
 
-    showInitTimer(JOIN_GAME_TIME);
-    $('.scoresHeaderText').text('Scoreboard');
-    joinTimerId = startActionTimer(JOIN_GAME_TIME, processNextQuestion, showTimer);
+var startActionTimer = function (duration, action, onTick) {
+    var tick = duration;
+
+    var timerId = setInterval(function () {
+        tick--;
+        if (onTick && tick > 0) {
+            onTick(duration, tick);
+        }
+        if (tick == 0) {
+            clearInterval(timerId);
+            action();
+        }
+    }, 1000);
+    return timerId;
+};
+
+var loadGames = function () {
+    var games = xphoot_data.games, l = games.length, i;
+    var gameSelect = $('#games');
+
+    for (i = 0; i < l; i++) {
+        gameSelect.append($("<option></option>").attr("value", games[i].id).text(games[i].name));
+    }
+
+    gameSelect.on('change', function (e) {
+        e.preventDefault();
+        var gameId = this.value;
+        if (gameId) {
+            sendJoin(role, gameId);
+        }
+    });
+};
+
+var showInitTimer = function (duration) {
+    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
+    $('#timeLeft').text(duration);
+    timerPos++;
+};
+
+var showTimer = function (duration, left) {
+    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
+    var leftStr = left < 10 ? "0" + left : left;
+    $('#timeLeft').text(leftStr);
+    timerPos++;
+};
+
+var getQuestion = function (questionNumber) {
+    return game.questions[questionNumber];
+};
+
+
+var isMoreQuestions = function () {
+    return game.questions.length > currentQuestNum;
+};
+
+var calculateScore = function (timeUsed) {
+    var questionTime = QUESTION_TRANSITION_TIME * 1000;
+    var timeLeft = questionTime - timeUsed;
+
+    return Math.floor(((timeLeft / questionTime) * 5000) + 3000);
+};
+
+
+var addDummyPlayers = function () {
+    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123'];
+    dummies.forEach(function (nick) {
+        setTimeout(function () {
+            handlePlayerJoined(nick);
+            answers[nick] = Math.floor((Math.random() * 3000) + 2000);
+        }, Math.random() * (8000));
+    })
+};
+
+// UTILS ENDED
+
+
+// EVENT HANDLERS
+
+wsResponseHandlers.joinAck = function (data) {
+    handleJoined(data);
 };
 
 wsResponseHandlers.playerJoined = function (data) {
-    joinPlayer(data.nick);
+    handlePlayerJoined(data.nick);
 };
 
 wsResponseHandlers.questBegin = function (data) {
-    showQuestion(data.question);
-};
-
-wsResponseHandlers.questEnd = function (data) {
-    showQuestResult(data);
+    handleShowQuestions(data.question);
 };
 
 wsResponseHandlers.playerAnswer = function (data) {
+    handlePlayerAnswer(data);
+};
 
-    var player = data.nick;
+wsResponseHandlers.questEnd = function (data) {
+    handleQuestEnded(data);
+};
 
-    if (game.questions[currentQuestNum].answer == data.answer) {
-        answers[player] = (answers[player] || 0) + calculateScore(data.timeUsed);
-    }
-    currentAnswers[data.answer]++;
+wsResponseHandlers.showScores = function (data) {
+    handleShowScores();
+};
+
+wsResponseHandlers.quizEnd = function (data) {
+    handleQuizEnd();
 };
