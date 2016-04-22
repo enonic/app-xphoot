@@ -10,6 +10,12 @@ var SHOW_SCORE_TIME = 7;
 
 var currentQuestNum = 0;
 var answers = {};
+var currentAnswers = {
+    blue: 0,
+    red: 0,
+    green: 0,
+    yellow: 0
+};
 var joinTimerId;
 var initialTimerOffset = 754;
 var timerPos = 1;
@@ -24,6 +30,7 @@ $(function () {
         sendQuestBegin();
     });
 
+    var answerCount = $('.answerCount');
     progressBar = new ProgressBar.Line('#progressbar', {
         strokeWidth: 1.5,
         easing: 'easeInOut',
@@ -36,6 +43,7 @@ $(function () {
         to: {color: '#b22222'},
         step: function (state, bar) {
             bar.path.setAttribute('stroke', state.color);
+            answerCount.css('color', state.color);
         }
     });
 
@@ -76,6 +84,10 @@ var handlePlayerJoined = function (nick) {
 
 var handleShowQuestions = function (question) {
     displayQuestionPanel(question);
+    currentAnswers.red = 0;
+    currentAnswers.blue = 0;
+    currentAnswers.yellow = 0;
+    currentAnswers.green = 0;
     startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
 };
 
@@ -85,10 +97,13 @@ var handlePlayerAnswer = function (data) {
     if (game.questions[currentQuestNum].answer == data.answer) {
         answers[player] = (answers[player] || 0) + calculateScore(data.timeUsed);
     }
+    currentAnswers[data.answer]++;
+    $('.answerCount').text(currentAnswers['red'] + currentAnswers['blue'] + currentAnswers['green'] + currentAnswers['yellow']);
 };
 
-var handleQuestEnded = function (data) {
+var handleQuestEnded = function () {
     displayCorrectAnswer(getQuestion(currentQuestNum));
+    showAnswersPie();
     currentQuestNum++;
 
     if (isMoreQuestions()) {
@@ -180,6 +195,8 @@ function displayAnswerGrid(question) {
     $('#answerYellow span').text(question.yellow);
 
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
+    $('.pieContainer').hide();
+    $('.answerCount').show().text('0');
 }
 
 function getLayoutClass(question) {
@@ -253,6 +270,40 @@ function displayScoreBoard() {
         playersEl.append(li);
     });
 }
+
+var showAnswersPie = function () {
+    var red = currentAnswers.red;
+    var blue = currentAnswers.blue;
+    var yellow = currentAnswers.yellow;
+    var green = currentAnswers.green;
+
+    // red = Math.floor(Math.random() * playerCount);
+    // blue = Math.floor(Math.random() * (playerCount - red));
+    // yellow = Math.floor(Math.random() * (playerCount - red - blue));
+    // green = Math.floor(Math.random() * (playerCount - red - blue - yellow));
+
+    var total = blue + red + yellow + green; //playerCount;
+    if (total === 0) {
+        return;
+    }
+
+    red = (red / total) * 360;
+    blue = (blue / total) * 360;
+    yellow = (yellow / total) * 360;
+    green = (green / total) * 360;
+
+    var colors = [
+        ["#B22222"], // red
+        ["#51a8fa"], // blue
+        ["#6fc040"], // green
+        ["#cdd422"]  // yellow
+    ];
+    var data = [red, blue, green, yellow];
+    var pieChart = new PieChart("pieChart", data, colors);
+    pieChart.draw();
+
+    $('.pieContainer').show();
+};
 
 // DISPLAY END
 
@@ -412,6 +463,64 @@ var addDummyPlayers = function () {
             answers[nick] = Math.floor((Math.random() * 3000) + 2000);
         }, Math.random() * (8000));
     })
+};
+
+function PieChart(id, data, colors) {
+    this.data = data;
+    this.colors = colors;
+    this.canvas = document.getElementById(id);
+}
+
+PieChart.prototype = {
+
+    select: function (segment) {
+        var context = this.canvas.getContext("2d");
+        this.drawSegment(this.canvas, context, segment, this.data[segment], true);
+    },
+
+    draw: function () {
+        var context = this.canvas.getContext("2d");
+        for (var i = 0; i < this.data.length; i++) {
+            this.drawSegment(this.canvas, context, i, this.data[i], false);
+        }
+    },
+
+    drawSegment: function (canvas, context, i, size, isSelected) {
+        var self = this;
+        context.save();
+        var centerX = Math.floor(canvas.width / 2);
+        var centerY = Math.floor(canvas.height / 2);
+        var radius = Math.floor(canvas.width / 2);
+
+        var startingAngle = self.degreesToRadians(self.sumTo(self.data, i));
+        var arcSize = self.degreesToRadians(size);
+        var endingAngle = startingAngle + arcSize;
+
+        context.beginPath();
+        context.moveTo(centerX, centerY);
+        context.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
+        context.closePath();
+
+        isSelected ?
+        context.fillStyle = self.colors[i][1] :
+        context.fillStyle = self.colors[i][0];
+
+        context.fill();
+        context.restore();
+    },
+
+    // helper functions
+    degreesToRadians: function (degrees) {
+        return (degrees * Math.PI) / 180;
+    },
+
+    sumTo: function (a, i) {
+        var sum = 0;
+        for (var j = 0; j < i; j++) {
+            sum += a[j];
+        }
+        return sum;
+    }
 };
 
 // UTILS ENDED

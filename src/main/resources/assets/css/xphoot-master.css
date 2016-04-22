@@ -114,8 +114,6 @@ select {
 }
 
 #joinPlayersHeader {
-    /*padding-top: 50px;*/
-
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -160,6 +158,10 @@ select {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#questionTop {
+    width: 100%;
 }
 
 #questionHeader {
@@ -365,11 +367,13 @@ select {
 
 /* pie */
 .pieContainer {
-    height: 80px;
-    width: 80px;
-    /*margin-left: 30px;*/
-    /*position: relative;*/
+    float: left;
+    padding-left: 15px;
 
+
+}
+
+#pieChart {
     -webkit-animation-name: spin;
     -webkit-animation-duration: 4000ms;
     -webkit-animation-iteration-count: infinite;
@@ -387,63 +391,6 @@ select {
     animation-duration: 4000ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-}
-
-.pieBackground {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-}
-
-.pie {
-    transition: all 1s;
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    clip: rect(0px, 40px, 80px, 0px);
-}
-
-.hold {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    clip: rect(0px, 80px, 80px, 40px);
-}
-
-#pieSliceRed .pie {
-    background-color: firebrick;
-    transform: rotate(90deg);
-}
-
-#pieSliceBlue {
-    transform: rotate(90deg);
-}
-
-#pieSliceBlue .pie {
-    background-color: #51a8fa;
-    transform: rotate(90deg);
-}
-
-#pieSliceGreen {
-    transform: rotate(180deg);
-}
-
-#pieSliceGreen .pie {
-    background-color: #6fc040;
-    transform: rotate(90deg);
-}
-
-#pieSliceYellow {
-    transform: rotate(270deg);
-}
-
-#pieSliceYellow .pie {
-    background-color: #cdd422;
-    transform: rotate(90deg);
 }
 
 @-moz-keyframes spin {
@@ -471,4 +418,12 @@ select {
     to {
         transform: rotate(360deg);
     }
+}
+
+.answerCount {
+    float: right;
+    padding-right: 15px;
+
+    font-family: "Digital-7 Mono", monospace;
+    font-size: 8vw;
 }

@@ -49,21 +49,15 @@
 
 <div id="questionPanel" style="display: none;">
     <div id="progressbar"></div>
-    <div class="pieContainer" style="display: none;">
-        <div class="pieBackground"></div>
-        <div id="pieSliceRed" class="hold">
-            <div class="pie"></div>
+    <div id="questionTop">
+        <div class="pieContainer" style="display_: none;">
+            <canvas id="pieChart" width="80" height="80">
+            </canvas>
         </div>
-        <div id="pieSliceBlue" class="hold">
-            <div class="pie"></div>
-        </div>
-        <div id="pieSliceGreen" class="hold">
-            <div class="pie"></div>
-        </div>
-        <div id="pieSliceYellow" class="hold">
-            <div class="pie"></div>
+        <div class="answerCount" style="display_: none;">
         </div>
     </div>
+
     <div id="questionHeader">
         <span id="questionText"></span>
         <img id="questionImage" data-th-src="${portal.assetUrl({'_path=img/empty.png'})}" style="display:none;"/>
