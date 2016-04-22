@@ -127,9 +127,9 @@ function handleQuizEnd(answers) {
 
             if (place == 1) {
                 $('#playerPos').text("Winner!");
-            } else if (place = 2) {
+            } else if (place == 2) {
                 $('#playerPos').text("Second place!");
-            } else if (place = 3) {
+            } else if (place == 3) {
                 $('#playerPos').text("Third place!");
             } else {
                 $('#playerPos').text(place + "th place");
