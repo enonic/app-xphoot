@@ -3,11 +3,10 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var imageService = xphoot_data.imageServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin;
-
-var JOIN_GAME_TIME = 30;
-var QUESTION_TRANSITION_TIME = 10;
+var currentAudio;
+var JOIN_GAME_TIME = 60;
+var QUESTION_TRANSITION_TIME = 20;
 var SHOW_SCORE_TIME = 7;
-
 var currentQuestNum = 0;
 var answers = {};
 var currentAnswers = {
@@ -102,6 +101,7 @@ var handlePlayerAnswer = function (data) {
 };
 
 var handleQuestEnded = function () {
+    stopAudio($('#questionAudio'));
     displayCorrectAnswer(getQuestion(currentQuestNum));
     showAnswersPie();
     currentQuestNum++;
@@ -142,6 +142,9 @@ function displayJoinPanel(data) {
 }
 
 function displayQuestionPanel(question) {
+
+    enableAudio(question);
+
     getAllPanels().hide();
     $('#questionPanel').show();
 
@@ -226,6 +229,28 @@ var setImage = function (imageId, component) {
         }
     });
 };
+
+function enableAudio(question) {
+
+    if (!question.audio) {
+        return;
+    }
+
+    var trackId = question.audio.trackId;
+
+    if (trackId) {
+        jQuery.ajax({
+            url: "https://api.spotify.com/v1/tracks/" + trackId,
+            success: function (result) {
+                var url = result.preview_url;
+                console.log("URL", url);
+                var audioElement = $('#questionAudio');
+                audioElement.attr("src", url);
+                startAudio(audioElement);
+            }
+        });
+    }
+}
 
 var displayCorrectAnswer = function (question) {
     var answer = question.answer;
@@ -366,6 +391,18 @@ function sendQuizEnd() {
 
 function getAllPanels() {
     return $('#scoresPanel,#questionPanel,#joinPanel,#selectPanel');
+}
+
+function startAudio(audioElement) {
+    audioElement[0].volume = 0;
+    audioElement.animate({volume: 1}, 1500);
+    audioElement.trigger("play");
+}
+
+function stopAudio(audioElement) {
+    audioElement.animate({volume: 0}, 3000, function () {
+        audioElement.trigger("pause");
+    });
 }
 
 var saveResults = function () {
