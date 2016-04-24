@@ -83,6 +83,19 @@ var handlePlayerJoined = function (nick) {
 };
 
 var handleQuizBegin = function () {
+    if (playerCount == 0) {
+        // restart join timer
+        $('#circle').hide();
+        $('.circle_animation').css('stroke-dashoffset', initialTimerOffset);
+        $('#timeLeft').text('00');
+        setTimeout(function () {
+            timerPos = 2;
+            $('#circle').show();
+            joinTimerId = startActionTimer(JOIN_GAME_TIME, handleQuizBegin, showTimer);
+        }, 1000);
+        return;
+    }
+
     playGameMusic();
     sendQuestBegin();
 };
@@ -501,7 +514,8 @@ var loadGames = function () {
 
 var showInitTimer = function (duration) {
     $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
-    $('#timeLeft').text(duration);
+    var leftStr = duration < 10 ? "0" + duration : duration;
+    $('#timeLeft').text(leftStr);
     timerPos++;
 };
 
