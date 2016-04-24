@@ -8,7 +8,8 @@ var JOIN_GAME_TIME = 60;
 var QUESTION_TRANSITION_TIME = 20;
 var SHOW_SCORE_TIME = 7;
 var currentQuestNum = 0;
-var answers = {};
+var playerScores = {};
+var playerAnswered = {};
 var currentAnswers = {
     blue: 0,
     red: 0,
@@ -87,17 +88,23 @@ var handleShowQuestions = function (question) {
     currentAnswers.blue = 0;
     currentAnswers.yellow = 0;
     currentAnswers.green = 0;
+    playerAnswered = {};
     startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
 };
 
 var handlePlayerAnswer = function (data) {
     var player = data.nick;
 
+    if (playerAnswered[player]) {
+        // avoid double answers
+        return;
+    }
     if (game.questions[currentQuestNum].answer == data.answer) {
-        answers[player] = (answers[player] || 0) + calculateScore(data.timeUsed);
+        playerScores[player] = (playerScores[player] || 0) + calculateScore(data.timeUsed);
     }
     currentAnswers[data.answer]++;
-    $('.answerCount').text(currentAnswers['red'] + currentAnswers['blue'] + currentAnswers['green'] + currentAnswers['yellow']);
+    playerAnswered[player] = true;
+    $('.answerCount span').text(currentAnswers['red'] + currentAnswers['blue'] + currentAnswers['green'] + currentAnswers['yellow']);
 };
 
 var handleQuestEnded = function () {
@@ -199,7 +206,7 @@ function displayAnswerGrid(question) {
 
     $('#answerRed,#answerBlue,#answerGreen,#answerYellow').fadeTo('fast', 1);
     $('.pieContainer').hide();
-    $('.answerCount').show().text('0');
+    $('.answerCount').show().find('span').text('0');
 }
 
 function getLayoutClass(question) {
@@ -277,9 +284,9 @@ function displayScoreBoard() {
     playersEl.find('li').remove();
 
     var sortedPlayers = [];
-    for (var player in answers) {
-        if (answers.hasOwnProperty(player)) {
-            sortedPlayers.push({player: player, score: answers[player]});
+    for (var player in playerScores) {
+        if (playerScores.hasOwnProperty(player)) {
+            sortedPlayers.push({player: player, score: playerScores[player]});
         }
     }
     sortedPlayers.sort(function (a, b) {
@@ -318,10 +325,10 @@ var showAnswersPie = function () {
     green = (green / total) * 360;
 
     var colors = [
-        ["#B22222"], // red
-        ["#51a8fa"], // blue
-        ["#6fc040"], // green
-        ["#cdd422"]  // yellow
+        "#B22222", // red
+        "#51a8fa", // blue
+        "#6fc040", // green
+        "#cdd422"  // yellow
     ];
     var data = [red, blue, green, yellow];
     var pieChart = new PieChart("pieChart", data, colors);
@@ -382,7 +389,7 @@ var sendShowScores = function () {
 function sendQuizEnd() {
     var req = {
         action: 'quizEnd',
-        scores: answers
+        scores: playerScores
     };
     send(req);
 }
@@ -406,17 +413,17 @@ function stopAudio(audioElement) {
 }
 
 var saveResults = function () {
-    var playerScores = [];
-    for (var player in answers) {
-        if (answers.hasOwnProperty(player)) {
-            playerScores.push({nick: player, score: answers[player]});
+    var finalPlayerScores = [];
+    for (var player in playerScores) {
+        if (playerScores.hasOwnProperty(player)) {
+            finalPlayerScores.push({nick: player, score: playerScores[player]});
         }
     }
 
     var data = {
         description: game.name,
         game: game.id,
-        players: playerScores
+        players: finalPlayerScores
     };
 
     $.ajax({
@@ -497,7 +504,7 @@ var addDummyPlayers = function () {
     dummies.forEach(function (nick) {
         setTimeout(function () {
             handlePlayerJoined(nick);
-            answers[nick] = Math.floor((Math.random() * 3000) + 2000);
+            playerScores[nick] = Math.floor((Math.random() * 3000) + 2000);
         }, Math.random() * (8000));
     })
 };
@@ -510,19 +517,14 @@ function PieChart(id, data, colors) {
 
 PieChart.prototype = {
 
-    select: function (segment) {
-        var context = this.canvas.getContext("2d");
-        this.drawSegment(this.canvas, context, segment, this.data[segment], true);
-    },
-
     draw: function () {
         var context = this.canvas.getContext("2d");
         for (var i = 0; i < this.data.length; i++) {
-            this.drawSegment(this.canvas, context, i, this.data[i], false);
+            this.drawSegment(this.canvas, context, i, this.data[i]);
         }
     },
 
-    drawSegment: function (canvas, context, i, size, isSelected) {
+    drawSegment: function (canvas, context, i, size) {
         var self = this;
         context.save();
         var centerX = Math.floor(canvas.width / 2);
@@ -538,9 +540,7 @@ PieChart.prototype = {
         context.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
         context.closePath();
 
-        isSelected ?
-        context.fillStyle = self.colors[i][1] :
-        context.fillStyle = self.colors[i][0];
+        context.fillStyle = self.colors[i];
 
         context.fill();
         context.restore();
