@@ -40,6 +40,7 @@ function getGames() {
         game.id = res._id;
         game.name = res.displayName;
         game.questions = res.data.questions.length;
+        game.musicUrl = res.data.soundtrack ? portalLib.attachmentUrl({id: res.data.soundtrack}) : '';
         games.push(game);
     }
 

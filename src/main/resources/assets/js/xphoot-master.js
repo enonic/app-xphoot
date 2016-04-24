@@ -2,7 +2,7 @@ var role = 'master';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var imageService = xphoot_data.imageServiceUrl;
 var players = {}, playerCount = 0;
-var game, pin;
+var game, pin, gameAudioElement;
 var currentAudio;
 var JOIN_GAME_TIME = 60;
 var QUESTION_TRANSITION_TIME = 20;
@@ -27,7 +27,7 @@ $(function () {
     loadGames();
     $('#joinTimer').on('click', function () {
         clearInterval(joinTimerId);
-        sendQuestBegin();
+        handleQuizBegin();
     });
 
     var answerCount = $('.answerCount');
@@ -71,7 +71,7 @@ ws.onmessage = function (event) {
 
 var handleJoined = function (data) {
     displayJoinPanel(data);
-    joinTimerId = startActionTimer(JOIN_GAME_TIME, sendQuestBegin, showTimer);
+    joinTimerId = startActionTimer(JOIN_GAME_TIME, handleQuizBegin, showTimer);
 };
 
 var handlePlayerJoined = function (nick) {
@@ -80,6 +80,11 @@ var handlePlayerJoined = function (nick) {
     $('#players').append('<li>' + nick + '</li>');
 
     $('#joinPlayersTitle').text(playerCount + " Player" + (playerCount > 1 ? "s" : "") + " joined");
+};
+
+var handleQuizBegin = function () {
+    playGameMusic();
+    sendQuestBegin();
 };
 
 var handleShowQuestions = function (question) {
@@ -128,6 +133,7 @@ var handleShowScores = function () {
 var handleQuizEnd = function () {
     displayScoreBoard();
     saveResults();
+    stopGameMusic();
 };
 
 // END HANDLERS
@@ -258,6 +264,30 @@ function enableAudio(question) {
         });
     }
 }
+
+playGameMusic = function () {
+    var games = xphoot_data.games, l = games.length, i, musicUrl = '';
+    for (i = 0; i < l; i++) {
+        if (games[i].id === game.id) {
+            musicUrl = games[i].musicUrl;
+            break;
+        }
+    }
+
+    if (!musicUrl) {
+        return;
+    }
+    gameAudioElement = $('#gameAudio');
+    gameAudioElement.attr("src", musicUrl);
+    startAudio(gameAudioElement);
+};
+
+stopGameMusic = function () {
+    if (!gameAudioElement) {
+        return;
+    }
+    stopAudio(gameAudioElement);
+};
 
 var displayCorrectAnswer = function (question) {
     var answer = question.answer;

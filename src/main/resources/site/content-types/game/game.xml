@@ -3,6 +3,23 @@
   <display-name>Game</display-name>
   <super-type>base:structured</super-type>
   <form>
+    <field-set name="music">
+      <label>Game Music</label>
+      <items>
+        <input type="ContentSelector" name="soundtrack">
+          <label>Background Music</label>
+          <occurrences minimum="0" maximum="1"/>
+          <config>
+            <allowContentType>media:audio</allowContentType>
+          </config>
+        </input>
+        <input type="TextLine" name="soundtrackAuthor">
+          <label>Background Music Author</label>
+          <occurrences minimum="0" maximum="1"/>
+        </input>
+      </items>
+    </field-set>
+
     <item-set name="questions">
       <label>Question</label>
       <occurrences minimum="1" maximum="0"/>

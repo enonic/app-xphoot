@@ -1,8 +1,8 @@
 <node>
-    <id>3eb70a75-dd78-4f39-9d42-48efa4969ab2</id>
+    <id>06d1da21-7ad2-4636-b2b6-90cee9221eda</id>
     <childOrder>modifiedtime DESC</childOrder>
     <nodeType>content</nodeType>
-    <timestamp>2016-04-24T18:55:09.456Z</timestamp>
+    <timestamp>2016-04-24T18:54:47.979Z</timestamp>
     <inheritPermissions>true</inheritPermissions>
     <permissions>
         <principal key="role:cms.cm.app">
@@ -44,48 +44,28 @@
     </permissions>
     <data>
         <boolean name="valid">true</boolean>
-        <string name="displayName">Geo Quiz</string>
-        <string name="type">com.enonic.app.xphoot:game</string>
-        <string name="owner">user:system:su</string>
-        <dateTime name="modifiedTime">2016-04-24T18:55:09.456Z</dateTime>
-        <string name="modifier">user:system:su</string>
+        <string name="displayName">bensound-thelounge.mp3</string>
+        <string name="type">media:audio</string>
+        <dateTime name="createdTime">2016-04-24T18:54:47.957Z</dateTime>
         <string name="creator">user:system:su</string>
-        <dateTime name="createdTime">2016-04-18T09:35:07.524Z</dateTime>
+        <string name="modifier">user:system:su</string>
+        <dateTime name="modifiedTime">2016-04-24T18:54:47.957Z</dateTime>
+        <string name="owner">user:system:su</string>
         <property-set name="data">
-            <property-set name="questions">
-                <string name="answer">blue</string>
-                <string name="question">What is the most widely spoken language of the world (by first language speakers)?</string>
-                <string name="red">Hindi</string>
-                <string name="blue">Mandarin</string>
-                <string name="green">Spanish</string>
-                <string name="yellow">English</string>
+            <property-set name="media">
+                <string name="attachment">bensound-thelounge.mp3</string>
             </property-set>
-            <property-set name="questions">
-                <string name="question">What is the southernmost capital of an independent nation in the world?</string>
-                <string name="red">Canberra</string>
-                <string name="blue">Pretoria</string>
-                <string name="green">Montevideo</string>
-                <string name="yellow">Wellington</string>
-                <string name="answer">yellow</string>
-            </property-set>
-            <property-set name="questions">
-                <string name="question">What is Earth's approximate water vs. land coverage ratio?</string>
-                <string name="red">71 to 29</string>
-                <string name="blue">61 to 39</string>
-                <string name="green">51 to 49</string>
-                <string name="yellow">81 to 19</string>
-                <string name="answer">red</string>
-            </property-set>
-            <property-set name="questions">
-                <string name="question">Which of these countries has three national capitals?</string>
-                <string name="red">Bolivia</string>
-                <string name="blue">South Africa</string>
-                <string name="green">The Netherlands</string>
-                <string name="yellow">Israel</string>
-                <string name="answer">blue</string>
-            </property-set>
-            <reference name="soundtrack">06d1da21-7ad2-4636-b2b6-90cee9221eda</reference>
-            <string name="soundtrackAuthor">Music: http://www.bensound.com</string>
+            <string name="caption"/>
+            <string name="artist"/>
+            <string name="copyright"/>
+            <string name="tags"/>
+        </property-set>
+        <property-set name="attachment">
+            <string name="name">bensound-thelounge.mp3</string>
+            <string name="label">source</string>
+            <binaryReference name="binary">bensound-thelounge.mp3</binaryReference>
+            <string name="mimeType">audio/mp3</string>
+            <long name="size">3585099</long>
         </property-set>
     </data>
     <indexConfigs>
