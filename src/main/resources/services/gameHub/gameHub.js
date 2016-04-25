@@ -93,7 +93,7 @@ function join(event, message) {
         nick = message.nick;
 
         if (!masters[pin]) {
-            sendToClient(sessionId, {action: 'joinAck', error: 'Game with pin [' + pin + '] not found'});
+            sendToClient(sessionId, {action: 'joinAck', error: 'Game with pin [' + pin + '] not found', errorType: 'wrongPin'});
             return;
         }
 

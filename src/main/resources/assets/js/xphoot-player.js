@@ -19,7 +19,9 @@ $(function () {
             var nick = $('#nick').val();
             var pin = $('#pin').val();
             sendJoin(role, nick, pin);
+            return;
         }
+        $('#pin').removeClass('invalid');
     });
 });
 
@@ -59,7 +61,10 @@ ws.onmessage = function (event) {
 
 function handleJoined(data) {
     if (data.error) {
-        $('#message').text('Not able to join the game: ' + data.error);
+        // $('#message').text('Not able to join the game: ' + data.error);
+        if (data.errorType == 'wrongPin') {
+            $('#pin').focus().addClass('invalid');
+        }
     } else {
         gamePin = data.pin;
         $('#pin').text(data.pin);

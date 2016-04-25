@@ -38,7 +38,6 @@ $(function () {
         to: {color: '#b22222'},
         step: function (state, bar) {
             bar.path.setAttribute('stroke', state.color);
-            answerCount.css('color', state.color);
         }
     });
 
