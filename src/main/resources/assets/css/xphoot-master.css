@@ -25,6 +25,7 @@ body.masterview {
     justify-content: center;
     margin: 0;
     color: #333333;
+    animation: background-pulse 8s ease-out infinite;
 }
 
 #selectPanel {
@@ -335,7 +336,24 @@ select {
     }
 }
 
-/* timer */
+@keyframes background-pulse {
+    0% {
+        background-color: #51a8fa;
+    }
+    25% {
+        background-color: #6fc040;
+    }
+    50% {
+        background-color: #cdd422;
+    }
+    75% {
+        background-color: #B22222;
+    }
+    100% {
+        background-color: #51a8fa;
+    }
+}
+
 .timerItem {
     position: relative;
     float: left;
