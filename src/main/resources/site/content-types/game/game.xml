@@ -42,6 +42,13 @@
               <label>Spotify Track Id</label>
               <occurrences minimum="0" maximum="1"/>
             </input>
+            <input type="ContentSelector" name="audioId">
+              <label>Audio file</label>
+              <occurrences minimum="0" maximum="1"/>
+              <config>
+                <allowContentType>media:audio</allowContentType>
+              </config>
+            </input>
           </items>
           <occurrences minimum="0" maximum="1"/>
         </item-set>

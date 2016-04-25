@@ -41,7 +41,9 @@ body.masterview {
 
 #selectPanel > img {
     flex: 1;
-    width: 30vw;
+    width: 45vw;
+    min-width: 250px;
+    max-width: 350px;
 }
 
 #selectGame {
@@ -54,7 +56,9 @@ body.masterview {
 
 select {
     margin: 50px;
-    min-width: 30vw;
+    min-width: 250px;
+    width: 45vw;
+    max-width: 350px;
     height: 50px;
     padding: 5px 35px 5px 5px;
     font-size: 25px;

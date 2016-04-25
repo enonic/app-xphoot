@@ -1,6 +1,6 @@
 var role = 'master';
 var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
-var imageService = xphoot_data.imageServiceUrl;
+var mediaService = xphoot_data.mediaServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
 var QUESTION_TRANSITION_TIME = 20;
@@ -15,6 +15,7 @@ var currentAnswers = {
     yellow: 0
 };
 var progressBar;
+var spotifyUrl = "https://api.spotify.com/v1/tracks/";
 
 var wsResponseHandlers = {};
 
@@ -50,7 +51,7 @@ ws.onopen = function (event) {
 };
 
 ws.onmessage = function (event) {
-    // console.log("Yay, a message for me: " + event.data);
+    // consoleconsole.log("Yay, a message for me: " + event.data);
     var data = JSON.parse(event.data);
     var action = data.action;
 
@@ -226,7 +227,7 @@ function getLayoutClass(question) {
 var setImage = function (imageId, component) {
 
     jQuery.ajax({
-        url: imageService,
+        url: mediaService,
         data: {
             imageId: imageId
         },
@@ -244,20 +245,38 @@ function enableAudio(question) {
         return;
     }
 
-    var trackId = question.audio.trackId;
-
-    if (trackId) {
-        jQuery.ajax({
-            url: "https://api.spotify.com/v1/tracks/" + trackId,
-            success: function (result) {
-                var url = result.preview_url;
-                console.log("URL", url);
-                var audioElement = $('#questionAudio');
-                audioElement.attr("src", url);
-                startAudio(audioElement);
-            }
-        });
+    if (question.audio.trackId) {
+        playSpotifyTrack(question.audio.trackId);
+    } else if (question.audio.audioId) {
+        playLocalAudio(question.audio.audioId);
     }
+}
+
+function playSpotifyTrack(trackId) {
+    jQuery.ajax({
+        url: spotifyUrl + trackId,
+        success: function (result) {
+            playAudioUrl(result.preview_url);
+        }
+    });
+}
+
+function playLocalAudio(audioId) {
+    jQuery.ajax({
+        url: mediaService,
+        data: {
+            audioId: audioId
+        },
+        success: function (result) {
+            playAudioUrl(result.url);
+        }
+    })
+}
+
+function playAudioUrl(url) {
+    var audioElement = $('#questionAudio');
+    audioElement.attr("src", url);
+    startAudio(audioElement);
 }
 
 playGameMusic = function () {

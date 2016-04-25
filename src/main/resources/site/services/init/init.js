@@ -5,7 +5,7 @@ exports.get = function (req) {
     var isMaster = req.params.r === 'master';
     var saveGameUrl = portalLib.serviceUrl({service: 'saveGame'});
     var wsUrl = portalLib.serviceUrl({service: 'gameHub', type: 'absolute'});
-    var imageServiceUrl = portalLib.serviceUrl({service: 'imageService', type: 'absolute'});
+    var mediaServiceUrl = portalLib.serviceUrl({service: 'mediaService', type: 'absolute'});
 
     wsUrl = 'ws' + wsUrl.substring(wsUrl.indexOf(':'));
     var data = {
@@ -14,7 +14,7 @@ exports.get = function (req) {
     if (isMaster) {
         data.saveGameUrl = saveGameUrl;
         data.games = getGames();
-        data.imageServiceUrl = imageServiceUrl;
+        data.mediaServiceUrl = mediaServiceUrl;
     }
 
     return {
