@@ -22,7 +22,9 @@ var wsResponseHandlers = {};
 $(function () {
     loadGames();
     $('#joinStart').on('click', function () {
-        handleQuizBegin();
+        if (playerCount > 0) {
+            handleQuizBegin();
+        }
     });
 
     var answerCount = $('.answerCount');

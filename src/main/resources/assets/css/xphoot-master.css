@@ -155,6 +155,7 @@ select {
     background-color: #fff;
     color: #51a8fa;
     animation: start-pulse 2s ease-in-out infinite;
+    cursor: pointer;
 }
 
 @keyframes start-pulse {
