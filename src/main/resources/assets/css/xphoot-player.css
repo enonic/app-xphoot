@@ -31,9 +31,16 @@ body.playerview {
     text-align: center;
     display: flex;
     border: 0px;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#joinPanel > img {
+    width: auto;
+    height: auto;
+    max-width: 50vw;
+    max-height: 20vh;
 }
 
 .joinPanelFields {
