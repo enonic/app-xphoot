@@ -128,12 +128,101 @@ select {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
 
-    overflow: hidden;
+#joinStartContainer {
+    height: 24vh;
+}
+
+#joinStart {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 5vw;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.start-ready {
+    background-color: #fff;
+    color: #51a8fa;
+    animation: start-pulse 2s ease-in-out infinite;
+}
+
+@keyframes start-pulse {
+    0% {
+        color: #51a8fa;
+        font-size: 6vw;
+    }
+    25% {
+        color: firebrick;
+    }
+    50% {
+        color: #51a8fa;
+        font-size: 8vw;
+    }
+    75% {
+        color: firebrick;
+    }
+    100% {
+        color: #51a8fa;
+        font-size: 6vw;
+    }
 }
 
 #joinPlayersTitle {
     font-size: 3vw;
+}
+
+/* ellipsis animation*/
+
+.one {
+    opacity: 0;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.0s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.0s;
+}
+
+.two {
+    opacity: 0;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.2s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.2s;
+}
+
+.three {
+    opacity: 0;
+    -webkit-animation: dot 1.3s infinite;
+    -webkit-animation-delay: 0.3s;
+    animation: dot 1.3s infinite;
+    animation-delay: 0.3s;
+}
+
+@-webkit-keyframes dot {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes dot {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 #players {
@@ -152,11 +241,6 @@ select {
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 20px;
-}
-
-#joinTimer {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 8vw;
 }
 
 #questionPanel {
@@ -361,28 +445,6 @@ select {
     100% {
         background-color: #51a8fa;
     }
-}
-
-.timerItem {
-    position: relative;
-    float: left;
-}
-
-.timerItem > svg {
-    -webkit-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-}
-
-.circle_animation {
-    stroke-dasharray: 754; /* this value is the pixel circumference of the circle */
-    stroke-dashoffset: 754;
-    transition: all 1s linear;
-}
-
-#timeLeft {
-    width: 100%;
-    font-family: "Digital-7 Mono", monospace;
-    transform: rotate(90deg);
 }
 
 /* */

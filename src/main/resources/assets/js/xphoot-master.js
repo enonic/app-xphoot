@@ -3,8 +3,6 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var imageService = xphoot_data.imageServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
-var currentAudio;
-var JOIN_GAME_TIME = 60;
 var QUESTION_TRANSITION_TIME = 20;
 var SHOW_SCORE_TIME = 7;
 var currentQuestNum = 0;
@@ -16,17 +14,13 @@ var currentAnswers = {
     green: 0,
     yellow: 0
 };
-var joinTimerId;
-var initialTimerOffset = 754;
-var timerPos = 1;
 var progressBar;
 
 var wsResponseHandlers = {};
 
 $(function () {
     loadGames();
-    $('#joinTimer').on('click', function () {
-        clearInterval(joinTimerId);
+    $('#joinStart').on('click', function () {
         handleQuizBegin();
     });
 
@@ -71,7 +65,6 @@ ws.onmessage = function (event) {
 
 var handleJoined = function (data) {
     displayJoinPanel(data);
-    joinTimerId = startActionTimer(JOIN_GAME_TIME, handleQuizBegin, showTimer);
 };
 
 var handlePlayerJoined = function (nick) {
@@ -79,23 +72,13 @@ var handlePlayerJoined = function (nick) {
     playerCount++;
     $('#players').append('<li>' + nick + '</li>');
 
-    $('#joinPlayersTitle').text(playerCount + " Player" + (playerCount > 1 ? "s" : "") + " joined");
+    $('#joinPlayersTitle').text(playerCount + " player" + (playerCount > 1 ? "s" : "") + " joined");
+    $('#joinPlayersHeader').css('display', 'flex');
+
+    $('#joinStart').text('Go!').addClass('start-ready');
 };
 
 var handleQuizBegin = function () {
-    if (playerCount == 0) {
-        // restart join timer
-        $('#circle').hide();
-        $('.circle_animation').css('stroke-dashoffset', initialTimerOffset);
-        $('#timeLeft').text('00');
-        setTimeout(function () {
-            timerPos = 2;
-            $('#circle').show();
-            joinTimerId = startActionTimer(JOIN_GAME_TIME, handleQuizBegin, showTimer);
-        }, 1000);
-        return;
-    }
-
     playGameMusic();
     sendQuestBegin();
 };
@@ -163,7 +146,6 @@ function displayJoinPanel(data) {
 
     $('#pin').text(data.pin);
 
-    showInitTimer(JOIN_GAME_TIME);
     $('.scoresHeaderText').text('Scoreboard');
 }
 
@@ -512,20 +494,6 @@ var loadGames = function () {
     });
 };
 
-var showInitTimer = function (duration) {
-    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
-    var leftStr = duration < 10 ? "0" + duration : duration;
-    $('#timeLeft').text(leftStr);
-    timerPos++;
-};
-
-var showTimer = function (duration, left) {
-    $('.circle_animation').css('stroke-dashoffset', initialTimerOffset - (timerPos * (initialTimerOffset / duration)));
-    var leftStr = left < 10 ? "0" + left : left;
-    $('#timeLeft').text(leftStr);
-    timerPos++;
-};
-
 var getQuestion = function (questionNumber) {
     return game.questions[questionNumber];
 };
@@ -549,7 +517,7 @@ var addDummyPlayers = function () {
         setTimeout(function () {
             handlePlayerJoined(nick);
             playerScores[nick] = Math.floor((Math.random() * 3000) + 2000);
-        }, Math.random() * (8000));
+        }, 4000 + (Math.random() * 8000));
     })
 };
 
