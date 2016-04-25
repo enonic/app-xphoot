@@ -25,13 +25,18 @@ body.playerview {
     color: #333333;
 }
 
+#joinPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 #joinPanel > img {
     width: auto;
     height: auto;
-    max-width: 50vw;
-    max-height: 20vh;
+    max-width: 30vw;
 }
-
 
 .joinPanelFields {
     border: 0;
@@ -52,7 +57,7 @@ body.playerview {
     padding: 0;
     font-size: 2.5vh;
     border-radius: 4px;
-    background: lightgoldenrodyellow;
+    background: #fafad2;
     border: 1px solid #333;
 }
 
@@ -64,7 +69,7 @@ body.playerview {
     font-size: 2.5vh;
     border-radius: 4px;
     font-weight: bold;
-    color: lightgoldenrodyellow;
+    color: #fafad2;
     background: #333333;
     border: 0;
 }
