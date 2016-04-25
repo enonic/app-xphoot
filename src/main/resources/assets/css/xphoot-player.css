@@ -33,9 +33,8 @@ body.playerview {
 }
 
 #joinPanel > img {
-    width: auto;
     height: auto;
-    max-width: 30vw;
+    width: 45vw;
 }
 
 .joinPanelFields {
@@ -53,9 +52,10 @@ body.playerview {
 .joinElement input {
     text-align: center;
     height: 4.8vh;
-    width: 30vh;
+    min-height: 25px;
+    width: 45vw;
     padding: 0;
-    font-size: 2.5vh;
+    font-size: 3vmax;
     border-radius: 4px;
     background: #fafad2;
     border: 1px solid #333;
@@ -64,7 +64,8 @@ body.playerview {
 .joinElement button {
     text-align: center;
     height: 4.8vh;
-    width: 30vh;
+    width: 45vw;
+    min-height: 25px;
     padding: 0;
     font-size: 2.5vh;
     border-radius: 4px;
@@ -72,6 +73,12 @@ body.playerview {
     color: #fafad2;
     background: #333333;
     border: 0;
+}
+
+#readyPanel {
+    width: 80vw;
+    font-size: 4vh;
+    text-align: center;
 }
 
 #questStartPanel {
