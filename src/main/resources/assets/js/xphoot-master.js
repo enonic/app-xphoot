@@ -402,8 +402,8 @@ var sendJoin = function (role, gameId) {
 };
 
 var sendQuestBegin = function () {
-    var question = getQuestion(currentQuestNum);
-    // delete question['answer'];
+    var question = jQuery.extend(true, {}, getQuestion(currentQuestNum));
+    delete question['answer'];
     var req = {
         action: 'questBegin',
         question: question
