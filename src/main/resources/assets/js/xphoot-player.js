@@ -126,7 +126,7 @@ function handleQuizEnd(answers) {
         if (p.player == nick) {
 
             if (place == 1) {
-                $('#playerPos').text("Winner!");
+                $('#playerPos').text("You Won!");
             } else if (place == 2) {
                 $('#playerPos').text("Second place!");
             } else if (place == 3) {

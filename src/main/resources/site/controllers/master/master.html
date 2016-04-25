@@ -10,7 +10,9 @@
 <body class="masterview">
 
 <div id="selectPanel">
-    <img data-th-src="${portal.assetUrl({'_path=img/logo.png'})}"/>
+    <div id="selectPanelLogo">
+        <img data-th-src="${portal.assetUrl({'_path=img/logo.png'})}"/>
+    </div>
     <div id="selectGame">
         <div>
             <select name="games" id="games">

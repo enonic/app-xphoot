@@ -39,11 +39,14 @@ body.masterview {
     justify-content: center;
 }
 
-#selectPanel > img {
+#selectPanelLogo {
     flex: 1;
+    padding-bottom: 8%;
+}
+
+#selectPanelLogo > img {
     width: 45vw;
-    min-width: 250px;
-    max-width: 350px;
+    height: auto;
 }
 
 #selectGame {
@@ -56,9 +59,7 @@ body.masterview {
 
 select {
     margin: 50px;
-    min-width: 250px;
-    width: 45vw;
-    max-width: 350px;
+    min-width: 30vw;
     height: 50px;
     padding: 5px 35px 5px 5px;
     font-size: 25px;
@@ -152,6 +153,7 @@ select {
     background-color: #fff;
     color: #51a8fa;
     animation: start-pulse 2s ease-in-out infinite;
+    cursor: pointer;
 }
 
 @keyframes start-pulse {
