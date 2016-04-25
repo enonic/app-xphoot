@@ -2,18 +2,20 @@ var portalLib = require('/lib/xp/portal');
 var contentLib = require('/lib/xp/content');
 
 exports.get = function (req) {
-
+    var isMaster = req.params.r === 'master';
     var saveGameUrl = portalLib.serviceUrl({service: 'saveGame'});
     var wsUrl = portalLib.serviceUrl({service: 'gameHub', type: 'absolute'});
     var imageServiceUrl = portalLib.serviceUrl({service: 'imageService', type: 'absolute'});
 
     wsUrl = 'ws' + wsUrl.substring(wsUrl.indexOf(':'));
     var data = {
-        wsUrl: wsUrl,
-        saveGameUrl: saveGameUrl,
-        games: getGames(),
-        imageServiceUrl: imageServiceUrl
+        wsUrl: wsUrl
     };
+    if (isMaster) {
+        data.saveGameUrl = saveGameUrl;
+        data.games = getGames();
+        data.imageServiceUrl = imageServiceUrl;
+    }
 
     return {
         contentType: 'application/javascript',
