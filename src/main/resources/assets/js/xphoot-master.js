@@ -3,7 +3,8 @@ var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
 var mediaService = xphoot_data.mediaServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
-var QUESTION_TRANSITION_TIME = 20;
+var questionAudioPlaying = false;
+var QUESTION_TRANSITION_TIME = 10;
 var SHOW_SCORE_TIME = 7;
 var currentQuestNum = 0;
 var playerScores = {};
@@ -42,7 +43,6 @@ $(function () {
             bar.path.setAttribute('stroke', state.color);
         }
     });
-
     addDummyPlayers();
 });
 
@@ -86,6 +86,14 @@ var handleQuizBegin = function () {
 };
 
 var handleShowQuestions = function (question) {
+
+    if (question.audio) {
+        if (gameAudioElement) {
+            stopElementAudio(gameAudioElement, 1000);
+        }
+        playQuestionAudio(question.audio);
+    }
+
     displayQuestionPanel(question);
     currentAnswers.red = 0;
     currentAnswers.blue = 0;
@@ -111,7 +119,15 @@ var handlePlayerAnswer = function (data) {
 };
 
 var handleQuestEnded = function () {
-    stopAudio($('#questionAudio'));
+
+    if (questionAudioPlaying) {
+        questionAudioPlaying = false;
+        stopElementAudio($('#questionAudio'), 2000);
+        if (gameAudioElement) {
+            startElementAudio(gameAudioElement, 2000);
+        }
+    }
+
     displayCorrectAnswer(getQuestion(currentQuestNum));
     showAnswersPie();
     currentQuestNum++;
@@ -152,8 +168,6 @@ function displayJoinPanel(data) {
 }
 
 function displayQuestionPanel(question) {
-
-    enableAudio(question);
 
     getAllPanels().hide();
     $('#questionPanel').show();
@@ -240,70 +254,6 @@ var setImage = function (imageId, component) {
     });
 };
 
-function enableAudio(question) {
-
-    if (!question.audio) {
-        return;
-    }
-
-    if (question.audio.trackId) {
-        playSpotifyTrack(question.audio.trackId);
-    } else if (question.audio.audioId) {
-        playLocalAudio(question.audio.audioId);
-    }
-}
-
-function playSpotifyTrack(trackId) {
-    jQuery.ajax({
-        url: spotifyUrl + trackId,
-        success: function (result) {
-            playAudioUrl(result.preview_url);
-        }
-    });
-}
-
-function playLocalAudio(audioId) {
-    jQuery.ajax({
-        url: mediaService,
-        data: {
-            audioId: audioId
-        },
-        success: function (result) {
-            playAudioUrl(result.url);
-        }
-    })
-}
-
-function playAudioUrl(url) {
-    var audioElement = $('#questionAudio');
-    audioElement.attr("src", url);
-    startAudio(audioElement);
-}
-
-playGameMusic = function () {
-    var games = xphoot_data.games, l = games.length, i, musicUrl = '';
-    for (i = 0; i < l; i++) {
-        if (games[i].id === game.id) {
-            musicUrl = games[i].musicUrl;
-            break;
-        }
-    }
-
-    if (!musicUrl) {
-        return;
-    }
-    gameAudioElement = $('#gameAudio');
-    gameAudioElement.attr("src", musicUrl);
-    startAudio(gameAudioElement);
-};
-
-stopGameMusic = function () {
-    if (!gameAudioElement) {
-        return;
-    }
-    stopAudio(gameAudioElement);
-};
-
 var displayCorrectAnswer = function (question) {
     var answer = question.answer;
     if (answer === 'red') {
@@ -385,6 +335,80 @@ var showAnswersPie = function () {
 // DISPLAY END
 
 
+// AUDIO
+
+function playQuestionAudio(audio) {
+    if (audio.trackId) {
+        playSpotifyTrack(audio.trackId);
+    } else if (audio.audioId) {
+        playLocalAudio(audio.audioId);
+    }
+    questionAudioPlaying = true;
+}
+
+playGameMusic = function () {
+    var games = xphoot_data.games, l = games.length, i, musicUrl = '';
+    for (i = 0; i < l; i++) {
+        if (games[i].id === game.id) {
+            musicUrl = games[i].musicUrl;
+            break;
+        }
+    }
+
+    if (!musicUrl) {
+        return;
+    }
+    gameAudioElement = $('#gameAudio');
+    gameAudioElement.attr("src", musicUrl);
+    startElementAudio(gameAudioElement, 1500);
+};
+
+stopGameMusic = function () {
+    if (!gameAudioElement) {
+        return;
+    }
+    stopElementAudio(gameAudioElement, 5000);
+};
+
+function playSpotifyTrack(trackId) {
+    jQuery.ajax({
+        url: spotifyUrl + trackId,
+        success: function (result) {
+            playAudioUrl(result.preview_url);
+        }
+    });
+}
+
+function playLocalAudio(audioId) {
+    jQuery.ajax({
+        url: mediaService,
+        data: {
+            audioId: audioId
+        },
+        success: function (result) {
+            playAudioUrl(result.url);
+        }
+    })
+}
+
+function playAudioUrl(url) {
+    var audioElement = $('#questionAudio');
+    audioElement.attr("src", url);
+    startElementAudio(audioElement, 1500);
+}
+
+function startElementAudio(audioElement, fadeTime) {
+    audioElement[0].volume = 0;
+    audioElement.animate({volume: 1}, fadeTime);
+    audioElement.trigger("play");
+}
+
+function stopElementAudio(audioElement, fadeTime) {
+    audioElement.animate({volume: 0}, fadeTime, function () {
+        audioElement.trigger("pause");
+    });
+}
+
 // SEND EVENTS
 
 var send = function (data) {
@@ -443,18 +467,6 @@ function sendQuizEnd() {
 
 function getAllPanels() {
     return $('#scoresPanel,#questionPanel,#joinPanel,#selectPanel');
-}
-
-function startAudio(audioElement) {
-    audioElement[0].volume = 0;
-    audioElement.animate({volume: 1}, 1500);
-    audioElement.trigger("play");
-}
-
-function stopAudio(audioElement) {
-    audioElement.animate({volume: 0}, 3000, function () {
-        audioElement.trigger("pause");
-    });
 }
 
 var saveResults = function () {
