@@ -12,6 +12,7 @@ html {
 body {
     min-height: 100%;
     font-family: Verdana, Geneva, sans-serif;
+    overflow: hidden;
 }
 
 body.startview {
@@ -251,6 +252,23 @@ select {
     padding-bottom: 20px;
 }
 
+#players li.fadeIn {
+    animation-duration: 0.5s;
+    animation-name: fadeAndScale;
+    animation-timing-function: cubic-bezier(.71, .55, .62, 1.57);
+}
+
+@keyframes fadeAndScale {
+    from {
+        opacity: 0;
+        transform: scale(.5, .5) translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1, 1) translateX(0%);
+    }
+}
+
 #questionPanel {
     height: 100vh;
 
@@ -408,7 +426,6 @@ select {
 }
 
 #scoresPlayers li {
-
     font-size: 2.8vw;
     color: whitesmoke;
     list-style-type: none;

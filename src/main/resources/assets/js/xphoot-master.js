@@ -43,7 +43,7 @@ $(function () {
             bar.path.setAttribute('stroke', state.color);
         }
     });
-    //addDummyPlayers();
+    addDummyPlayers();
 });
 
 // WS - EVENTS
@@ -72,7 +72,9 @@ var handleJoined = function (data) {
 var handlePlayerJoined = function (nick) {
     players[nick] = {nick: nick};
     playerCount++;
-    $('#players').append('<li>' + nick + '</li>');
+    var newPlayer = $('<li>').text(nick);
+    $('#players').append(newPlayer);
+    newPlayer.addClass('fadeIn');
 
     $('#joinPlayersTitle').text(playerCount + " player" + (playerCount > 1 ? "s" : "") + " joined");
     $('#joinPlayersHeader').css('display', 'flex');
@@ -600,7 +602,7 @@ var calculateScore = function (timeUsed) {
 
 
 var addDummyPlayers = function () {
-    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123'];
+    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123', 'gri', 'srs', 'jsi', 'mer', 'tsi'];
     dummies.forEach(function (nick) {
         setTimeout(function () {
             handlePlayerJoined(nick);
