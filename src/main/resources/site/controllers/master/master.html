@@ -43,21 +43,23 @@
 
 <div id="questionPanel" style="display: none;">
     <div id="progressbar"></div>
-    <div id="questionTop">
-        <div class="pieContainer" style="display: none;">
-            <canvas id="pieChart" width="80" height="80">
-            </canvas>
-            <img style="width:5vh;" data-th-src="${portal.assetUrl({'_path=img/gameResult.svg'})}"/>
-        </div>
-        <div class="answerCount" style="display: none;">
-            <img style="width:5vh;" data-th-src="${portal.assetUrl({'_path=img/game.svg'})}"/>
-            <span>0</span>
-        </div>
-    </div>
 
     <div id="questionHeader">
         <span id="questionText"></span>
         <img id="questionImage" data-th-src="${portal.assetUrl({'_path=img/empty.png'})}" style="display:none;"/>
+        <div class="pieContainer" style="display: none;">
+            <div class="pieID pie">
+            </div>
+            <ul class="pieID legend">
+            </ul>
+        </div>
+
+        <div id="questionTop">
+            <div class="answerCount" style="display: none;">
+                <span>0</span>
+            </div>
+        </div>
+
         <audio id="questionAudio"></audio>
         <audio id="gameAudio" loop="loop"></audio>
     </div>

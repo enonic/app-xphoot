@@ -43,7 +43,7 @@ $(function () {
             bar.path.setAttribute('stroke', state.color);
         }
     });
-    addDummyPlayers();
+    //addDummyPlayers();
 });
 
 // WS - EVENTS
@@ -309,27 +309,83 @@ var showAnswersPie = function () {
     // yellow = Math.floor(Math.random() * (playerCount - red - blue));
     // green = Math.floor(Math.random() * (playerCount - red - blue - yellow));
 
-    var total = blue + red + yellow + green; //playerCount;
-    if (total === 0) {
-        return;
+    var total = playerCount;
+    if (total < (blue + red + yellow + green)) {
+        total = (blue + red + yellow + green);
     }
 
-    red = (red / total) * 360;
-    blue = (blue / total) * 360;
-    yellow = (yellow / total) * 360;
-    green = (green / total) * 360;
+    var noAnswer = total - (blue + red + yellow + green);
 
     var colors = [
         "#B22222", // red
         "#51a8fa", // blue
         "#6fc040", // green
-        "#cdd422"  // yellow
+        "#cdd422",  // yellow
+        "grey"
     ];
-    var data = [red, blue, green, yellow];
-    var pieChart = new PieChart("pieChart", data, colors);
-    pieChart.draw();
+    var data = [red, blue, green, yellow, noAnswer];
+    var labels = ['Red', 'Blue', 'Green', 'Yellow', 'No answer'];
 
+    $('#questionImage').hide();
+    $('.pieID.legend,.pieID.pie').empty();
     $('.pieContainer').show();
+
+    createPieLegend($('.pieID.legend'), colors, data, labels);
+    createPie($('.pieID.pie'), colors, data);
+};
+
+var sliceSize = function (dataNum, dataTotal) {
+    return (dataNum / dataTotal) * 360;
+};
+
+var addSlice = function (sliceSize, pieElement, offset, sliceID, color) {
+    pieElement.append("<div class='slice " + sliceID + "'><span></span></div>");
+    offset = offset - 1;
+    var sizeRotation = -179 + sliceSize;
+    $("." + sliceID).css({
+        "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+    });
+    $("." + sliceID + " span").css({
+        "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+        "background-color": color
+    });
+};
+
+var iterateSlices = function (sliceSize, pieElement, offset, dataCount, sliceCount, color) {
+    var sliceID = "s" + dataCount + "-" + sliceCount;
+    var maxSize = 179;
+    if (sliceSize <= maxSize) {
+        addSlice(sliceSize, pieElement, offset, sliceID, color);
+    } else {
+        addSlice(maxSize, pieElement, offset, sliceID, color);
+        iterateSlices(sliceSize - maxSize, pieElement, offset + maxSize, dataCount, sliceCount + 1, color);
+    }
+};
+
+var createPie = function (pieElement, colors, listData) {
+    var listTotal = 0, i;
+    for (i = 0; i < listData.length; i++) {
+        listTotal += listData[i];
+    }
+    var offset = 0;
+    for (i = 0; i < listData.length; i++) {
+        var size = sliceSize(listData[i], listTotal);
+        iterateSlices(size, pieElement, offset, i, 0, colors[i]);
+        offset += size;
+    }
+};
+
+var createPieLegend = function (dataElement, colors, data, labels) {
+    var i, li, lis = [];
+    dataElement.empty();
+    for (i = 0; i < data.length; i++) {
+        if (data[i] > 0) {
+            li = $('<li/>').css("border-color", colors[i]);
+            li.append($('<em/>').text(labels[i])).append($('<span/>').text(data[i]));
+            lis.push(li);
+        }
+    }
+    dataElement.append(lis);
 };
 
 // DISPLAY END
@@ -549,7 +605,7 @@ var addDummyPlayers = function () {
         setTimeout(function () {
             handlePlayerJoined(nick);
             playerScores[nick] = Math.floor((Math.random() * 3000) + 2000);
-        }, 4000 + (Math.random() * 8000));
+        }, (Math.random() * 8000));
     })
 };
 
