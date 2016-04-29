@@ -27,7 +27,21 @@ $(function () {
             handleQuizBegin();
         }
     });
-
+    $('#selectPanelLogo img').on('click', function () {
+        if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled ||
+            document.msFullscreenEnabled) {
+            var el = document.body;
+            if(el.requestFullscreen) {
+                el.requestFullscreen();
+            } else if(el.mozRequestFullScreen) {
+                el.mozRequestFullScreen();
+            } else if(el.webkitRequestFullscreen) {
+                el.webkitRequestFullscreen();
+            } else if(el.msRequestFullscreen) {
+                el.msRequestFullscreen();
+            }
+        }
+    });
     var answerCount = $('.answerCount');
     progressBar = new ProgressBar.Line('#progressbar', {
         strokeWidth: 1.5,

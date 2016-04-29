@@ -7,10 +7,12 @@
 
 html {
     height: 100%;
+    background-color: #fff;
 }
 
 body {
     min-height: 100%;
+    width: 100%;
     font-family: Verdana, Geneva, sans-serif;
     overflow: hidden;
 }
