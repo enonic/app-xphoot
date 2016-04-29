@@ -282,7 +282,7 @@ select {
     align-items: center;
 }
 
-#questionTop {
+#questionBottom {
     width: 100%;
 }
 
@@ -302,6 +302,7 @@ select {
 }
 
 #questionImage {
+    margin-top: 5px;
     padding: 0;
     height: 32vh;
     border: 0;
