@@ -302,11 +302,10 @@ select {
 }
 
 #questionImage {
-    padding: 10px;
-    height: 25vh;
-    border: 0px;
+    padding: 0;
+    height: 32vh;
+    border: 0;
     border-radius: 2px;
-    margin-bottom: 10px;
 }
 
 /* answers */
@@ -499,7 +498,7 @@ select {
     padding-right: 15px;
 
     font-family: "Digital-7 Mono", monospace;
-    font-size: 8vh;
+    font-size: 6vh;
     color: #08006D;
 }
 
