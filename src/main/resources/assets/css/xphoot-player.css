@@ -45,6 +45,7 @@ body.playerview {
     border: 0;
     width: 100%;
     display: flex;
+    flex-direction: column;
 }
 
 .joinElement {
