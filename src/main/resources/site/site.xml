@@ -8,10 +8,6 @@
   </config>
 
   <mappings>
-    <mapping controller="/site/controllers/start/start.js">
-      <pattern>/portal/.*/xphoot</pattern>
-    </mapping>
-
     <mapping controller="/site/controllers/master/master.js">
       <pattern>/portal/.*/xphoot/master</pattern>
     </mapping>

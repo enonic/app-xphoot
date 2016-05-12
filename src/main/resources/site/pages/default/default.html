@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XpHoot</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" data-th-href="${portal.assetUrl({'_path=css/main.css'})}" href="../../../assets/css/main.css"
+          type="text/css"/>
+</head>
+<body data-portal-component-type="page">
+
+<main class="siteContent">
+    <div data-portal-region="main" class="main-container">
+        <div data-th-if="${mainRegion}" data-th-each="component : ${mainRegion.components}" data-th-remove="tag">
+            <div data-portal-component="${component.path}" data-th-remove="tag"></div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

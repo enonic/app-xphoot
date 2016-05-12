@@ -1,264 +1,264 @@
 <node>
-  <id>f91ef3df-e23f-4cad-a22b-911304334c49</id>
-  <childOrder>modifiedtime DESC</childOrder>
-  <nodeType>content</nodeType>
-  <timestamp>2016-04-22T10:23:03.142Z</timestamp>
-  <inheritPermissions>true</inheritPermissions>
-  <permissions>
-    <principal key="role:cms.cm.app">
-      <allow type="array">
-        <value>READ</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-    <principal key="role:system.admin">
-      <allow type="array">
-        <value>READ</value>
-        <value>CREATE</value>
-        <value>MODIFY</value>
-        <value>DELETE</value>
-        <value>PUBLISH</value>
-        <value>READ_PERMISSIONS</value>
-        <value>WRITE_PERMISSIONS</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-    <principal key="role:cms.admin">
-      <allow type="array">
-        <value>READ</value>
-        <value>CREATE</value>
-        <value>MODIFY</value>
-        <value>DELETE</value>
-        <value>PUBLISH</value>
-        <value>READ_PERMISSIONS</value>
-        <value>WRITE_PERMISSIONS</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-    <principal key="role:system.everyone">
-      <allow type="array">
-        <value>READ</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-  </permissions>
-  <data>
-    <boolean name="valid">true</boolean>
-    <string name="displayName">Nerd Quiz</string>
-    <string name="type">com.enonic.app.xphoot:game</string>
-    <string name="owner">user:system:su</string>
-    <dateTime name="modifiedTime">2016-04-22T10:23:03.130Z</dateTime>
-    <string name="modifier">user:system:su</string>
-    <string name="creator">user:system:su</string>
-    <dateTime name="createdTime">2016-04-22T09:04:50.044Z</dateTime>
-    <property-set name="data">
-      <property-set name="questions">
-        <string name="answer">blue</string>
-        <string name="question">Who is this charming guy?</string>
-        <reference name="image">ee7414cf-3169-481e-98e3-1ceae2668900</reference>
-        <string name="red">Gandalf</string>
-        <string name="blue">Linus Torvalds</string>
-        <string name="green">Robert "Uncle Bob" Martin</string>
-        <string name="yellow">Steve Ballmer</string>
-      </property-set>
-      <property-set name="questions">
-        <string name="question">Which language is this?</string>
-        <reference name="image">58932d30-e164-419c-a34e-8fa4f4cba96b</reference>
-        <string name="red">COBOL</string>
-        <string name="blue">Javascript</string>
-        <string name="green">BASIC</string>
-        <string name="yellow">FORTRAN</string>
-        <string name="answer">green</string>
-      </property-set>
-      <property-set name="questions">
-        <string name="question">Which of these where NOT a common floppy disk size</string>
-        <string name="red">8-inch</string>
-        <string name="blue">5¼-inch</string>
-        <string name="green">4½-inch</string>
-        <string name="yellow">3½-inch</string>
-        <string name="answer">green</string>
-      </property-set>
-      <property-set name="questions">
-        <string name="question">Which Amiga model is this?</string>
-        <reference name="image">149f85f3-ec87-4dea-9b4f-8a8e8cb3fcc5</reference>
-        <string name="red">A500</string>
-        <string name="blue">A1200</string>
-        <string name="green">A2000</string>
-        <string name="yellow">A600</string>
-        <string name="answer">red</string>
-      </property-set>
-      <property-set name="questions">
-        <string name="question">Name the game!</string>
-        <reference name="image">8982d55c-b3b0-4ea0-8cb5-eb5bd0fb1eb8</reference>
-        <string name="red">Golden Axe</string>
-        <string name="blue">Elite</string>
-        <string name="green">Defender of the crown</string>
-        <string name="yellow">Ghosts and Goblins</string>
-        <string name="answer">yellow</string>
-      </property-set>
-      <property-set name="questions">
-        <string name="question">Name the game!</string>
-        <reference name="image">544719e8-54fb-4c29-83c8-1a72e0a59701</reference>
-        <string name="red">Zac McKracken and the alian Mindbenders</string>
-        <string name="blue">Police Quest</string>
-        <string name="green">Tetris</string>
-        <string name="yellow">Mission Impossible</string>
-        <string name="answer">red</string>
-      </property-set>
-      <property-set name="questions">
-        <string name="question">Name the game</string>
-        <reference name="image">907e707f-8d62-423f-b0f3-04095ebe8290</reference>
-        <string name="red">Spy and Sly</string>
-        <string name="blue">Spy vs Spy</string>
-        <string name="green">Spy Hunter</string>
-        <string name="yellow">Spy Command</string>
-        <string name="answer">green</string>
-      </property-set>
-    </property-set>
-  </data>
-  <indexConfigs>
-    <analyzer>document_index_default</analyzer>
-    <defaultConfig>
-      <decideByType>true</decideByType>
-      <enabled>true</enabled>
-      <nGram>false</nGram>
-      <fulltext>false</fulltext>
-      <includeInAllText>false</includeInAllText>
-    </defaultConfig>
-    <pathIndexConfigs>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>false</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>page.regions</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>true</nGram>
-          <fulltext>true</fulltext>
-          <includeInAllText>true</includeInAllText>
-          <indexValueProcessors>
-            <indexValueProcessor>htmlStripper</indexValueProcessor>
-          </indexValueProcessors>
-        </indexConfig>
-        <path>data.htmlarea_text</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>modifier</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>owner</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>attachment</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>x</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>true</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>data</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>page</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>false</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>site</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>type</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>creator</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>createdTime</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>modifiedTime</path>
-      </pathIndexConfig>
-    </pathIndexConfigs>
-  </indexConfigs>
+    <id>f91ef3df-e23f-4cad-a22b-911304334c49</id>
+    <childOrder>modifiedtime DESC</childOrder>
+    <nodeType>content</nodeType>
+    <timestamp>2016-05-12T11:24:27.583Z</timestamp>
+    <inheritPermissions>true</inheritPermissions>
+    <permissions>
+        <principal key="role:cms.cm.app">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:system.admin">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.admin">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:system.everyone">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+    </permissions>
+    <data>
+        <boolean name="valid">true</boolean>
+        <string name="displayName">Nerd Quiz</string>
+        <string name="type">com.enonic.app.xphoot:game</string>
+        <string name="owner">user:system:su</string>
+        <dateTime name="modifiedTime">2016-04-22T10:23:03.130Z</dateTime>
+        <string name="modifier">user:system:su</string>
+        <string name="creator">user:system:su</string>
+        <dateTime name="createdTime">2016-04-22T09:04:50.044Z</dateTime>
+        <property-set name="data">
+            <property-set name="questions">
+                <string name="answer">blue</string>
+                <string name="question">Who is this charming guy?</string>
+                <reference name="image">ee7414cf-3169-481e-98e3-1ceae2668900</reference>
+                <string name="red">Gandalf</string>
+                <string name="blue">Linus Torvalds</string>
+                <string name="green">Robert "Uncle Bob" Martin</string>
+                <string name="yellow">Steve Ballmer</string>
+            </property-set>
+            <property-set name="questions">
+                <string name="question">Which language is this?</string>
+                <reference name="image">58932d30-e164-419c-a34e-8fa4f4cba96b</reference>
+                <string name="red">COBOL</string>
+                <string name="blue">Javascript</string>
+                <string name="green">BASIC</string>
+                <string name="yellow">FORTRAN</string>
+                <string name="answer">green</string>
+            </property-set>
+            <property-set name="questions">
+                <string name="question">Which of these where NOT a common floppy disk size</string>
+                <string name="red">8-inch</string>
+                <string name="blue">5¼-inch</string>
+                <string name="green">4½-inch</string>
+                <string name="yellow">3½-inch</string>
+                <string name="answer">green</string>
+            </property-set>
+            <property-set name="questions">
+                <string name="question">Which Amiga model is this?</string>
+                <reference name="image">149f85f3-ec87-4dea-9b4f-8a8e8cb3fcc5</reference>
+                <string name="red">A500</string>
+                <string name="blue">A1200</string>
+                <string name="green">A2000</string>
+                <string name="yellow">A600</string>
+                <string name="answer">red</string>
+            </property-set>
+            <property-set name="questions">
+                <string name="question">Name the game!</string>
+                <reference name="image">8982d55c-b3b0-4ea0-8cb5-eb5bd0fb1eb8</reference>
+                <string name="red">Golden Axe</string>
+                <string name="blue">Elite</string>
+                <string name="green">Defender of the crown</string>
+                <string name="yellow">Ghosts and Goblins</string>
+                <string name="answer">yellow</string>
+            </property-set>
+            <property-set name="questions">
+                <string name="question">Name the game!</string>
+                <reference name="image">544719e8-54fb-4c29-83c8-1a72e0a59701</reference>
+                <string name="red">Zac McKracken and the alian Mindbenders</string>
+                <string name="blue">Police Quest</string>
+                <string name="green">Tetris</string>
+                <string name="yellow">Mission Impossible</string>
+                <string name="answer">red</string>
+            </property-set>
+            <property-set name="questions">
+                <string name="question">Name the game</string>
+                <reference name="image">907e707f-8d62-423f-b0f3-04095ebe8290</reference>
+                <string name="red">Spy and Sly</string>
+                <string name="blue">Spy vs Spy</string>
+                <string name="green">Spy Hunter</string>
+                <string name="yellow">Spy Command</string>
+                <string name="answer">green</string>
+            </property-set>
+        </property-set>
+    </data>
+    <indexConfigs>
+        <analyzer>document_index_default</analyzer>
+        <defaultConfig>
+            <decideByType>true</decideByType>
+            <enabled>true</enabled>
+            <nGram>false</nGram>
+            <fulltext>false</fulltext>
+            <includeInAllText>false</includeInAllText>
+        </defaultConfig>
+        <pathIndexConfigs>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>false</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>page.regions</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>true</nGram>
+                    <fulltext>true</fulltext>
+                    <includeInAllText>true</includeInAllText>
+                    <indexValueProcessors>
+                        <indexValueProcessor>htmlStripper</indexValueProcessor>
+                    </indexValueProcessors>
+                </indexConfig>
+                <path>data.htmlarea_text</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>modifier</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>owner</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>attachment</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>x</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>true</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>data</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>page</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>false</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>site</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>type</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>creator</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>createdTime</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>modifiedTime</path>
+            </pathIndexConfig>
+        </pathIndexConfigs>
+    </indexConfigs>
 </node>

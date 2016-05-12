@@ -1,201 +1,233 @@
 <node>
-  <id>70bed510-28c6-4e8b-82c3-48374c329ad2</id>
-  <childOrder>modifiedtime DESC</childOrder>
-  <nodeType>content</nodeType>
-  <timestamp>2016-04-18T08:20:47.745Z</timestamp>
-  <inheritPermissions>true</inheritPermissions>
-  <permissions>
-    <principal key="role:cms.cm.app">
-      <allow type="array">
-        <value>READ</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-    <principal key="role:system.admin">
-      <allow type="array">
-        <value>READ</value>
-        <value>CREATE</value>
-        <value>MODIFY</value>
-        <value>DELETE</value>
-        <value>PUBLISH</value>
-        <value>READ_PERMISSIONS</value>
-        <value>WRITE_PERMISSIONS</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-    <principal key="role:cms.admin">
-      <allow type="array">
-        <value>READ</value>
-        <value>CREATE</value>
-        <value>MODIFY</value>
-        <value>DELETE</value>
-        <value>PUBLISH</value>
-        <value>READ_PERMISSIONS</value>
-        <value>WRITE_PERMISSIONS</value>
-      </allow>
-      <deny type="array"/>
-    </principal>
-  </permissions>
-  <data>
-    <boolean name="valid">true</boolean>
-    <string name="displayName">xphoot</string>
-    <string name="type">portal:site</string>
-    <string name="owner">user:system:su</string>
-    <dateTime name="modifiedTime">2016-04-18T08:20:47.744Z</dateTime>
-    <string name="modifier">user:system:su</string>
-    <string name="creator">user:system:su</string>
-    <dateTime name="createdTime">2016-04-18T08:20:04.977Z</dateTime>
-    <property-set name="data">
-      <string isNull="true" name="description"/>
-      <property-set name="siteConfig">
-        <string name="applicationKey">com.enonic.app.xphoot</string>
-        <property-set name="config"/>
-      </property-set>
-    </property-set>
-  </data>
-  <indexConfigs>
-    <analyzer>document_index_default</analyzer>
-    <defaultConfig>
-      <decideByType>true</decideByType>
-      <enabled>true</enabled>
-      <nGram>false</nGram>
-      <fulltext>false</fulltext>
-      <includeInAllText>false</includeInAllText>
-    </defaultConfig>
-    <pathIndexConfigs>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>false</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>page.regions</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>true</nGram>
-          <fulltext>true</fulltext>
-          <includeInAllText>true</includeInAllText>
-          <indexValueProcessors>
-            <indexValueProcessor>htmlStripper</indexValueProcessor>
-          </indexValueProcessors>
-        </indexConfig>
-        <path>data.htmlarea_text</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>modifier</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>owner</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>attachment</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>x</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>true</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>data</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>page</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>false</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>site</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>type</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>creator</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>createdTime</path>
-      </pathIndexConfig>
-      <pathIndexConfig>
-        <indexConfig>
-          <decideByType>false</decideByType>
-          <enabled>true</enabled>
-          <nGram>false</nGram>
-          <fulltext>false</fulltext>
-          <includeInAllText>false</includeInAllText>
-        </indexConfig>
-        <path>modifiedTime</path>
-      </pathIndexConfig>
-    </pathIndexConfigs>
-  </indexConfigs>
+    <id>70bed510-28c6-4e8b-82c3-48374c329ad2</id>
+    <childOrder>modifiedtime DESC</childOrder>
+    <nodeType>content</nodeType>
+    <timestamp>2016-05-12T12:07:02.861Z</timestamp>
+    <inheritPermissions>false</inheritPermissions>
+    <permissions>
+        <principal key="role:cms.cm.app">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:system.admin">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.admin">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:system.everyone">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+    </permissions>
+    <data>
+        <boolean name="valid">true</boolean>
+        <string name="displayName">xphoot</string>
+        <string name="type">portal:site</string>
+        <string name="owner">user:system:su</string>
+        <dateTime name="modifiedTime">2016-05-12T12:07:02.861Z</dateTime>
+        <string name="modifier">user:system:su</string>
+        <string name="creator">user:system:su</string>
+        <dateTime name="createdTime">2016-04-18T08:20:04.977Z</dateTime>
+        <property-set name="data">
+            <string isNull="true" name="description"/>
+            <property-set name="siteConfig">
+                <string name="applicationKey">com.enonic.app.xphoot</string>
+                <property-set name="config">
+                    <string isNull="true" name="playerUrl"/>
+                </property-set>
+            </property-set>
+        </property-set>
+        <property-set name="page">
+            <string name="controller">com.enonic.app.xphoot:default</string>
+            <reference isNull="true" name="template"/>
+            <property-set name="region">
+                <string name="name">main</string>
+                <property-set name="component">
+                    <string name="type">PartComponent</string>
+                    <property-set name="PartComponent">
+                        <string name="name">XpHoot Start</string>
+                        <string name="template">com.enonic.app.xphoot:start</string>
+                        <property-set name="config"/>
+                    </property-set>
+                </property-set>
+            </property-set>
+            <property-set name="config"/>
+            <boolean name="customized">true</boolean>
+        </property-set>
+    </data>
+    <indexConfigs>
+        <analyzer>document_index_default</analyzer>
+        <defaultConfig>
+            <decideByType>true</decideByType>
+            <enabled>true</enabled>
+            <nGram>false</nGram>
+            <fulltext>false</fulltext>
+            <includeInAllText>false</includeInAllText>
+        </defaultConfig>
+        <pathIndexConfigs>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>true</nGram>
+                    <fulltext>true</fulltext>
+                    <includeInAllText>true</includeInAllText>
+                </indexConfig>
+                <path>page.region.component.textcomponent.text</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>true</nGram>
+                    <fulltext>true</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>attachment.text</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>false</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>page.regions</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>modifier</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>owner</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>attachment</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>x</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>true</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>data</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>false</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>page</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>false</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>site</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>type</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>creator</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>createdTime</path>
+            </pathIndexConfig>
+            <pathIndexConfig>
+                <indexConfig>
+                    <decideByType>false</decideByType>
+                    <enabled>true</enabled>
+                    <nGram>false</nGram>
+                    <fulltext>false</fulltext>
+                    <includeInAllText>false</includeInAllText>
+                </indexConfig>
+                <path>modifiedTime</path>
+            </pathIndexConfig>
+        </pathIndexConfigs>
+    </indexConfigs>
 </node>
