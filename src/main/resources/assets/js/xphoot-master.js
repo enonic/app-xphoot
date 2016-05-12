@@ -4,7 +4,7 @@ var mediaService = xphoot_data.mediaServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
 var questionAudioPlaying = false;
-var QUESTION_TRANSITION_TIME = 10;
+var QUESTION_TRANSITION_TIME = 20;
 var SHOW_SCORE_TIME = 7;
 var currentQuestNum = 0;
 var playerScores = {};
@@ -57,7 +57,7 @@ $(function () {
             bar.path.setAttribute('stroke', state.color);
         }
     });
-    addDummyPlayers();
+
 });
 
 // WS - EVENTS
