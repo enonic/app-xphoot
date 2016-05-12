@@ -25,7 +25,6 @@ body {
 
 .logo-container {
     width: 50%;
-    max-width: 400px;
     min-width: 300px;
     margin: 0 auto;
     padding: 10px;
@@ -34,7 +33,6 @@ body {
 
 .main-container img {
     height: auto;
-    max-width: 350px;
     min-width: 300px;
     width: 50%;
     padding-bottom: 35px;
@@ -45,7 +43,6 @@ body {
     font-size: 26px;
     width: 25%;
     min-width: 139px;
-    max-width: 174px;
     cursor: pointer;
     background: #333333;
     color: lightgoldenrodyellow;
