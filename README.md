@@ -3,7 +3,7 @@
 
 ## The Quest
 
-Once upon a time, three backend-developers that where awed by the enjoyment of http://kahoot.it asked theirselves how difficult it would be to create a (suspiciously) similar app using Enonic XP. They wondered if the powers of [lib/xp/websockets](http://repo.enonic.com/public/com/enonic/xp/docs/6.5.2/docs-6.5.2-libdoc.zip!/module-lib_xp_websocket.html), short deadline, their bare hands and meagre front-end skills would be enough to conquer this quest?
+Once upon a time, three backend-developers that where awed by the enjoyment of http://kahoot.it asked theirselves how difficult it would be to create a (suspiciously) similar app using Enonic XP. They wondered if the powers of [lib/xp/websockets](http://repo.enonic.com/public/com/enonic/xp/docs/6.5.2/docs-6.5.2-libdoc.zip!/module-lib_xp_websocket.html), a short deadline, their bare hands and meagre front-end skills would be enough to conquer this quest?
 
 ## The Journey
 
