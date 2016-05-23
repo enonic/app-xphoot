@@ -20,3 +20,13 @@ After only two days of travel, the beast of css stood before them, the last obst
 * Support for Images in questions
 * Support for Spotify-id's and uploaded mp3-files in questions
 * Quiz background music
+* Results are stored and will be used for statistics in future versions
+* 
+
+## Upcoming features
+
+* Quiz statistics
+* Client keep-alive handling
+* Show score stats/changes on client on answer
+* End question-timer when all connected players have answered
+
