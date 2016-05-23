@@ -1,5 +1,5 @@
 
-# Xphoot App
+# xpHoot App
 
 ## The Quest
 
@@ -7,4 +7,4 @@ Once upon a time, three backend-developers that where awed by the enjoyment of h
 
 ## The Journey
 
-Filled with fear of the dreaded beast of the css, but equally encouraged by the apparent mightyness of the spiked club of websocket-lib they left their safe haven of backendtown, and started designing the application flow. And it was beautiful. The pieces clicked together like they had been practicing all their life for this particular task, and the websocket-lib swashed away all the foes of complexity. After only two days of travel, the beast of css stood before them, the last obstacle before they could be successful. And it was indeed a mighty opponent, but guidance by the wise masters of frontend and the secret algorithm of "changing stuff and seeing what happens", they where done. 
+Filled with fear of the dreaded beast of the css, but equally encouraged by the apparent mightyness of the spiked club of websocket-lib they left their safe haven of backendtown, and started designing the application flow. And it was beautiful. The pieces clicked together like they had been practicing all their life for this particular task, and the websocket-lib swashed away all the foes of complexity. After only two days of travel, the beast of css stood before them, the last obstacle before they could be successful. And it was indeed a mighty opponent, but with guidance by the wise masters of frontend and the secret algorithm of "changing stuff and seeing what happens", they where able to slay the beast and capture the...eh..princess of xpHoot. 
