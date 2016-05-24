@@ -10,6 +10,7 @@ body {
     font-family: Verdana, Geneva, sans-serif;
     overflow: hidden;
     background-color: #51a8fa;
+    margin: 0;
 }
 
 .main-container {
