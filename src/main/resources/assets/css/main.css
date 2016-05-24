@@ -23,6 +23,15 @@ body {
     text-align: center;
 }
 
+.start-panel-element a {
+    pointer-events: none;
+    color: transparent;
+}
+
+.start-panel-element button {
+    pointer-events: auto;
+}
+
 .logo-container {
     width: 50%;
     min-width: 300px;
