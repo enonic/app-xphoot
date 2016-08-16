@@ -63,17 +63,6 @@
         <property-set name="page">
             <string name="controller">com.enonic.app.xphoot:default</string>
             <reference isNull="true" name="template"/>
-            <property-set name="region">
-                <string name="name">main</string>
-                <property-set name="component">
-                    <string name="type">PartComponent</string>
-                    <property-set name="PartComponent">
-                        <string name="name">XpHoot Start</string>
-                        <string name="template">com.enonic.app.xphoot:start</string>
-                        <property-set name="config"/>
-                    </property-set>
-                </property-set>
-            </property-set>
             <property-set name="config"/>
             <boolean name="customized">true</boolean>
         </property-set>

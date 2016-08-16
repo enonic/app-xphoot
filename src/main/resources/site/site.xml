@@ -9,17 +9,13 @@
 
   <mappings>
     <mapping controller="/site/controllers/master/master.js">
-      <pattern>/portal/.*/xphoot/master</pattern>
+      <pattern>/master</pattern>
     </mapping>
 
     <mapping controller="/site/controllers/player/player.js">
-      <pattern>/portal/.*/xphoot/player</pattern>
+      <pattern>/player</pattern>
     </mapping>
 
   </mappings>
-  <!--
-   Requires that site is called xphoot, and xphoot/master and xphoot/player content exists.
-   It's currently not possible to have mappings if the content for the path does not exist.
-  -->
 
 </site>

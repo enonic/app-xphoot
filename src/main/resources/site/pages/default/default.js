@@ -1,19 +1,25 @@
-var portal = require('/lib/xp/portal'); // Import the portal functions
+var portalLib = require('/lib/xp/portal'); // Import the portal functions
 var thymeleaf = require('/lib/xp/thymeleaf'); // Import the Thymeleaf rendering function
 
 // Handle the GET request
 exports.get = function (req) {
 
-    // Get the content that is using the page
-    var content = portal.getContent();
+    // Get the current site for this page
+    var site = portalLib.getSite();
 
-    // Extract the main region which contains component parts
-    var mainRegion = content.page.regions.main;
+    var masterUrl = portalLib.pageUrl({
+        path: site._path + '/master'
+    });
+
+    var playerUrl = portalLib.pageUrl({
+        path: site._path + '/player'
+    });
 
     // Prepare the model that will be passed to the view
     var model = {
-        mainRegion: mainRegion
-    }
+        masterUrl: masterUrl,
+        playerUrl: playerUrl
+    };
 
     // Specify the view file to use
     var view = resolve('default.html');

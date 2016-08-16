@@ -11,8 +11,16 @@
 
 <main class="siteContent">
     <div data-portal-region="main" class="main-container">
-        <div data-th-if="${mainRegion}" data-th-each="component : ${mainRegion.components}" data-th-remove="tag">
-            <div data-portal-component="${component.path}" data-th-remove="tag"></div>
+        <div class="logo-container">
+            <img data-th-src="${portal.assetUrl({'_path=img/logo.png'})}"/>
+            <div class="start-panel-element">
+                <a href="#" data-th-href="${masterUrl}">
+                    <button>Start</button>
+                </a>
+                <a href="#" data-th-href="${playerUrl}">
+                    <button>Join</button>
+                </a>
+            </div>
         </div>
     </div>
 </main>
