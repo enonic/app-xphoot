@@ -12,22 +12,14 @@ buildscript {
     }
 }
 
-apply plugin: 'maven'
 apply plugin: 'com.enonic.xp.app'
+apply plugin: 'maven-publish'
 
 app {
     name = project.appName
     displayName = project.displayName
     vendorName = 'Enonic AS'
     vendorUrl = 'http://enonic.com'
-}
-
-repositories {
-    mavenLocal()
-    jcenter()
-    maven {
-        url 'http://repo.enonic.com/public'
-    }
 }
 
 dependencies {
@@ -42,17 +34,21 @@ dependencies {
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
     maven {
         url 'http://repo.enonic.com/public'
     }
 }
 
-
-uploadArchives {
+publishing {
+    publications {
+        mavenJava( MavenPublication ) {
+            from components.java
+        }
+    }
     repositories {
-        mavenDeployer {
-            repository( url: 'http://repo.enonic.com/artifactory/public' )
+        maven {
+            url 'http://repo.enonic.net/artifactory/public'
         }
     }
 }
