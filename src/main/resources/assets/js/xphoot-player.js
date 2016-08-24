@@ -1,8 +1,7 @@
 var role = 'player';
 var gamePin;
-var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
-
-var nick;
+var ws, connected, keepAliveIntervalId;
+var playerNick, sessionId;
 
 var startTime;
 
@@ -10,6 +9,8 @@ var currentQuestion;
 var currentAnswer;
 
 $(function () {
+    wsConnect();
+
     setTimeout(function () {
         $('#pin').focus();
     });
@@ -36,14 +37,38 @@ $('#sendJoin').on('click', function (e) {
 
 // WS-STUFF
 
-ws.onopen = function (event) {
-    // TODO check connected
-    $('#joinPanel').show();
-};
+function wsConnect() {
+    ws = new WebSocket(xphoot_data.wsUrl, ['game']);
+    ws.onopen = onWsOpen;
+    ws.onclose = onWsClose;
+    ws.onmessage = onWsMessage;
+}
+
+function onWsOpen() {
+    if (playerNick) {
+        sendJoin(role, playerNick, gamePin, sessionId); // reconnect
+    } else {
+        $('#joinPanel').show();
+    }
+
+    keepAliveIntervalId = setInterval(function () {
+        if (connected) {
+            this.ws.send('{"action":"KeepAlive"}');
+        }
+    }, 30 * 1000);
+    connected = true;
+}
+
+function onWsClose() {
+    clearInterval(keepAliveIntervalId);
+    connected = false;
+
+    setTimeout(wsConnect, 2000); // attempt to reconnect
+}
 
 var wsResponseHandlers = {};
 
-ws.onmessage = function (event) {
+function onWsMessage(event) {
     //console.log("Yay, a message for me: " + event.data);
     var data = JSON.parse(event.data);
     var action = data.action;
@@ -52,7 +77,7 @@ ws.onmessage = function (event) {
     if (handler) {
         handler(data);
     }
-};
+}
 
 // WS END
 
@@ -64,12 +89,19 @@ function handleJoined(data) {
         // $('#message').text('Not able to join the game: ' + data.error);
         if (data.errorType == 'wrongPin') {
             $('#pin').focus().addClass('invalid');
+        } else if (data.errorType == 'wrongNick') {
+            $('#nick').focus().addClass('invalid');
         }
     } else {
+        var isReconnect = !!sessionId;
         gamePin = data.pin;
+        sessionId = data.sessionId;
+        playerNick = data.nick;
+        if (isReconnect) {
+            return;
+        }
         $('#pin').text(data.pin);
         $('#message').text(data.nick + ' joined the game');
-        nick = data.nick;
         $('#readyNick').text(data.nick);
         $('#joinPanel').hide();
         $('#readyPanel').show();
@@ -128,7 +160,7 @@ function handleQuizEnd(answers) {
 
     var place = 1;
     sortedPlayers.forEach(function (p) {
-        if (p.player == nick) {
+        if (p.player == playerNick) {
 
             if (place == 1) {
                 $('#playerPos').text("You Won!");
@@ -162,7 +194,7 @@ var send = function (data) {
     ws.send(JSON.stringify(data));
 };
 
-var sendJoin = function (role, nick, pin) {
+var sendJoin = function (role, nick, pin, sessionId) {
     nick = nick ? nick.trim() : '';
     pin = pin ? pin.trim() : '';
     if (!pin || !nick) {
@@ -172,7 +204,8 @@ var sendJoin = function (role, nick, pin) {
         action: 'join',
         role: role,
         nick: nick,
-        pin: pin
+        pin: pin,
+        reconnectId: sessionId
     };
     send(req);
 };

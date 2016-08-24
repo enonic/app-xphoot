@@ -2,6 +2,7 @@ var webSocketLib = require('/lib/xp/websocket');
 var contentLib = require('/lib/xp/content');
 
 var masters = {};
+var players = {};
 
 function handleGet(req) {
 
@@ -43,16 +44,13 @@ function handleMessage(event) {
 
     var message = JSON.parse(event.message);
     if (message.action == 'join') {
-        return join(event, message);
+        join(event, message);
+        return;
     }
 
     if (message.action == 'playerAnswer') {
-        return playerAnswer(event, message);
-    }
-
-    if (message.action == 'getImageUrl') {
-        var id = message.imageId;
-        return getImageUrl(id);
+        playerAnswer(event, message);
+        return;
     }
 
     return forwardEvent(message);
@@ -74,7 +72,7 @@ function playerAnswer(event, message) {
 function join(event, message) {
     var role = message.role;
     var sessionId = getId(event);
-    var pin, nick, gameId, game;
+    var pin, nick, gameId, game, oldSessionId, player;
 
     if (role == 'master') {
         gameId = message.gameId;
@@ -91,18 +89,41 @@ function join(event, message) {
     } else if (role == 'player') {
         pin = message.pin;
         nick = message.nick;
+        oldSessionId = message.reconnectId;
 
         if (!masters[pin]) {
             sendToClient(sessionId, {action: 'joinAck', error: 'Game with pin [' + pin + '] not found', errorType: 'wrongPin'});
             return;
         }
 
-        webSocketLib.addToGroup(pin, sessionId);
-        sendToClient(sessionId, {action: 'joinAck', pin: pin, nick: nick});
-        sendToClient(masters[pin], {action: 'playerJoined', pin: pin, nick: nick});
+        if (oldSessionId) {
+            // reconnect
+            player = getPlayer(oldSessionId);
+            if (player) {
+                delete players[oldSessionId];
+                addPlayer(pin, sessionId, nick);
+                webSocketLib.addToGroup(pin, sessionId);
+                sendToClient(sessionId, {action: 'joinAck', pin: pin, nick: nick, sessionId: sessionId});
+            }
+        } else {
+            // new player
+            if (isNickInUse(pin, nick)) {
+                sendToClient(sessionId, {
+                    action: 'joinAck',
+                    error: "The nick '" + nick + "' is already in use for this game", errorType: 'wrongNick'
+                });
+                return;
+            }
+
+            addPlayer(pin, sessionId, nick);
+            webSocketLib.addToGroup(pin, sessionId);
+            sendToClient(sessionId, {action: 'joinAck', pin: pin, nick: nick, sessionId: sessionId});
+            sendToClient(masters[pin], {action: 'playerJoined', pin: pin, nick: nick});
+        }
+
     }
 
-    return true;
+    return;
 }
 
 function addMaster(pin, sessionId) {
@@ -116,17 +137,42 @@ function addMaster(pin, sessionId) {
     return true;
 }
 
-function leave(event) {
+function addPlayer(pin, sessionId, nick) {
+    players[sessionId] = {pin: pin, nick: nick};
+}
 
-    var id = getId(event);
-    var pin = getPin(event);
+function getPlayer(sessionId) {
+    return players[sessionId];
+}
 
-    if (masters.hasOwnProperty(pin) && masters[pin] == id) {
-        delete masters[pin]
+function getMasterPin(sessionId) {
+    for (var pin in masters) {
+        if (masters[pin] == sessionId) {
+            return pin;
+        }
     }
+    return undefined;
+}
 
-    webSocketLib.removeFromGroup(pin, id);
-    webSocketLib.send(getId(event), "Left");
+function isNickInUse(pin, nick) {
+    var player;
+    for (var sessionId in players) {
+        player = players[sessionId];
+        if (player.pin === pin && player.nick === nick) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function leave(event) {
+    var id = getId(event);
+    var pin = getMasterPin(id);
+    if (pin) {
+        delete masters[pin];
+        webSocketLib.removeFromGroup(pin, id);
+        webSocketLib.send(getId(event), "Left");
+    }
 }
 
 function forwardEvent(message) {
@@ -140,10 +186,6 @@ function sendToClient(sessionId, message) {
 
 function getId(event) {
     return event.session.id;
-}
-
-function getPin(event) {
-    return event.message.pin;
 }
 
 function fetchGame(id) {
