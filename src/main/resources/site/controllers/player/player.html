@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <title>XPHoot - Player</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" data-th-href="${portal.assetUrl({'_path=css/xphoot-player.css'})}" href="../../../assets/css/xphoot.css"
+    <link rel="stylesheet" data-th-href="${portal.assetUrl({'_path=css/xphoot-player.css'})}" href="../../../assets/css/xphoot-player.css"
           type="text/css"/>
 </head>
 <body class="playerview">
@@ -15,15 +15,15 @@
 
     <fieldset class="joinPanelFields">
         <div class="joinElement">
-            <input id="pin" type="text" value="" placeholder="PIN" maxlength="5"/>
+            <input id="pin" type="text" value="" placeholder="PIN" maxlength="5" autocapitalize="off" autocorrect="off"/>
         </div>
         <div class="joinElement">
-            <input id="nick" type="text" value="" placeholder="Nick" maxlength="20"/>
+            <input id="nick" type="text" value="" placeholder="Nick" maxlength="20" autocapitalize="off" autocorrect="off"/>
         </div>
         <div class="joinElement">
             <button type="button" name="send" id="sendJoin">Join</button>
         </div>
-        <div id="message"/>
+        <div id="message"></div>
     </fieldset>
 </div>
 
@@ -55,7 +55,7 @@
 
 <div id="quizEndPanel" style="display: none;">
     <div id="quizResultText">Game over!</div>
-    <div id="quizResultPlace"><span id="playerPos"/></div>
+    <div id="quizResultPlace"><span id="playerPos"></span></div>
 </div>
 
 

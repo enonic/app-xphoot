@@ -23,6 +23,7 @@ body.playerview {
     font-size: 7vw;
     font-family: Geneva, Tahoma, Verdana, sans-serif;
     color: #333333;
+    overflow: hidden;
 }
 
 #joinPanel {

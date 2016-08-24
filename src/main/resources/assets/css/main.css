@@ -51,7 +51,7 @@ body {
 .main-container button {
     height: 40px;
     font-size: 26px;
-    width: 25%;
+    width: 50%;
     min-width: 139px;
     cursor: pointer;
     background: #333333;
@@ -59,4 +59,14 @@ body {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border: 1px solid black;
+}
+
+.start-master {
+    font-size: 2vh;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 20px;
+    text-align: center;
+    color: lightgoldenrodyellow;
 }

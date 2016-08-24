@@ -14,9 +14,6 @@
         <div class="logo-container">
             <img data-th-src="${portal.assetUrl({'_path=img/logo.png'})}"/>
             <div class="start-panel-element">
-                <a href="#" data-th-href="${masterUrl}">
-                    <button>Start</button>
-                </a>
                 <a href="#" data-th-href="${playerUrl}">
                     <button>Join</button>
                 </a>
@@ -24,6 +21,8 @@
         </div>
     </div>
 </main>
+
+<a class="start-master" href="#" data-th-href="${masterUrl}">Start a new game</a>
 
 </body>
 </html>
