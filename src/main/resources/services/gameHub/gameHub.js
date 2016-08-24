@@ -77,12 +77,16 @@ function join(event, message) {
     if (role == 'master') {
         gameId = message.gameId;
         if (!message.pin) {
-            pin = createPin(10000, 99999);
-            if (!addMaster(pin, sessionId)) {
-                return;
-            }
-            webSocketLib.addToGroup(pin, sessionId);
+            do {
+                pin = createPin(10000, 99999);
+            } while (pinRegistered(pin));
+
+        } else { // reconnecting
+            pin = message.pin;
         }
+        addMaster(pin, sessionId);
+        webSocketLib.addToGroup(pin, sessionId);
+
         game = fetchGame(gameId);
         sendToClient(sessionId, {action: 'joinAck', pin: pin, game: game});
 
@@ -127,14 +131,11 @@ function join(event, message) {
 }
 
 function addMaster(pin, sessionId) {
-
-    if (masters.hasOwnProperty(pin)) {
-        log.info("Master already joined [" + masters[pin] + "]");
-        return false;
-    }
-
     masters[pin] = sessionId;
-    return true;
+}
+
+function pinRegistered(pin) {
+    return !!masters[pin];
 }
 
 function addPlayer(pin, sessionId, nick) {

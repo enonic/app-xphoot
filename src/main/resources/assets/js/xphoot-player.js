@@ -188,8 +188,8 @@ var send = function (data) {
     if (!data.pin && gamePin) {
         data.pin = gamePin;
     }
-    if (!data.nick && nick) {
-        data.nick = nick;
+    if (!data.nick && playerNick) {
+        data.nick = playerNick;
     }
     ws.send(JSON.stringify(data));
 };

@@ -1,5 +1,5 @@
 var role = 'master';
-var ws = new WebSocket(xphoot_data.wsUrl, ['game']);
+var ws, connected, keepAliveIntervalId;
 var mediaService = xphoot_data.mediaServiceUrl;
 var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
@@ -21,6 +21,7 @@ var spotifyUrl = "https://api.spotify.com/v1/tracks/";
 var wsResponseHandlers = {};
 
 $(function () {
+    wsConnect();
     loadGames();
     $('#joinStart').on('click', function () {
         if (playerCount > 0) {
@@ -31,13 +32,13 @@ $(function () {
         if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled ||
             document.msFullscreenEnabled) {
             var el = document.body;
-            if(el.requestFullscreen) {
+            if (el.requestFullscreen) {
                 el.requestFullscreen();
-            } else if(el.mozRequestFullScreen) {
+            } else if (el.mozRequestFullScreen) {
                 el.mozRequestFullScreen();
-            } else if(el.webkitRequestFullscreen) {
+            } else if (el.webkitRequestFullscreen) {
                 el.webkitRequestFullscreen();
-            } else if(el.msRequestFullscreen) {
+            } else if (el.msRequestFullscreen) {
                 el.msRequestFullscreen();
             }
         }
@@ -62,11 +63,34 @@ $(function () {
 
 // WS - EVENTS
 
-ws.onopen = function (event) {
-};
+function wsConnect() {
+    ws = new WebSocket(xphoot_data.wsUrl, ['game']);
+    ws.onopen = onWsOpen;
+    ws.onclose = onWsClose;
+    ws.onmessage = onWsMessage;
+}
 
-ws.onmessage = function (event) {
-    // consoleconsole.log("Yay, a message for me: " + event.data);
+function onWsOpen() {
+    if (game) {
+        sendJoin(role, game.id);
+    }
+
+    keepAliveIntervalId = setInterval(function () {
+        if (connected) {
+            this.ws.send('{"action":"KeepAlive"}');
+        }
+    }, 30 * 1000);
+    connected = true;
+}
+
+function onWsClose() {
+    clearInterval(keepAliveIntervalId);
+    connected = false;
+
+    setTimeout(wsConnect, 2000); // attempt to reconnect
+}
+
+function onWsMessage(event) {
     var data = JSON.parse(event.data);
     var action = data.action;
 
@@ -74,13 +98,15 @@ ws.onmessage = function (event) {
     if (handler) {
         handler(data);
     }
-};
+}
 
 
 // HANDLERS
 
 var handleJoined = function (data) {
-    displayJoinPanel(data);
+    if (!game) {
+        displayJoinPanel(data);
+    }
 };
 
 var handlePlayerJoined = function (nick) {
@@ -319,11 +345,6 @@ var showAnswersPie = function () {
     var blue = currentAnswers.blue;
     var yellow = currentAnswers.yellow;
     var green = currentAnswers.green;
-
-    // red = Math.floor(Math.random() * playerCount);
-    // blue = Math.floor(Math.random() * (playerCount - red));
-    // yellow = Math.floor(Math.random() * (playerCount - red - blue));
-    // green = Math.floor(Math.random() * (playerCount - red - blue - yellow));
 
     var total = playerCount;
     if (total < (blue + red + yellow + green)) {
@@ -623,57 +644,6 @@ var addDummyPlayers = function () {
             playerScores[nick] = Math.floor((Math.random() * 3000) + 2000);
         }, (Math.random() * 8000));
     })
-};
-
-function PieChart(id, data, colors) {
-    this.data = data;
-    this.colors = colors;
-    this.canvas = document.getElementById(id);
-}
-
-PieChart.prototype = {
-
-    draw: function () {
-        var context = this.canvas.getContext("2d");
-        for (var i = 0; i < this.data.length; i++) {
-            this.drawSegment(this.canvas, context, i, this.data[i]);
-        }
-    },
-
-    drawSegment: function (canvas, context, i, size) {
-        var self = this;
-        context.save();
-        var centerX = Math.floor(canvas.width / 2);
-        var centerY = Math.floor(canvas.height / 2);
-        var radius = Math.floor(canvas.width / 2);
-
-        var startingAngle = self.degreesToRadians(self.sumTo(self.data, i));
-        var arcSize = self.degreesToRadians(size);
-        var endingAngle = startingAngle + arcSize;
-
-        context.beginPath();
-        context.moveTo(centerX, centerY);
-        context.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
-        context.closePath();
-
-        context.fillStyle = self.colors[i];
-
-        context.fill();
-        context.restore();
-    },
-
-    // helper functions
-    degreesToRadians: function (degrees) {
-        return (degrees * Math.PI) / 180;
-    },
-
-    sumTo: function (a, i) {
-        var sum = 0;
-        for (var j = 0; j < i; j++) {
-            sum += a[j];
-        }
-        return sum;
-    }
 };
 
 // UTILS ENDED
