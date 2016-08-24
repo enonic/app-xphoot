@@ -142,7 +142,16 @@ var handleShowQuestions = function (question) {
     currentAnswers.yellow = 0;
     currentAnswers.green = 0;
     playerAnswered = {};
-    startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd);
+    var timerId = startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd, function () {
+        var totalAnswers = currentAnswers.blue + currentAnswers.red + currentAnswers.yellow + currentAnswers.green;
+        if (totalAnswers === playerCount) {
+            clearInterval(timerId);
+            progressBar.set(1.0);
+            setTimeout(function () {
+                sendQuestEnd();
+            }, 500);
+        }
+    });
 };
 
 var handlePlayerAnswer = function (data) {
