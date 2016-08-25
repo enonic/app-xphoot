@@ -5,10 +5,13 @@ var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
 var questionAudioPlaying = false;
 var QUESTION_TRANSITION_TIME = 20;
-var SHOW_SCORE_TIME = 7;
+var SHOW_ANSWERS_TIME = 7;
+var SHOW_QUESTION_SCORE_TIME = 4;
+var SHOW_SCORE_TIME = 5;
 var currentQuestNum = 0;
 var playerScores = {};
 var playerAnswered = {};
+var playerQuestionScores = {};
 var currentAnswers = {
     blue: 0,
     red: 0,
@@ -142,10 +145,12 @@ var handleShowQuestions = function (question) {
     currentAnswers.yellow = 0;
     currentAnswers.green = 0;
     playerAnswered = {};
-    var timerId = startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd, function () {
+    playerQuestionScores = {};
+
+    startActionTimer(QUESTION_TRANSITION_TIME, sendQuestEnd, function (tick, options) {
         var totalAnswers = currentAnswers.blue + currentAnswers.red + currentAnswers.yellow + currentAnswers.green;
         if (totalAnswers === playerCount) {
-            clearInterval(timerId);
+            options.cancel = true;
             progressBar.set(1.0);
             setTimeout(function () {
                 sendQuestEnd();
@@ -162,7 +167,10 @@ var handlePlayerAnswer = function (data) {
         return;
     }
     if (game.questions[currentQuestNum].answer == data.answer) {
-        playerScores[player] = (playerScores[player] || 0) + calculateScore(data.timeUsed);
+        playerQuestionScores[player] = calculateScore(data.timeUsed);
+        playerScores[player] = (playerScores[player] || 0) + playerQuestionScores[player];
+    } else {
+        playerQuestionScores[player] = 0;
     }
     currentAnswers[data.answer]++;
     playerAnswered[player] = true;
@@ -184,21 +192,31 @@ var handleQuestEnded = function () {
     currentQuestNum++;
 
     if (isMoreQuestions()) {
-        startActionTimer(SHOW_SCORE_TIME, sendShowScores);
+        startActionTimer(SHOW_ANSWERS_TIME, sendShowScores);
     } else {
-        startActionTimer(SHOW_SCORE_TIME, sendQuizEnd);
+        startActionTimer(SHOW_ANSWERS_TIME, sendQuizEnd);
     }
 };
 
 var handleShowScores = function () {
-    displayScoreBoard();
-    startActionTimer(SHOW_SCORE_TIME, sendQuestBegin);
+    displayScoreBoard(false);
+    startActionTimer(SHOW_QUESTION_SCORE_TIME, handleShowTotalScores);
+};
+
+var handleShowTotalScores = function () {
+    $('#scoresPlayers > ul > li').fadeOut(1000).promise().done(function () {
+        displayScoreBoard(true);
+        startActionTimer(SHOW_SCORE_TIME, sendQuestBegin);
+    });
 };
 
 var handleQuizEnd = function () {
-    displayScoreBoard();
-    saveResults();
-    stopGameMusic();
+    displayScoreBoard(false);
+    $('#scoresPlayers > ul > li').delay(SHOW_QUESTION_SCORE_TIME * 1000).fadeOut(1000).promise().done(function () {
+        displayScoreBoard(true);
+        saveResults();
+        stopGameMusic();
+    });
 };
 
 // END HANDLERS
@@ -318,9 +336,13 @@ var displayCorrectAnswer = function (question) {
     }
 };
 
-function displayScoreBoard() {
-    if (!isMoreQuestions()) {
+function displayScoreBoard(showTotalScores) {
+    if (!showTotalScores) {
+        $('.scoresHeaderText').text('Question Scores');
+    } else if (!isMoreQuestions()) {
         $('.scoresHeaderText').text('Final Scoreboard');
+    } else {
+        $('.scoresHeaderText').text('Scoreboard');
     }
 
     $('#questionPanel').hide();
@@ -330,19 +352,26 @@ function displayScoreBoard() {
     playersEl.find('li').remove();
 
     var sortedPlayers = [];
-    for (var player in playerScores) {
-        if (playerScores.hasOwnProperty(player)) {
-            sortedPlayers.push({player: player, score: playerScores[player]});
-        }
+    for (var player in players) {
+        var score = playerScores.hasOwnProperty(player) ? playerScores[player] : 0;
+        var answerScore = playerQuestionScores.hasOwnProperty(player) ? playerQuestionScores[player] : 0;
+        sortedPlayers.push({player: player, score: score, answerScore: answerScore});
     }
-    sortedPlayers.sort(function (a, b) {
-        return b.score - a.score;
-    });
+
+    if (showTotalScores) {
+        sortedPlayers.sort(function (a, b) {
+            return b.score - a.score;
+        });
+    } else {
+        sortedPlayers.sort(function (a, b) {
+            return b.answerScore - a.answerScore;
+        });
+    }
 
     var first = true;
     sortedPlayers.forEach(function (p) {
         var playerEl = $('<span>').text(p.player);
-        var playerScoreEl = $('<span>').text(p.score).addClass('scoreValue');
+        var playerScoreEl = $('<span>').text(showTotalScores ? p.score : p.answerScore).addClass('scoreValue');
         var li = $('<li>').append(playerEl).append(playerScoreEl).toggleClass('scoreWinner', first);
         first = false;
         playersEl.append(li);
@@ -601,7 +630,12 @@ var startActionTimer = function (duration, action, onTick) {
     var timerId = setInterval(function () {
         tick--;
         if (onTick && tick > 0) {
-            onTick(duration, tick);
+            var options = {cancel: false};
+            onTick(tick, options);
+            if (options.cancel) {
+                clearInterval(timerId);
+                return;
+            }
         }
         if (tick == 0) {
             clearInterval(timerId);
@@ -641,7 +675,7 @@ var calculateScore = function (timeUsed) {
     var questionTime = QUESTION_TRANSITION_TIME * 1000;
     var timeLeft = questionTime - timeUsed;
 
-    return Math.floor(((timeLeft / questionTime) * 5000) + 3000);
+    return Math.ceil(((timeLeft / questionTime) * 500)) + 500;
 };
 
 
