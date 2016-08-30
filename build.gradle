@@ -30,6 +30,8 @@ dependencies {
     include "com.enonic.xp:lib-portal:${xpVersion}"
     include "com.enonic.xp:lib-thymeleaf:${xpVersion}"
     include "com.enonic.xp:lib-websocket:${xpVersion}"
+    include "com.enonic.xp:lib-http-client:${xpVersion}"
+    include "com.enonic.xp:lib-cache:${xpVersion}"
 }
 
 repositories {

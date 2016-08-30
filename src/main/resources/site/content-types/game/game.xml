@@ -38,9 +38,12 @@
         <item-set name="audio">
           <label>Audio</label>
           <items>
-            <input name="trackId" type="TextLine">
+            <input name="trackId" type="CustomSelector">
               <label>Spotify Track Id</label>
               <occurrences minimum="0" maximum="1"/>
+              <config>
+                <service>spotify</service>
+              </config>
             </input>
             <input type="ContentSelector" name="audioId">
               <label>Audio file</label>
