@@ -107,7 +107,6 @@ function onWsMessage(event) {
 // HANDLERS
 
 var handleJoined = function (data) {
-    addDummyPlayers();
     if (!game) {
         displayJoinPanel(data);
     }
@@ -358,11 +357,6 @@ function displayScoreBoard(showTotalScores) {
 
     var sortedPlayers = [];
     for (var player in players) {
-        // dummy scores
-        if (!playerQuestionScores.hasOwnProperty(player)) {
-            playerQuestionScores[player] = Math.floor((Math.random() * 5000) + 2000);
-            playerScores[player] = (playerScores[player] || 0) + playerQuestionScores[player];
-        }
         var score = playerScores.hasOwnProperty(player) ? playerScores[player] : 0;
         var answerScore = playerQuestionScores.hasOwnProperty(player) ? playerQuestionScores[player] : 0;
         sortedPlayers.push({player: player, score: score, answerScore: answerScore});
@@ -701,18 +695,6 @@ var calculateScore = function (timeUsed) {
 
     return Math.ceil(((timeLeft / questionTime) * 500)) + 500;
 };
-
-
-var addDummyPlayers = function () {
-    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123', 'gri', 'srs', 'jsi', 'mer', 'tsi', 'bwe', 'ska', 'rfo', 'dap'];
-    dummies.forEach(function (nick) {
-        setTimeout(function () {
-            handlePlayerJoined(nick);
-            playerScores[nick] = 0;
-        }, (Math.random() * 4000));
-    })
-};
-
 // UTILS ENDED
 
 
