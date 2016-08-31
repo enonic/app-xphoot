@@ -5,9 +5,9 @@ var players = {}, playerCount = 0;
 var game, pin, gameAudioElement;
 var questionAudioPlaying = false;
 var QUESTION_TRANSITION_TIME = 20;
-var SHOW_ANSWERS_TIME = 7;
-var SHOW_QUESTION_SCORE_TIME = 4;
-var SHOW_SCORE_TIME = 5;
+var SHOW_ANSWERS_TIME = 6;
+var SHOW_QUESTION_SCORE_TIME = 5;
+var SHOW_SCORE_TIME = 7;
 var currentQuestNum = 0;
 var playerScores = {};
 var playerAnswered = {};
@@ -107,6 +107,7 @@ function onWsMessage(event) {
 // HANDLERS
 
 var handleJoined = function (data) {
+    addDummyPlayers();
     if (!game) {
         displayJoinPanel(data);
     }
@@ -204,7 +205,8 @@ var handleShowScores = function () {
 };
 
 var handleShowTotalScores = function () {
-    $('#scoresPlayers > ul > li').fadeOut(1000).promise().done(function () {
+    $('#scoresPlayers > ul > li').removeClass('fadeIn').removeClass('scoreWinner').addClass('fadeOut').delay(2000).promise().done(function () {
+        $('#scoresPlayers > ul').find('li').remove();
         displayScoreBoard(true);
         startActionTimer(SHOW_SCORE_TIME, sendQuestBegin);
     });
@@ -212,11 +214,14 @@ var handleShowTotalScores = function () {
 
 var handleQuizEnd = function () {
     displayScoreBoard(false);
-    $('#scoresPlayers > ul > li').delay(SHOW_QUESTION_SCORE_TIME * 1000).fadeOut(1000).promise().done(function () {
-        displayScoreBoard(true);
-        saveResults();
-        stopGameMusic();
-    });
+    setTimeout(function () {
+        $('#scoresPlayers > ul > li').removeClass('fadeIn').removeClass('scoreWinner').addClass('fadeOut').delay(2000).promise().done(function () {
+            $('#scoresPlayers > ul').find('li').remove();
+            displayScoreBoard(true);
+            saveResults();
+            stopGameMusic();
+        });
+    }, SHOW_QUESTION_SCORE_TIME * 1000);
 };
 
 // END HANDLERS
@@ -353,6 +358,11 @@ function displayScoreBoard(showTotalScores) {
 
     var sortedPlayers = [];
     for (var player in players) {
+        // dummy scores
+        if (!playerQuestionScores.hasOwnProperty(player)) {
+            playerQuestionScores[player] = Math.floor((Math.random() * 5000) + 2000);
+            playerScores[player] = (playerScores[player] || 0) + playerQuestionScores[player];
+        }
         var score = playerScores.hasOwnProperty(player) ? playerScores[player] : 0;
         var answerScore = playerQuestionScores.hasOwnProperty(player) ? playerQuestionScores[player] : 0;
         sortedPlayers.push({player: player, score: score, answerScore: answerScore});
@@ -368,15 +378,29 @@ function displayScoreBoard(showTotalScores) {
         });
     }
 
-    var first = true;
+    var first = true, lis = [];
     sortedPlayers.forEach(function (p) {
         var playerEl = $('<span>').text(p.player);
         var playerScoreEl = $('<span>').text(showTotalScores ? p.score : p.answerScore).addClass('scoreValue');
         var li = $('<li>').append(playerEl).append(playerScoreEl).toggleClass('scoreWinner', first);
         first = false;
-        playersEl.append(li);
+        lis.push(li);
     });
+
+    for (var i = 0; i < lis.length; i++) {
+        (function (li) {
+            setTimeout(function () {
+                playersEl.append(li);
+                li.addClass('fadeIn');
+            }, easeInOutCubic(i / lis.length) * 1000);
+
+        })(lis[i]);
+    }
 }
+
+var easeInOutCubic = function (t) {
+    return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+};
 
 var showAnswersPie = function () {
     var red = currentAnswers.red;
@@ -680,12 +704,12 @@ var calculateScore = function (timeUsed) {
 
 
 var addDummyPlayers = function () {
-    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123', 'gri', 'srs', 'jsi', 'mer', 'tsi'];
+    var dummies = ['odadoda3000', 'rmy666', 'myklebust', 'aro123', 'gri', 'srs', 'jsi', 'mer', 'tsi', 'bwe', 'ska', 'rfo', 'dap'];
     dummies.forEach(function (nick) {
         setTimeout(function () {
             handlePlayerJoined(nick);
-            playerScores[nick] = Math.floor((Math.random() * 3000) + 2000);
-        }, (Math.random() * 8000));
+            playerScores[nick] = 0;
+        }, (Math.random() * 4000));
     })
 };
 

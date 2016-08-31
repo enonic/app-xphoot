@@ -435,6 +435,59 @@ select {
     padding-right: 5px;
 }
 
+#scoresPlayers li.fadeIn {
+    animation-duration: 1s;
+    animation-name: scoreFadeAndScale;
+    animation-timing-function: cubic-bezier(.71, .55, .62, 1.57);
+}
+
+@keyframes scoreFadeAndScale {
+    from {
+        opacity: 0;
+        transform: scale(.3, .3) translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1, 1) translateY(0%);
+    }
+}
+
+#scoresPlayers li:nth-child(odd).fadeOut {
+    animation-duration: 2s;
+    animation-name: scoreFadeOutLeft;
+}
+
+#scoresPlayers li:nth-child(even).fadeOut {
+    animation-duration: 2s;
+    animation-name: scoreFadeOutRight;
+}
+
+@keyframes scoreFadeOutLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0%);
+        visibility: visible;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+        visibility: hidden;
+    }
+}
+
+@keyframes scoreFadeOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0%);
+        visibility: visible;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+        visibility: hidden;
+    }
+}
+
 .scoreValue {
     float: right;
 }
