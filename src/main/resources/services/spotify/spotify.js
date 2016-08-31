@@ -62,7 +62,11 @@ function getTracks(ids) {
 function searchTracks(text, start, count) {
     text = (text || '').trim();
     if (!text) {
-        return noTracks();
+        return {
+            count: 0,
+            total: 0,
+            hits: []
+        };
     }
 
     return searchQueriesCache.get(searchKey(text, start, count), function () {
