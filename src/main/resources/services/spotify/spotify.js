@@ -83,7 +83,7 @@ function fetchSpotifyTrackById(id) {
             method: 'GET',
             contentType: 'application/json',
             connectTimeout: 5000,
-            readTimeout: 5000,
+            readTimeout: 10000,
             params: {
                 'ids': id
             }
@@ -106,14 +106,17 @@ function searchSpotifyTracks(text, start, count) {
 
     log.info('Querying Spotify: ' + start + ' + ' + count + ' "' + text + '"');
     try {
+        if (text.length > 1) {
+            text += '*';
+        }
         var response = httpClient.request({
             url: 'https://api.spotify.com/v1/search',
             method: 'GET',
             contentType: 'application/json',
             connectTimeout: 5000,
-            readTimeout: 5000,
+            readTimeout: 10000,
             params: {
-                'q': text + '*',
+                'q': text,
                 'type': 'track,artist',
                 'limit': count,
                 'offset': start
