@@ -2,7 +2,7 @@ var role = 'master';
 var ws, connected, keepAliveIntervalId;
 var mediaService = xphoot_data.mediaServiceUrl;
 var players = {}, playerCount = 0;
-var game, pin, gameAudioElement;
+var game, gamePin, gameAudioElement;
 var questionAudioPlaying = false;
 var QUESTION_TRANSITION_TIME = 20;
 var SHOW_ANSWERS_TIME = 6;
@@ -230,7 +230,7 @@ var handleQuizEnd = function () {
 
 function displayJoinPanel(data) {
     game = data.game;
-    pin = data.pin;
+    gamePin = data.pin;
 
     getAllPanels().hide();
     $('#joinPanel').show();
@@ -561,8 +561,8 @@ function stopElementAudio(audioElement, fadeTime) {
 // SEND EVENTS
 
 var send = function (data) {
-    if (!data.pin && pin) {
-        data.pin = pin;
+    if (!data.pin && gamePin) {
+        data.pin = gamePin;
     }
     ws.send(JSON.stringify(data));
 };
