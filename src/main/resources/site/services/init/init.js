@@ -7,7 +7,8 @@ exports.get = function (req) {
     var wsUrl = portalLib.serviceUrl({service: 'gameHub', type: 'absolute'});
     var mediaServiceUrl = portalLib.serviceUrl({service: 'mediaService', type: 'absolute'});
 
-    wsUrl = 'ws' + wsUrl.substring(wsUrl.indexOf(':'));
+    var wsProto = wsUrl.indexOf('https:') === 0 ? 'wss' : 'ws';
+    wsUrl = wsProto + wsUrl.substring(wsUrl.indexOf(':'));
     var data = {
         wsUrl: wsUrl
     };
