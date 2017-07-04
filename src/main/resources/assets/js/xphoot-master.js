@@ -1,6 +1,7 @@
 var role = 'master';
 var ws, connected, keepAliveIntervalId;
 var mediaService = xphoot_data.mediaServiceUrl;
+var trackUrl = xphoot_data.trackUrl;
 var players = {}, playerCount = 0;
 var game, gamePin, gameAudioElement;
 var questionAudioPlaying = false;
@@ -19,7 +20,6 @@ var currentAnswers = {
     yellow: 0
 };
 var progressBar;
-var spotifyUrl = "https://api.spotify.com/v1/tracks/";
 
 var wsResponseHandlers = {};
 
@@ -204,22 +204,34 @@ var handleShowScores = function () {
 };
 
 var handleShowTotalScores = function () {
-    $('#scoresPlayers > ul > li').removeClass('fadeIn').removeClass('scoreWinner').addClass('fadeOut').delay(2000).promise().done(function () {
-        $('#scoresPlayers > ul').find('li').remove();
-        displayScoreBoard(true);
-        startActionTimer(SHOW_SCORE_TIME, sendQuestBegin);
-    });
+    $('#scoresPlayers > ul > li')
+        .removeClass('fadeIn')
+        .removeClass('scoreWinner')
+        .addClass('fadeOut')
+        .delay(2000)
+        .promise()
+        .done(function () {
+            $('#scoresPlayers > ul').find('li').remove();
+            displayScoreBoard(true);
+            startActionTimer(SHOW_SCORE_TIME, sendQuestBegin);
+        });
 };
 
 var handleQuizEnd = function () {
     displayScoreBoard(false);
     setTimeout(function () {
-        $('#scoresPlayers > ul > li').removeClass('fadeIn').removeClass('scoreWinner').addClass('fadeOut').delay(2000).promise().done(function () {
-            $('#scoresPlayers > ul').find('li').remove();
-            displayScoreBoard(true);
-            saveResults();
-            stopGameMusic();
-        });
+        $('#scoresPlayers > ul > li')
+            .removeClass('fadeIn')
+            .removeClass('scoreWinner')
+            .addClass('fadeOut')
+            .delay(2000)
+            .promise()
+            .done(function () {
+                $('#scoresPlayers > ul').find('li').remove();
+                displayScoreBoard(true);
+                saveResults();
+                stopGameMusic();
+            });
     }, SHOW_QUESTION_SCORE_TIME * 1000);
 };
 
@@ -521,9 +533,12 @@ stopGameMusic = function () {
 
 function playSpotifyTrack(trackId) {
     jQuery.ajax({
-        url: spotifyUrl + trackId,
+        url: trackUrl + '?trackId=' + trackId,
+        params: {},
         success: function (result) {
-            playAudioUrl(result.preview_url);
+            if (result.url) {
+                playAudioUrl(result.url);
+            }
         }
     });
 }

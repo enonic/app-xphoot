@@ -6,6 +6,7 @@ exports.get = function (req) {
     var saveGameUrl = portalLib.serviceUrl({service: 'saveGame'});
     var wsUrl = portalLib.serviceUrl({service: 'gameHub', type: 'absolute'});
     var mediaServiceUrl = portalLib.serviceUrl({service: 'mediaService', type: 'absolute'});
+    var trackUrl = portalLib.serviceUrl({service: 'spotify-play', type: 'absolute'});
 
     var wsProto = wsUrl.indexOf('https:') === 0 ? 'wss' : 'ws';
     wsUrl = wsProto + wsUrl.substring(wsUrl.indexOf(':'));
@@ -16,6 +17,7 @@ exports.get = function (req) {
         data.saveGameUrl = saveGameUrl;
         data.games = getGames();
         data.mediaServiceUrl = mediaServiceUrl;
+        data.trackUrl = trackUrl;
     }
 
     return {

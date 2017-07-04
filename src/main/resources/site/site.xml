@@ -5,6 +5,20 @@
       <label>Base public URL</label>
       <occurrences minimum="0" maximum="1"/>
     </input>
+    <field-set name="spotify">
+      <label>Spotify Integration</label>
+      <items>
+        <input name="spotifyClientId" type="TextLine">
+          <label>Spotify API Client ID</label>
+          <help-text>Register at https://developer.spotify.com to get access to Spotify API.</help-text>
+          <occurrences minimum="0" maximum="1"/>
+        </input>
+        <input name="spotifyClientSecret" type="TextLine">
+          <label>Spotify API Client Secret</label>
+          <occurrences minimum="0" maximum="1"/>
+        </input>
+      </items>
+    </field-set>
   </config>
 
   <mappings>

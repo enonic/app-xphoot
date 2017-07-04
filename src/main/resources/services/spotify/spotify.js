@@ -11,7 +11,13 @@ var searchQueriesCache = cacheLib.newCache({
     expire: 60 * 10
 });
 
+var authTokenCache = cacheLib.newCache({
+    size: 1,
+    expire: 3600
+});
+
 function handleGet(req) {
+    var authToken = getSpotifyToken();
 
     var params = req.params;
     var ids;
@@ -20,12 +26,29 @@ function handleGet(req) {
     } catch (e) {
         ids = [];
     }
+    if (!authToken) {
+        if (ids.length === 0) {
+            return {
+                contentType: 'application/json',
+                body: {
+                    count: 0,
+                    total: 0,
+                    hits: []
+                }
+            };
+        } else {
+            return {
+                contentType: 'application/json',
+                body: getSpotifyNotConfiguredResponse(ids)
+            }
+        }
+    }
 
     var tracks;
     if (ids.length > 0) {
-        tracks = getTracks(ids);
+        tracks = getTracks(ids, authToken);
     } else {
-        tracks = searchTracks(params.query, params.start || 0, params.count || 10);
+        tracks = searchTracks(params.query, params.start || 0, params.count || 10, authToken);
     }
 
     return {
@@ -36,14 +59,29 @@ function handleGet(req) {
 
 exports.get = handleGet;
 
-function getTracks(ids) {
+function getSpotifyNotConfiguredResponse(ids) {
+    return {
+        count: ids.length,
+        total: ids.length,
+        hits: ids.map(function (id) {
+            return {
+                id: id,
+                displayName: 'Spotify track not available.',
+                description: 'Set up Spotify integration in the Site configuration.',
+                iconUrl: defaultIcon()
+            };
+        })
+    };
+}
+
+function getTracks(ids, authToken) {
     var tracks = [];
 
     for (var i = 0; i < ids.length; i++) {
         var id = ids[i];
 
         var track = trackIdCache.get(id, function () {
-            var spotifyResponse = fetchSpotifyTrackById(id);
+            var spotifyResponse = fetchSpotifyTrackById(id, authToken);
             return spotifyResponse ? parseTrackResults(spotifyResponse) : null;
         });
 
@@ -59,7 +97,7 @@ function getTracks(ids) {
     };
 }
 
-function searchTracks(text, start, count) {
+function searchTracks(text, start, count, authToken) {
     text = (text || '').trim();
     if (!text) {
         return {
@@ -70,7 +108,7 @@ function searchTracks(text, start, count) {
     }
 
     return searchQueriesCache.get(searchKey(text, start, count), function () {
-        var spotifyResponse = searchSpotifyTracks(text, start, count);
+        var spotifyResponse = searchSpotifyTracks(text, start, count, authToken);
         return parseSearchResults(spotifyResponse);
     });
 }
@@ -79,7 +117,7 @@ function searchKey(text, start, count) {
     return start + '-' + count + '-' + text;
 }
 
-function fetchSpotifyTrackById(id) {
+function fetchSpotifyTrackById(id, authToken) {
     log.info('Fetching Spotify tack by id: ' + id);
     try {
         var response = httpClient.request({
@@ -90,6 +128,9 @@ function fetchSpotifyTrackById(id) {
             readTimeout: 10000,
             params: {
                 'ids': id
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authToken
             }
         });
         if (response.status === 200) {
@@ -103,7 +144,7 @@ function fetchSpotifyTrackById(id) {
     return null;
 }
 
-function searchSpotifyTracks(text, start, count) {
+function searchSpotifyTracks(text, start, count, authToken) {
     if (!text) {
         return noTracks();
     }
@@ -124,6 +165,9 @@ function searchSpotifyTracks(text, start, count) {
                 'type': 'track,artist',
                 'limit': count,
                 'offset': start
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authToken
             }
         });
 
@@ -136,6 +180,55 @@ function searchSpotifyTracks(text, start, count) {
     }
 
     return noTracks();
+}
+
+function getSpotifyToken() {
+    var result = authTokenCache.get('token', function () {
+        var siteConfig = portalLib.getSiteConfig() || {};
+
+        var clientId = siteConfig.spotifyClientId;
+        var clientSecret = siteConfig.spotifyClientSecret;
+
+        if (clientId && clientSecret) {
+            return requestSpotifyToken(clientId, clientSecret) || false;
+        }
+
+        log.warning('Spotify integration not configured for this site.');
+        return false;
+    });
+
+    if (!result) {
+        authTokenCache.clear();
+    }
+    return result;
+}
+
+function requestSpotifyToken(clientId, clientSecret) {
+    try {
+        var response = httpClient.request({
+            url: 'https://accounts.spotify.com/api/token',
+            method: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            headers: {
+                'Accept': 'application/json'
+            },
+            connectTimeout: 5000,
+            readTimeout: 10000,
+            auth: {
+                user: clientId,
+                password: clientSecret
+            },
+            body: 'grant_type=client_credentials'
+        });
+
+        if (response.status === 200) {
+            var tokenResponse = JSON.parse(response.body);
+            return tokenResponse && tokenResponse.access_token;
+        }
+    } catch (e) {
+        log.error('Could not obtain spotify token: ', e);
+    }
+    return null;
 }
 
 function noTracks() {
@@ -181,6 +274,9 @@ function parseTrack(spotifyTrack) {
     var artist = spotifyTrack.artists && spotifyTrack.artists.length > 0 ? spotifyTrack.artists[0].name : '';
     var album = spotifyTrack.album && spotifyTrack.album.name ? spotifyTrack.album.name : '';
     option.description = artist + (album ? ' - ' + album : '');
+    if (spotifyTrack.preview_url) {
+        option.description = '\u266B ' + option.description;
+    }
 
     if (spotifyTrack.album && spotifyTrack.album.images && spotifyTrack.album.images.length > 0) {
         option.iconUrl = spotifyTrack.album.images[0].url;
