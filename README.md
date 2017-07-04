@@ -29,3 +29,21 @@ After only two days of travel, the beast of css stood before them, the last obst
 * Show score stats/changes on client on answer
 * End question-timer when all connected players have answered
 
+## Spotify Integration
+
+Using Spotify music tracks in the questions requires access to their [API](https://developer.spotify.com/web-api/). 
+Previously Spotify API was open but [now the requests need to be authenticated](https://developer.spotify.com/news-stories/2017/01/27/removing-unauthenticated-calls-to-the-web-api/).
+
+To set up Spotify in xpHoot follow these steps:
+- Go to https://developer.spotify.com/my-applications/ 
+- Sign in or register as a new user.
+- Click on "Create an App" and enter a name and a description.
+- Copy the text from the generated **Client ID** and **Client Secret**.
+- Edit the xpHoot site in Enonic XP.
+- Click the pencil icon to edit the xpHoot App settings.
+- Enter the **Client ID** and **Client Secret**. Click Apply and then Save.
+
+Note that _not all_ the tracks available provide the 30 second preview that can be used in xpHoot questions. (See also [issue #592](https://github.com/spotify/web-api/issues/592) and [issue #516](https://github.com/spotify/web-api/issues/516)). 
+
+Tracks that support the preview will appear with a small music note icon :musical_note: in Content Studio editor. 
+
