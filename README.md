@@ -24,10 +24,10 @@ After only two days of travel, the beast of css stood before them, the last obst
 
 ## Upcoming features
 
+* ~~Client keep-alive handling~~
+* ~~End question-timer when all connected players have answered~~
 * Quiz statistics
-* Client keep-alive handling
 * Show score stats/changes on client on answer
-* End question-timer when all connected players have answered
 
 ## Spotify Integration
 
