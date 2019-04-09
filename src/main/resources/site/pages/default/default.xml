@@ -1,6 +1,6 @@
 <page>
   <display-name>Default</display-name>
-  <config/>
+  <form/>
   <regions>
     <region name="main"/>
   </regions>

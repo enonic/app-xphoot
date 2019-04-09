@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-  <config>
+  <form>
     <input name="playerUrl" type="TextLine">
       <label>Base public URL</label>
       <occurrences minimum="0" maximum="1"/>
@@ -19,7 +19,7 @@
         </input>
       </items>
     </field-set>
-  </config>
+  </form>
 
   <mappings>
     <mapping controller="/site/controllers/master/master.js">

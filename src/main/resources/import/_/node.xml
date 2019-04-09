@@ -1,8 +1,8 @@
 <node>
-    <id>6d8fa474-cab2-497b-b4f7-46d70d017181</id>
+    <id>7a2c4de2-bf29-4e29-9d26-ef43543954f6</id>
     <childOrder>displayname ASC</childOrder>
     <nodeType>default</nodeType>
-    <timestamp>2016-05-12T11:21:40.938Z</timestamp>
+    <timestamp>2019-04-05T15:11:44.841Z</timestamp>
     <inheritPermissions>false</inheritPermissions>
     <permissions>
         <principal key="role:cms.cm.app">
@@ -42,7 +42,7 @@
         <property-set name="data"/>
         <property-set name="form"/>
         <string name="creator">user:system:su</string>
-        <dateTime name="createdTime">2016-05-12T11:21:40.936Z</dateTime>
+        <dateTime name="createdTime">2019-04-05T15:11:44.840Z</dateTime>
     </data>
     <indexConfigs>
         <defaultConfig>
@@ -53,5 +53,6 @@
             <includeInAllText>false</includeInAllText>
         </defaultConfig>
         <pathIndexConfigs/>
+        <allTextIndexConfig/>
     </indexConfigs>
 </node>
