@@ -3,7 +3,7 @@
   <display-name>Game</display-name>
   <super-type>base:structured</super-type>
   <form>
-    <field-set name="music">
+    <field-set>
       <label>Game Music</label>
       <items>
         <input type="ContentSelector" name="soundtrack">
