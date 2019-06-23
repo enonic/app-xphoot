@@ -5,7 +5,7 @@
       <label>Base public URL</label>
       <occurrences minimum="0" maximum="1"/>
     </input>
-    <field-set name="spotify">
+    <field-set>
       <label>Spotify Integration</label>
       <items>
         <input name="spotifyClientId" type="TextLine">

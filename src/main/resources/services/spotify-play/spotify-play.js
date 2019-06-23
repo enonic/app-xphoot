@@ -1,6 +1,6 @@
 var portalLib = require('/lib/xp/portal');
-var httpClient = require('/lib/xp/http-client');
-var cacheLib = require('/lib/xp/cache');
+var httpClient = require('/lib/http-client');
+var cacheLib = require('/lib/cache');
 
 var authTokenCache = cacheLib.newCache({
     size: 1,
