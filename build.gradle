@@ -16,6 +16,9 @@ dependencies {
     compile "com.enonic.xp:script-api:${xpVersion}"
     include "com.enonic.xp:lib-content:${xpVersion}"
     include "com.enonic.xp:lib-context:${xpVersion}"
+    include "com.enonic.xp:lib-cluster:${xpVersion}"
+    include "com.enonic.xp:lib-project:${xpVersion}"
+    include "com.enonic.xp:lib-export:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
     include "com.enonic.xp:lib-websocket:${xpVersion}"
     include "com.enonic.lib:lib-thymeleaf:2.0.0"
@@ -24,7 +27,6 @@ dependencies {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    xp.enonicRepo()
+    xp.enonicRepo('dev')
 }
