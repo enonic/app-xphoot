@@ -5,8 +5,8 @@ const exportLib = require('/lib/xp/export');
 
 const projectData = {
     id: 'xphoot',
-    displayName: 'Xphoot',
-    description: 'The Xphoot site',
+    displayName: 'xpHoot',
+    description: 'The xpHoot site',
     readAccess: {
         public: true
     }
