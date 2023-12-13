@@ -80,7 +80,7 @@
             <option value="green">Green</option>
             <option value="yellow">Yellow</option>
           </config>
-          <default>one</default>
+          <default>red</default>
         </input>
       </items>
     </item-set>
