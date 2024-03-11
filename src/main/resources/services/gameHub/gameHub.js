@@ -1,17 +1,20 @@
 var webSocketLib = require('/lib/xp/websocket');
 var contentLib = require('/lib/xp/content');
+var contextLib = require('/lib/xp/context');
 
 var masters = {};
 var players = {};
 
-function handleGet(req) {
+var branch = "draft";
 
+function handleGet(req) {
     if (!req.webSocket) {
         return {
             status: 404
         };
     }
 
+    branch = req.branch;
 
     return {
         webSocket: {
@@ -77,10 +80,7 @@ function join(event, message) {
     if (role == 'master') {
         gameId = message.gameId;
         if (!message.pin) {
-            do {
-                pin = createPin(10000, 99999);
-            } while (pinRegistered(pin));
-
+            pin = createPin(10000, 99999);
         } else { // reconnecting
             pin = message.pin;
         }
@@ -132,10 +132,6 @@ function join(event, message) {
 
 function addMaster(pin, sessionId) {
     masters[pin] = sessionId;
-}
-
-function pinRegistered(pin) {
-    return !!masters[pin];
 }
 
 function addPlayer(pin, sessionId, nick) {
@@ -190,7 +186,12 @@ function getId(event) {
 }
 
 function fetchGame(id) {
-    var content = contentLib.get({key: id});
+    var content = contextLib.run({
+        branch: branch,
+        principals: ["role:system.admin"]
+    }, () => {
+        return contentLib.get({key: id});
+    })
 
     return {
         name: content.displayName,
@@ -202,4 +203,3 @@ function fetchGame(id) {
 exports.webSocketEvent = handleEvent;
 
 exports.get = handleGet;
-
