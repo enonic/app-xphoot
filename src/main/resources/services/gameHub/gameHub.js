@@ -6,6 +6,7 @@ var masters = {};
 var players = {};
 
 var branch = "draft";
+var repositoryId = 'com.enonic.cms.xphoot'
 
 function handleGet(req) {
     if (!req.webSocket) {
@@ -187,6 +188,7 @@ function getId(event) {
 
 function fetchGame(id) {
     var content = contextLib.run({
+        repository: repositoryId,
         branch: branch,
         principals: ["role:system.admin"]
     }, () => {
