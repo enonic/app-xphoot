@@ -21,7 +21,7 @@ dependencies {
     include "com.enonic.xp:lib-export:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
     include "com.enonic.xp:lib-websocket:${xpVersion}"
-    include "com.enonic.lib:lib-thymeleaf:2.1.0"
+    include "com.enonic.lib:lib-thymeleaf:2.1.1"
     include "com.enonic.lib:lib-cache:2.2.1"
     include 'com.enonic.lib:lib-http-client:3.2.2'
 }
