@@ -1,0 +1,5 @@
+kind: "Page"
+title: "Default"
+form: []
+regions:
+  - "main"

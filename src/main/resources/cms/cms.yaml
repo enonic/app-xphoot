@@ -1,0 +1,25 @@
+kind: "CMS"
+form:
+  - type: "TextLine"
+    name: "playerUrl"
+    label: "Base public URL"
+    occurrences:
+      min: 0
+      max: 1
+  - type: "FieldSet"
+    label: "Spotify Integration"
+    items:
+      - type: "TextLine"
+        name: "spotifyClientId"
+        label: "Spotify API Client ID"
+        helpText: "Register at https://developer.spotify.com to get access to Spotify\
+          \ API."
+        occurrences:
+          min: 0
+          max: 1
+      - type: "TextLine"
+        name: "spotifyClientSecret"
+        label: "Spotify API Client Secret"
+        occurrences:
+          min: 0
+          max: 1
