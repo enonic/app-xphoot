@@ -1,0 +1,104 @@
+kind: "ContentType"
+superType: "base:structured"
+title: "Game"
+form:
+  - type: "FieldSet"
+    label: "Game Music"
+    items:
+      - type: "ContentSelector"
+        name: "soundtrack"
+        label: "Background Music"
+        occurrences:
+          min: 0
+          max: 1
+        allowContentType:
+          - "media:audio"
+      - type: "TextLine"
+        name: "soundtrackAuthor"
+        label: "Background Music Author"
+        occurrences:
+          min: 0
+          max: 1
+  - type: "ItemSet"
+    name: "questions"
+    label: "Question"
+    occurrences:
+      min: 1
+      max: 0
+    items:
+      - type: "TextLine"
+        name: "question"
+        label: "Question"
+        occurrences:
+          min: 1
+          max: 1
+      - type: "ImageSelector"
+        name: "image"
+        label: "Question image"
+        occurrences:
+          min: 0
+          max: 1
+        allowPath:
+          - "./*"
+      - type: "ItemSet"
+        name: "audio"
+        label: "Audio"
+        occurrences:
+          min: 0
+          max: 1
+        items:
+          - type: "CustomSelector"
+            name: "trackId"
+            label: "Spotify Track Id"
+            occurrences:
+              min: 0
+              max: 1
+            service: "spotify"
+          - type: "ContentSelector"
+            name: "audioId"
+            label: "Audio file"
+            occurrences:
+              min: 0
+              max: 1
+            allowContentType:
+              - "media:audio"
+      - type: "TextLine"
+        name: "red"
+        label: "Red"
+        occurrences:
+          min: 1
+          max: 1
+      - type: "TextLine"
+        name: "blue"
+        label: "Blue"
+        occurrences:
+          min: 1
+          max: 1
+      - type: "TextLine"
+        name: "green"
+        label: "Green"
+        occurrences:
+          min: 0
+          max: 1
+      - type: "TextLine"
+        name: "yellow"
+        label: "Yellow"
+        occurrences:
+          min: 0
+          max: 1
+      - type: "ComboBox"
+        name: "answer"
+        label: "Correct answer"
+        occurrences:
+          min: 1
+          max: 1
+        options:
+          - value: "red"
+            label: "Red"
+          - value: "blue"
+            label: "Blue"
+          - value: "green"
+            label: "Green"
+          - value: "yellow"
+            label: "Yellow"
+        default: "red"

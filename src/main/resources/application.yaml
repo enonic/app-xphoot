@@ -1,0 +1,5 @@
+kind: "Application"
+title: "Xphoot App"
+description: "An awesome quiz app for XP - inspired by Kahoot"
+vendorName: "Enonic AS"
+vendorUrl: "https://enonic.com"

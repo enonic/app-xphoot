@@ -1,0 +1,8 @@
+kind: "Site"
+mappings:
+  - controller: "/cms/controllers/master/master.js"
+    order: 50
+    pattern: "/master"
+  - controller: "/cms/controllers/player/player.js"
+    order: 50
+    pattern: "/player"

@@ -1,0 +1,39 @@
+kind: "ContentType"
+superType: "base:structured"
+title: "Game result"
+form:
+  - type: "TextLine"
+    name: "description"
+    label: "Description"
+    occurrences:
+      min: 0
+      max: 1
+  - type: "ContentSelector"
+    name: "game"
+    label: "Game"
+    occurrences:
+      min: 0
+      max: 1
+    attributes:
+      relationshipType: "system:reference"
+    allowContentType:
+      - "game"
+  - type: "ItemSet"
+    name: "players"
+    label: "Player"
+    occurrences:
+      min: 1
+      max: 0
+    items:
+      - type: "TextLine"
+        name: "nick"
+        label: "Nick"
+        occurrences:
+          min: 1
+          max: 1
+      - type: "Double"
+        name: "score"
+        label: "Score"
+        occurrences:
+          min: 1
+          max: 1
