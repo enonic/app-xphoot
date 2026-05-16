@@ -1,4 +1,5 @@
 var portalLib = require('/lib/xp/portal');
+var assetLib = require('/lib/enonic/asset');
 var httpClient = require('/lib/http-client');
 var cacheLib = require('/lib/cache');
 
@@ -288,5 +289,5 @@ function parseTrack(spotifyTrack) {
 }
 
 function defaultIcon() {
-    return portalLib.assetUrl({path: 'img/Spotify_logo_without_text.svg'});
+    return assetLib.assetUrl({path: 'img/Spotify_logo_without_text.svg'});
 }

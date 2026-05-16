@@ -2,8 +2,10 @@
 thymeleaf = "3.0.0-SNAPSHOT"
 cache = "3.0.0-SNAPSHOT"
 httpClient = "4.0.0-SNAPSHOT"
+asset = "2.0.0-SNAPSHOT"
 
 [libraries]
 lib-thymeleaf = { module = "com.enonic.lib:lib-thymeleaf", version.ref = "thymeleaf" }
 lib-cache = { module = "com.enonic.lib:lib-cache", version.ref = "cache" }
 lib-httpClient = { module = "com.enonic.lib:lib-http-client", version.ref = "httpClient" }
+lib-asset = { module = "com.enonic.lib:lib-asset", version.ref = "asset" }

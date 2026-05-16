@@ -6,3 +6,5 @@ mappings:
   - controller: "/cms/controllers/player/player.js"
     order: 50
     pattern: "/player"
+apis:
+  - "asset"
