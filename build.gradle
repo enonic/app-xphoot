@@ -16,6 +16,7 @@ dependencies {
     include libs.lib.thymeleaf
     include libs.lib.cache
     include libs.lib.httpClient
+    include libs.lib.asset
 }
 
 repositories {
