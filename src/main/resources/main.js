@@ -17,7 +17,8 @@ function runInContext(callback) {
     try {
         result = contextLib.run({
             principals: ["role:system.admin"],
-            repository: 'com.enonic.cms.' + projectData.id
+            repository: 'com.enonic.cms.' + projectData.id,
+            branch: 'draft'
         }, callback);
     } catch (e) {
         log.info('Error: ' + e.message);
