@@ -7,9 +7,7 @@ const projectData = {
     id: 'xphoot',
     displayName: 'xpHoot',
     description: 'The xpHoot site',
-    readAccess: {
-        public: true
-    }
+    publicRead: true
 }
 
 function runInContext(callback) {
