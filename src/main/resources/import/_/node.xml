@@ -1,16 +1,9 @@
 <node>
-    <id>7a2c4de2-bf29-4e29-9d26-ef43543954f6</id>
+    <id>d2b74b62-7d6d-4333-9489-90b858a51ee6</id>
     <childOrder>displayname ASC</childOrder>
     <nodeType>default</nodeType>
-    <timestamp>2019-04-05T15:11:44.841Z</timestamp>
-    <inheritPermissions>false</inheritPermissions>
+    <timestamp>2026-05-29T12:22:12.310Z</timestamp>
     <permissions>
-        <principal key="role:cms.cm.app">
-            <allow type="array">
-                <value>READ</value>
-            </allow>
-            <deny type="array"/>
-        </principal>
         <principal key="role:system.admin">
             <allow type="array">
                 <value>READ</value>
@@ -35,6 +28,51 @@
             </allow>
             <deny type="array"/>
         </principal>
+        <principal key="role:cms.project.xphoot.owner">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.editor">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.author">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.contributor">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.viewer">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
     </permissions>
     <data>
         <string name="type">base:folder</string>
@@ -53,6 +91,10 @@
             <includeInAllText>false</includeInAllText>
         </defaultConfig>
         <pathIndexConfigs/>
-        <allTextIndexConfig/>
+        <allTextIndexConfig>
+            <enabled>true</enabled>
+            <nGram>true</nGram>
+            <fulltext>true</fulltext>
+        </allTextIndexConfig>
     </indexConfigs>
 </node>
