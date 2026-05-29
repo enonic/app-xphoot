@@ -2,15 +2,8 @@
     <id>06d1da21-7ad2-4636-b2b6-90cee9221eda</id>
     <childOrder>modifiedtime DESC</childOrder>
     <nodeType>content</nodeType>
-    <timestamp>2019-04-05T15:11:46.494Z</timestamp>
-    <inheritPermissions>true</inheritPermissions>
+    <timestamp>2026-05-29T12:22:14.012Z</timestamp>
     <permissions>
-        <principal key="role:cms.cm.app">
-            <allow type="array">
-                <value>READ</value>
-            </allow>
-            <deny type="array"/>
-        </principal>
         <principal key="role:system.admin">
             <allow type="array">
                 <value>READ</value>
@@ -41,6 +34,51 @@
             </allow>
             <deny type="array"/>
         </principal>
+        <principal key="role:cms.project.xphoot.owner">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.editor">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+                <value>PUBLISH</value>
+                <value>READ_PERMISSIONS</value>
+                <value>WRITE_PERMISSIONS</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.author">
+            <allow type="array">
+                <value>READ</value>
+                <value>CREATE</value>
+                <value>MODIFY</value>
+                <value>DELETE</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.contributor">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
+        <principal key="role:cms.project.xphoot.viewer">
+            <allow type="array">
+                <value>READ</value>
+            </allow>
+            <deny type="array"/>
+        </principal>
     </permissions>
     <data>
         <boolean name="valid">true</boolean>
@@ -66,10 +104,11 @@
             <binaryReference name="binary">bensound-thelounge.mp3</binaryReference>
             <string name="mimeType">audio/mp3</string>
             <long name="size">3585099</long>
+            <string name="sha512">e54c817e7b4f86e6d5d44dbbed631497cb6e3a8f7464d70696aab40a3ef58064d4e8577a13a70d40caaa468afc44dc2c85e4c6a83c444851445331874e51d13b</string>
+            <string name="text"/>
         </property-set>
         <property-set name="publish">
             <dateTime name="first">2019-04-05T15:11:46.429Z</dateTime>
-            <dateTime name="from">2019-04-05T15:11:46.429Z</dateTime>
         </property-set>
     </data>
     <indexConfigs>
@@ -152,7 +191,7 @@
                     <fulltext>false</fulltext>
                     <includeInAllText>false</includeInAllText>
                 </indexConfig>
-                <path>modifiedTime</path>
+                <path>modifiedtime</path>
             </pathIndexConfig>
             <pathIndexConfig>
                 <indexConfig>
@@ -182,7 +221,7 @@
                     <fulltext>false</fulltext>
                     <includeInAllText>false</includeInAllText>
                 </indexConfig>
-                <path>createdTime</path>
+                <path>createdtime</path>
             </pathIndexConfig>
             <pathIndexConfig>
                 <indexConfig>
@@ -195,6 +234,10 @@
                 <path>attachment</path>
             </pathIndexConfig>
         </pathIndexConfigs>
-        <allTextIndexConfig/>
+        <allTextIndexConfig>
+            <enabled>true</enabled>
+            <nGram>true</nGram>
+            <fulltext>true</fulltext>
+        </allTextIndexConfig>
     </indexConfigs>
 </node>

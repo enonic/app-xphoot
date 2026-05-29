@@ -12,6 +12,7 @@ dependencies {
     include xplibs.project
     include xplibs.export
     include xplibs.portal
+    include xplibs.task
     include xplibs.websocket
     include libs.lib.thymeleaf
     include libs.lib.cache

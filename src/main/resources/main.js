@@ -1,20 +1,27 @@
-const projectLib = require('/lib/xp/project');
 const contextLib = require('/lib/xp/context');
+const contentLib = require('/lib/xp/content');
 const clusterLib = require('/lib/xp/cluster');
 const exportLib = require('/lib/xp/export');
+const projectLib = require('/lib/xp/project');
+const taskLib = require('/lib/xp/task');
 
 const projectData = {
     id: 'xphoot',
     displayName: 'xpHoot',
     description: 'The xpHoot site',
-    publicRead: true
+    readAccess: {
+        public: true
+    }
 }
 
-function runInContext(callback) {
+const runInContext = function (callback) {
     let result;
     try {
         result = contextLib.run({
-            principals: ["role:system.admin"],
+            user: {
+                login: "su",
+                idProvider: "system"
+            },
             repository: 'com.enonic.cms.' + projectData.id,
             branch: 'draft'
         }, callback);
@@ -25,33 +32,44 @@ function runInContext(callback) {
     return result;
 }
 
-function createProject() {
+const createProject = function () {
     return projectLib.create(projectData);
 }
 
-function getProject() {
+const getProject = function () {
     return projectLib.get({
         id: projectData.id
     });
 }
 
-function initializeProject() {
-    let project = runInContext(getProject);
+const initialize = function () {
+    runInContext(() => {
+        const project = getProject();
+        if (!project) {
+            taskLib.executeFunction({
+                description: 'Importing content',
+                func: initProject
+            });
+        }
+        else {
+            log.debug(`Project ${project.id} exists, skipping import`);
+        }
+    });
+};
 
-    if (!project) {
-        log.info('Project "' + projectData.id + '" not found. Creating...');
-        project = runInContext(createProject);
+const initProject = function () {
+    runInContext(() => {
+        const project = createProject();
 
         if (project) {
             log.info('Project "' + projectData.id + '" successfully created');
-
-            log.info('Importing "' + projectData.id + '" data');
-            runInContext(createContent);
+            createContent();
+            publishRoot();
         } else {
-            log.error('Project "' + projectData.id + '" failed to be created');
+            log.error('Project "' + projectData.id + '" creation failed');
         }
-    }
-}
+    });
+};
 
 function createContent() {
     let importNodes = exportLib.importNodes({
@@ -59,34 +77,40 @@ function createContent() {
         targetNodePath: '/content',
         xslt: resolve('/import/replace_app.xsl'),
         xsltParams: {
-            applicationId: app.name
+            applicationId: app.name,
+            projectName: projectData.id
         },
         versionAttributes: {
             'content.import': {
-                user: "role:system.admin",
+                user: contextLib.get().authInfo.user.key,
                 optime: new Date().toISOString()
             },
             'vacuum.skip': {}
         },
         includeNodeIds: true
     });
-    log.info('-------------------');
-    log.info('Imported nodes:');
-    importNodes.addedNodes.forEach(element => log.info(element));
-    log.info('-------------------');
-    log.info('Updated nodes:');
-    importNodes.updatedNodes.forEach(element => log.info(element));
-    log.info('-------------------');
-    log.info('Imported binaries:');
-    importNodes.importedBinaries.forEach(element => log.info(element));
-    log.info('-------------------');
-    if (importNodes.importErrors.length !== 0) {
+    if (importNodes.importErrors.length > 0) {
         log.warning('Errors:');
         importNodes.importErrors.forEach(element => log.warning(element.message));
         log.info('-------------------');
     }
 }
 
-if (clusterLib.isMaster()) {
-    initializeProject();
+function publishRoot() {
+    const result = contentLib.publish({
+        keys: ['/xphoot'],
+        sourceBranch: 'draft',
+        targetBranch: 'master',
+        includeChildren: true,
+        includeDependencies: true,
+    });
+    if (!result || (result.failedContents && result.failedContents.length > 0)) {
+        log.warning('Could not publish imported content. failed=' + JSON.stringify(result && result.failedContents));
+    } else {
+        log.info('Published ' + (result.pushedContents ? result.pushedContents.length : 0) + ' content items.');
+    }
+}
+
+if (clusterLib.isLeader()) {
+    initialize();
 }
