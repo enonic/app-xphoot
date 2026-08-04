@@ -3,7 +3,6 @@ const contentLib = require('/lib/xp/content');
 const clusterLib = require('/lib/xp/cluster');
 const exportLib = require('/lib/xp/export');
 const projectLib = require('/lib/xp/project');
-const taskLib = require('/lib/xp/task');
 
 const projectData = {
     id: 'xphoot',
@@ -44,15 +43,8 @@ const getProject = function () {
 
 const initialize = function () {
     runInContext(() => {
-        const project = getProject();
-        if (!project) {
-            taskLib.executeFunction({
-                description: 'Importing content',
-                func: initProject
-            });
-        }
-        else {
-            log.debug(`Project ${project.id} exists, skipping import`);
+        if (!getProject()) {
+            initProject();
         }
     });
 };

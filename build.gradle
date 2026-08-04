@@ -18,9 +18,21 @@ dependencies {
     include libs.lib.cache
     include libs.lib.httpClient
     include libs.lib.asset
+
+    testImplementation "com.enonic.xp:testing:${xpVersion}"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.1.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.1'
 }
 
 repositories {
     mavenCentral()
     xp.enonicRepo( 'dev' )
+}
+
+test {
+    useJUnitPlatform()
+}
+
+xp {
+    scriptEngines = ['Nashorn', 'GraalJS']
 }
