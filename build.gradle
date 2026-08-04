@@ -22,7 +22,6 @@ dependencies {
     testImplementation "com.enonic.xp:testing:${xpVersion}"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.1.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.1'
-    testRuntimeOnly 'org.graalvm.polyglot:js:25.0.3'
 }
 
 repositories {
@@ -34,14 +33,6 @@ test {
     useJUnitPlatform()
 }
 
-def testGraalJs = tasks.register('testGraalJs', Test) {
-    group = 'verification'
-    description = 'Runs tests with the GraalJS script engine.'
-    useJUnitPlatform()
-    testClassesDirs = sourceSets.test.output.classesDirs
-    classpath = sourceSets.test.runtimeClasspath
-    systemProperty 'xp.script-engine', 'GraalJS'
-    shouldRunAfter test
+xp {
+    scriptEngines = ['Nashorn', 'GraalJS']
 }
-
-check.dependsOn testGraalJs
