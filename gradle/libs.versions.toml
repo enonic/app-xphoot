@@ -1,5 +1,5 @@
 [versions]
-thymeleaf = "3.0.0"
+thymeleaf = "3.0.1"
 cache = "3.0.1"
 httpClient = "4.0.1"
 asset = "2.0.1"
